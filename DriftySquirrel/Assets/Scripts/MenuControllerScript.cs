@@ -1,6 +1,5 @@
-﻿using SA.iOS.GameKit;
+﻿//using SA.iOS.GameKit;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MenuControllerScript : MonoBehaviour
 {
@@ -65,9 +64,9 @@ public class MenuControllerScript : MonoBehaviour
     public void GameCenterButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
-        viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        viewController.Show();
+        //ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
+        //viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
+        //viewController.Show();
     }
 
     public void PlayButton()
@@ -85,11 +84,11 @@ public class MenuControllerScript : MonoBehaviour
     public void LeaderboardButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
-        viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
-        viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
-        viewController.Show();
+        //ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
+        //viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
+        //viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
+        //viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
+        //viewController.Show();
     }
 
     public void ExitButton()
