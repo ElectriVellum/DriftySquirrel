@@ -13,6 +13,12 @@ public class SoundsControllerScript : MonoBehaviour
         }
     }
 
+    public SoundsControllerScript()
+    {
+        _audioSource = null;
+        _maximumVolume = 0.65f;
+    }
+
     private AudioSource _audioSource;
 
     [SerializeField()]

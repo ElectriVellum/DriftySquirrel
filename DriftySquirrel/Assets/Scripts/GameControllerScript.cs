@@ -1,5 +1,5 @@
-﻿//using SA.Foundation.Templates;
-//using SA.iOS.GameKit;
+﻿using SA.Foundation.Templates;
+using SA.iOS.GameKit;
 using UnityEngine;
 
 public class GameControllerScript : MonoBehaviour
@@ -32,6 +32,11 @@ public class GameControllerScript : MonoBehaviour
         White,
     }
 
+    public GameControllerScript()
+    {
+        _resetPlayerPrefs = false;
+    }
+
     [SerializeField()]
     private bool _resetPlayerPrefs;
 
@@ -43,22 +48,22 @@ public class GameControllerScript : MonoBehaviour
 
     private void Start()
     {
-        //ISN_GKLocalPlayer.Authenticate((SA_Result result) => {
-        //    if (result.IsSucceeded)
-        //    {
-        //        Debug.Log("Authenticate is succeeded!");
-        //        ISN_GKLocalPlayer player = ISN_GKLocalPlayer.LocalPlayer;
-        //        Debug.Log(player.PlayerID);
-        //        Debug.Log(player.Alias);
-        //        Debug.Log(player.DisplayName);
-        //        Debug.Log(player.Authenticated);
-        //        Debug.Log(player.Underage);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Authenticate is failed! Error with code: " + result.Error.Code + " and description: " + result.Error.Message);
-        //    }
-        //});
+        ISN_GKLocalPlayer.Authenticate((SA_Result result) => {
+            if (result.IsSucceeded)
+            {
+                Debug.Log("Authenticate is succeeded!");
+                ISN_GKLocalPlayer player = ISN_GKLocalPlayer.LocalPlayer;
+                Debug.Log(player.PlayerID);
+                Debug.Log(player.Alias);
+                Debug.Log(player.DisplayName);
+                Debug.Log(player.Authenticated);
+                Debug.Log(player.Underage);
+            }
+            else
+            {
+                Debug.Log("Authenticate is failed! Error with code: " + result.Error.Code + " and description: " + result.Error.Message);
+            }
+        });
     }
 
     private void MakeSingleton()
@@ -226,20 +231,20 @@ public class GameControllerScript : MonoBehaviour
 
     public void ReportScore(int score)
     {
-        //ISN_GKScore scoreReporter = new ISN_GKScore(LEADERBOARD_ID);
-        //scoreReporter.Value = score;
-        //scoreReporter.Context = 1;
+        ISN_GKScore scoreReporter = new ISN_GKScore(LEADERBOARD_ID);
+        scoreReporter.Value = score;
+        scoreReporter.Context = 1;
 
-        //scoreReporter.Report((result) => {
-        //    if (result.IsSucceeded)
-        //    {
-        //        Debug.Log("Score Report Success");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
-        //    }
-        //});
+        scoreReporter.Report((result) => {
+            if (result.IsSucceeded)
+            {
+                Debug.Log("Score Report Success");
+            }
+            else
+            {
+                Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
+            }
+        });
         if (score > HighScore)
         {
             HighScore = score;

@@ -1,0 +1,9 @@
+#import "ISN_UNUserNotificationCenterDelegate.h"
+
+
+@interface ISN_UNUserNotificationCenter : NSObject
+@property (nonatomic, strong) ISN_UNUserNotificationCenterDelegate *m_userNotificationDelegate;
+
++ (id)sharedInstance;
+- (void) addDelegate;
+@end

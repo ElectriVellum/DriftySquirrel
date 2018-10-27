@@ -15,6 +15,18 @@ public class ScenesControllerScript : MonoBehaviour
         }
     }
 
+    public ScenesControllerScript()
+    {
+        _canvas = null;
+        _panel = null;
+        _inColor = new Color(0f, 0f, 0f, 0f);
+        _outColor = new Color(0f, 0f, 0f, 1f);
+        _deactivateCanvas = true;
+        _fading = false;
+        _loading = false;
+        _progress = 0f;
+    }
+
     [SerializeField()]
     private Canvas _canvas;
     [SerializeField()]
@@ -28,8 +40,17 @@ public class ScenesControllerScript : MonoBehaviour
     [SerializeField()]
     private bool _deactivateCanvas;
 
+    private bool _fading;
     private bool _loading;
     private float _progress;
+
+    public float Progress
+    {
+        get
+        {
+            return _progress;
+        }
+    }
 
     private void Awake()
     {
@@ -74,6 +95,10 @@ public class ScenesControllerScript : MonoBehaviour
 
     public IEnumerator LoadScene(string sceneName, LoadSceneMode loadSceneMode)
     {
+        while (_loading)
+        {
+            yield return null;
+        }
         _loading = true;
         StartCoroutine(FadeOutScene(0.7f));
         yield return new WaitForSeconds(0.7f);
@@ -90,6 +115,10 @@ public class ScenesControllerScript : MonoBehaviour
 
     public IEnumerator LoadScene(string sceneName, float fadeOutDuration, float fadeInDuration)
     {
+        while (_loading)
+        {
+            yield return null;
+        }
         _loading = true;
         StartCoroutine(FadeOutScene(fadeOutDuration));
         yield return new WaitForSeconds(fadeOutDuration);
@@ -106,6 +135,10 @@ public class ScenesControllerScript : MonoBehaviour
 
     public IEnumerator LoadScene(string sceneName, LoadSceneMode loadSceneMode, float fadeOutDuration, float fadeInDuration)
     {
+        while (_loading)
+        {
+            yield return null;
+        }
         _loading = true;
         StartCoroutine(FadeOutScene(fadeOutDuration));
         yield return new WaitForSeconds(fadeOutDuration);
@@ -122,6 +155,11 @@ public class ScenesControllerScript : MonoBehaviour
 
     public IEnumerator FadeInScene(float duration)
     {
+        while (_fading)
+        {
+            yield return null;
+        }
+        _fading = true;
         var elapsed = 0f;
         _panel.color = _outColor;
         while (elapsed < duration)
@@ -135,10 +173,16 @@ public class ScenesControllerScript : MonoBehaviour
         {
             _canvas.gameObject.SetActive(false);
         }
+        _fading = false;
     }
 
     public IEnumerator FadeOutScene(float duration)
     {
+        while (_fading)
+        {
+            yield return null;
+        }
+        _fading = true;
         var elapsed = 0f;
         _panel.color = _inColor;
         if (_deactivateCanvas)
@@ -152,5 +196,6 @@ public class ScenesControllerScript : MonoBehaviour
             elapsed += Time.deltaTime;
         }
         _panel.color = _outColor;
+        _fading = false;
     }
 }

@@ -1,4 +1,4 @@
-﻿//using SA.iOS.GameKit;
+﻿using SA.iOS.GameKit;
 using UnityEngine;
 
 public class MenuControllerScript : MonoBehaviour
@@ -13,6 +13,14 @@ public class MenuControllerScript : MonoBehaviour
         }
     }
 
+    public MenuControllerScript()
+    {
+        _backgroundMusic = null;
+        _clickSound = null;
+        _musicOffImage = null;
+        _soundsOffImage = null;
+    }
+
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
@@ -21,6 +29,8 @@ public class MenuControllerScript : MonoBehaviour
     private GameObject _musicOffImage;
     [SerializeField()]
     private GameObject _soundsOffImage;
+    [SerializeField()]
+    private GameObject _scorePanel;
 
     private void Awake()
     {
@@ -64,9 +74,9 @@ public class MenuControllerScript : MonoBehaviour
     public void GameCenterButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        //ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
-        //viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        //viewController.Show();
+        ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
+        viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
+        viewController.Show();
     }
 
     public void PlayButton()
@@ -79,16 +89,17 @@ public class MenuControllerScript : MonoBehaviour
     public void ScoresButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
+        _scorePanel.SetActive(true);
     }
 
     public void LeaderboardButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        //ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
-        //viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        //viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
-        //viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
-        //viewController.Show();
+        ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
+        viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
+        viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
+        viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
+        viewController.Show();
     }
 
     public void ExitButton()
@@ -125,5 +136,11 @@ public class MenuControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
+    }
+
+    public void ScorePanelBackButton()
+    {
+        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        _scorePanel.SetActive(false);
     }
 }

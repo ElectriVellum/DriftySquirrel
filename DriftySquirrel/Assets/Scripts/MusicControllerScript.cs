@@ -14,10 +14,17 @@ public class MusicControllerScript : MonoBehaviour
         }
     }
 
+    public MusicControllerScript()
+    {
+        _audioSource = null;
+        _maximumVolume = 0.5f;
+    }
+
     private AudioSource _audioSource;
+    private bool _fading;
 
     [SerializeField()]
-    [Range(0f,1f)]
+    [Range(0f, 1f)]
     private float _maximumVolume;
 
     private void Awake()
@@ -73,6 +80,11 @@ public class MusicControllerScript : MonoBehaviour
 
     public IEnumerator FadeIn(AudioClip audioClip, float duration)
     {
+        while (_fading)
+        {
+            yield return null;
+        }
+        _fading = true;
         var startVolume = 0.2f;
         var fullVolume = _audioSource.volume;
         _audioSource.volume = 0f;
@@ -87,10 +99,16 @@ public class MusicControllerScript : MonoBehaviour
         {
             _audioSource.volume = fullVolume;
         }
+        _fading = false;
     }
 
     public IEnumerator FadeOut(float duration)
     {
+        while (_fading)
+        {
+            yield return null;
+        }
+        _fading = true;
         float startVolume = _audioSource.volume;
 
         while (_audioSource.volume > 0f)
@@ -101,5 +119,6 @@ public class MusicControllerScript : MonoBehaviour
         _audioSource.Stop();
         _audioSource.clip = null;
         _audioSource.volume = startVolume;
+        _fading = false;
     }
 }

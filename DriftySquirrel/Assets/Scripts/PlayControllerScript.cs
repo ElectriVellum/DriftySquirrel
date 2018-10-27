@@ -12,6 +12,12 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
+    public PlayControllerScript()
+    {
+        _backgroundMusic = null;
+        _clickSound = null;
+    }
+
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
