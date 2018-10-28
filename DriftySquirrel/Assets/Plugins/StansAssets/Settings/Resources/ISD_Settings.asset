@@ -15,6 +15,9 @@ MonoBehaviour:
   Frameworks:
   - IsOptional: 0
     IsEmbeded: 0
+    Type: 22
+  - IsOptional: 0
+    IsEmbeded: 0
     Type: 35
   EmbededFrameworks: []
   Libraries: []

@@ -48,7 +48,7 @@ namespace SA.iOS.XCode {
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.AVFoundation));
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CFNetwork));
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreGraphics));
-					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreLocation));
+					//_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreLocation));
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreMedia));
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreMotion));
 					_DefaultFrameworks.Add (new ISD_Framework (ISD_iOSFramework.CoreVideo));
