@@ -44,6 +44,15 @@ TagManager:
   - name: Background
     uniqueID: 108839175
     locked: 0
+  - name: Ground
+    uniqueID: 3055627265
+    locked: 0
+  - name: MenuGUI
+    uniqueID: 1564424783
+    locked: 0
+  - name: Player
+    uniqueID: 22082193
+    locked: 0
   - name: GUI
     uniqueID: 2438390453
     locked: 0
