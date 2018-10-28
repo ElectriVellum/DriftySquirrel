@@ -101,7 +101,14 @@ public class MenuControllerScript : MonoBehaviour
     {
         var highScore = GameControllerScript.Instance.HighScore;
         _highScoreText.text = highScore.ToString("N0");
-        if (highScore <= 20)
+        if (highScore <= 10)
+        {
+            _medalText.text = "None";
+            _goldMedalImage.SetActive(false);
+            _silverMedalImage.SetActive(false);
+            _bronzeMedalImage.SetActive(false);
+        }
+        else if (highScore <= 20)
         {
             _medalText.text = "Bronze";
             _goldMedalImage.SetActive(false);
