@@ -1,5 +1,6 @@
 ﻿using SA.iOS.GameKit;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuControllerScript : MonoBehaviour
 {
@@ -31,6 +32,16 @@ public class MenuControllerScript : MonoBehaviour
     private GameObject _soundsOffImage;
     [SerializeField()]
     private GameObject _scorePanel;
+    [SerializeField()]
+    private Text _highScoreText;
+    [SerializeField()]
+    private Text _medalText;
+    [SerializeField()]
+    private GameObject _bronzeMedalImage;
+    [SerializeField()]
+    private GameObject _silverMedalImage;
+    [SerializeField()]
+    private GameObject _goldMedalImage;
 
     private void Awake()
     {
@@ -88,6 +99,29 @@ public class MenuControllerScript : MonoBehaviour
 
     public void ScoresButton()
     {
+        var highScore = GameControllerScript.Instance.HighScore;
+        _highScoreText.text = highScore.ToString("N0");
+        if (highScore <= 20)
+        {
+            _medalText.text = "Bronze";
+            _goldMedalImage.SetActive(false);
+            _silverMedalImage.SetActive(false);
+            _bronzeMedalImage.SetActive(true);
+        }
+        else if (highScore <= 40)
+        {
+            _medalText.text = "Silver";
+            _goldMedalImage.SetActive(false);
+            _silverMedalImage.SetActive(true);
+            _bronzeMedalImage.SetActive(false);
+        }
+        else
+        {
+            _medalText.text = "Gold";
+            _goldMedalImage.SetActive(true);
+            _silverMedalImage.SetActive(false);
+            _bronzeMedalImage.SetActive(false);
+        }
         SoundsControllerScript.Instance.PlaySound(_clickSound);
         _scorePanel.SetActive(true);
     }
@@ -138,7 +172,7 @@ public class MenuControllerScript : MonoBehaviour
         }
     }
 
-    public void ScorePanelBackButton()
+    public void ScorePanelHomeButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
         _scorePanel.SetActive(false);
