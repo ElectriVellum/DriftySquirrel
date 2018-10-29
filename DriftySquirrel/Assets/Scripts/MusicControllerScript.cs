@@ -104,6 +104,7 @@ public class MusicControllerScript : MonoBehaviour
 
     public IEnumerator FadeOut(float duration)
     {
+        Debug.Log("Fading out, Fading: " + _fading.ToString());
         while (_fading)
         {
             yield return null;

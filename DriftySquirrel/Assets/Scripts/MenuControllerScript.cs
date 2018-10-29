@@ -1,4 +1,5 @@
-﻿using SA.iOS.GameKit;
+﻿using System.Collections;
+using SA.iOS.GameKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,13 @@ public class MenuControllerScript : MonoBehaviour
         _clickSound = null;
         _musicOffImage = null;
         _soundsOffImage = null;
+        _scorePanel = null;
+        _highScoreText = null;
+        _medalText = null;
+        _bronzeMedalImage = null;
+        _silverMedalImage = null;
+        _goldMedalImage = null;
+        _player = null;
     }
 
     [SerializeField()]
@@ -42,6 +50,8 @@ public class MenuControllerScript : MonoBehaviour
     private GameObject _silverMedalImage;
     [SerializeField()]
     private GameObject _goldMedalImage;
+    [SerializeField()]
+    private GameObject _player;
 
     private void Awake()
     {
@@ -66,8 +76,15 @@ public class MenuControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.25f));
+        StartCoroutine(ShowPlayer());
+        StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
         StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
+    }
+
+    private IEnumerator ShowPlayer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        _player.SetActive(true);
     }
 
     private void MakeInstance()
@@ -93,7 +110,7 @@ public class MenuControllerScript : MonoBehaviour
     public void PlayButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.25f));
+        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
     }
 
@@ -146,7 +163,7 @@ public class MenuControllerScript : MonoBehaviour
     public void ExitButton()
     {
         SoundsControllerScript.Instance.PlaySound(_clickSound);
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.25f));
+        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.2f));
         StartCoroutine(ScenesControllerScript.Instance.FadeOutScene(0.2f));
         Application.Quit();
     }

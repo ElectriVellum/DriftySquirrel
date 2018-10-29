@@ -47,13 +47,13 @@ TagManager:
   - name: Ground
     uniqueID: 3055627265
     locked: 0
-  - name: MenuGUI
+  - name: GUI_Back
     uniqueID: 1564424783
     locked: 0
   - name: Player
     uniqueID: 22082193
     locked: 0
-  - name: GUI
+  - name: GUI_Front
     uniqueID: 2438390453
     locked: 0
   - name: SceneController
