@@ -96,9 +96,9 @@ public class GameControllerScript : MonoBehaviour
         if (CheckFirstRun() || _resetPlayerPrefs)
         {
             MusicOn = true;
-            MusicVolume = 0.5f;
+            MusicVolume = 0.25f;
             SoundsOn = true;
-            SoundsVolume = 0.75f;
+            SoundsVolume = 0.5f;
             HighScore = 0;
             SelectedSquirrel = Squirrels.Brown;
             RedSquirrelUnlocked = false;

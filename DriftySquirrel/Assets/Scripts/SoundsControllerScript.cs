@@ -25,6 +25,16 @@ public class SoundsControllerScript : MonoBehaviour
     [Range(0f, 1f)]
     private float _maximumVolume;
 
+    [SerializeField()]
+    private AudioClip _guiClickAudioClip;
+    [SerializeField()]
+    private AudioClip _flyAudioClip;
+    [SerializeField()]
+    private AudioClip _pingAudioClip;
+    [SerializeField()]
+    private AudioClip _dieAudioClip;
+
+
     private void Awake()
     {
         MakeSingleton();
@@ -96,5 +106,25 @@ public class SoundsControllerScript : MonoBehaviour
     {
         _audioSource.pitch = Random.Range(minimumPitch, maximumPitch);
         _audioSource.PlayOneShot(audioClip, volumeScale);
+    }
+
+    public void PlayGuiClickSound()
+    {
+        PlaySound(_guiClickAudioClip);
+    }
+
+    public void PlayFlySound()
+    {
+        PlaySound(_flyAudioClip);
+    }
+
+    public void PlayPingSound()
+    {
+        PlaySound(_pingAudioClip);
+    }
+
+    public void PlayDieSound()
+    {
+        PlaySound(_dieAudioClip);
     }
 }

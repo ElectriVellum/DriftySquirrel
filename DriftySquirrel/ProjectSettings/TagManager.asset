@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Background
+  - Ground
+  - TreeHolder
+  - Tree
   layers:
   - Default
   - TransparentFX
@@ -13,13 +17,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - BackgroundCollector
+  - Background
+  - Ground
+  - Player
+  - Tree
+  - TreeCollector
+  - TreeHolder
   - 
   - 
   - 
@@ -46,6 +50,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 3055627265
+    locked: 0
+  - name: Tree
+    uniqueID: 436139129
     locked: 0
   - name: GUI_Back
     uniqueID: 1564424783

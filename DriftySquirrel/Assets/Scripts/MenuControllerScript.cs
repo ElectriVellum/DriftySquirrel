@@ -18,7 +18,6 @@ public class MenuControllerScript : MonoBehaviour
     public MenuControllerScript()
     {
         _backgroundMusic = null;
-        _clickSound = null;
         _musicOffImage = null;
         _soundsOffImage = null;
         _scorePanel = null;
@@ -32,8 +31,6 @@ public class MenuControllerScript : MonoBehaviour
 
     [SerializeField()]
     private AudioClip _backgroundMusic;
-    [SerializeField()]
-    private AudioClip _clickSound;
     [SerializeField()]
     private GameObject _musicOffImage;
     [SerializeField()]
@@ -101,7 +98,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void GameCenterButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
         viewController.Show();
@@ -109,7 +106,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void PlayButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
     }
@@ -146,13 +143,13 @@ public class MenuControllerScript : MonoBehaviour
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(false);
         }
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         _scorePanel.SetActive(true);
     }
 
     public void LeaderboardButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
         viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
@@ -162,7 +159,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void ExitButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.2f));
         StartCoroutine(ScenesControllerScript.Instance.FadeOutScene(0.2f));
         Application.Quit();
@@ -170,7 +167,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void MusicButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.On = !MusicControllerScript.Instance.On;
         if (MusicControllerScript.Instance.On)
         {
@@ -184,7 +181,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void SoundsButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         SoundsControllerScript.Instance.On = !SoundsControllerScript.Instance.On;
         if (SoundsControllerScript.Instance.On)
         {
@@ -198,7 +195,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void ScorePanelHomeButton()
     {
-        SoundsControllerScript.Instance.PlaySound(_clickSound);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         _scorePanel.SetActive(false);
     }
 }
