@@ -92,7 +92,7 @@ public class MusicControllerScript : MonoBehaviour
         _audioSource.Play();
         while (_audioSource.volume < fullVolume)
         {
-            _audioSource.volume += startVolume * Time.deltaTime / duration;
+            _audioSource.volume += startVolume * Time.unscaledDeltaTime / duration;
             yield return null;
         }
         if (Mathf.Abs(_audioSource.volume - fullVolume) > Mathf.Epsilon)
@@ -104,7 +104,6 @@ public class MusicControllerScript : MonoBehaviour
 
     public IEnumerator FadeOut(float duration)
     {
-        Debug.Log("Fading out, Fading: " + _fading.ToString());
         while (_fading)
         {
             yield return null;
@@ -114,7 +113,7 @@ public class MusicControllerScript : MonoBehaviour
 
         while (_audioSource.volume > 0f)
         {
-            _audioSource.volume -= startVolume * Time.deltaTime / duration;
+            _audioSource.volume -= startVolume * Time.unscaledDeltaTime / duration;
             yield return null;
         }
         _audioSource.Stop();

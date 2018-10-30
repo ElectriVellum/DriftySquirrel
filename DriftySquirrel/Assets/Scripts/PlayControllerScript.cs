@@ -17,9 +17,12 @@ public class PlayControllerScript : MonoBehaviour
     public PlayControllerScript()
     {
         _backgroundMusic = null;
+        _pauseButton = null;
+        _instructionPanel = null;
         _musicOffImage = null;
         _soundsOffImage = null;
         _score = 0;
+        _hudScoreText = null;
         _pausePanel = null;
         _scoreText = null;
         _brownSquirrel = null;
@@ -41,11 +44,17 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
+    private GameObject _pauseButton;
+    [SerializeField()]
+    public GameObject _instructionPanel;
+    [SerializeField()]
     private GameObject _musicOffImage;
     [SerializeField()]
     private GameObject _soundsOffImage;
     [SerializeField()]
     private int _score;
+    [SerializeField()]
+    private Text _hudScoreText;
     [SerializeField()]
     private GameObject _pausePanel;
     [SerializeField()]
@@ -98,7 +107,7 @@ public class PlayControllerScript : MonoBehaviour
             else
             {
                 var angle = 0f;
-                angle = Mathf.Lerp(0f, -90f, -_rigidbody2D.velocity.y / 20f);
+                angle = Mathf.Lerp(0f, -90f, -_rigidbody2D.velocity.y / 16f);
                 _squirrel.transform.rotation = Quaternion.Euler(0f, 0f, angle);
             }
         }
@@ -119,11 +128,10 @@ public class PlayControllerScript : MonoBehaviour
                 _squirrel = _whiteSquirrel;
                 break;
         }
-        _squirrel.SetActive(true);
         _rigidbody2D = _squirrel.GetComponent<Rigidbody2D>();
         _animator = _squirrel.GetComponent<Animator>();
         _camera = Camera.main;
-        _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x) - 1f;
+        _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x);
         StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
         StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
     }
@@ -150,8 +158,19 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
+    public void InstructionButton()
+    {
+        _instructionPanel.SetActive(false);
+        _pauseButton.SetActive(true);
+        _hudScoreText.gameObject.SetActive(true);
+        _squirrel.SetActive(true);
+        Time.timeScale = 1f;
+        _didFly = true;
+    }
+
     public void PauseButton()
     {
+        Time.timeScale = 0f;
         if (MusicControllerScript.Instance.On)
         {
             _musicOffImage.SetActive(false);
@@ -168,9 +187,9 @@ public class PlayControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        _scoreText.text = _score.ToString("N0");
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+        _hudScoreText.gameObject.SetActive(false);
         _pausePanel.SetActive(true);
     }
 
@@ -184,6 +203,8 @@ public class PlayControllerScript : MonoBehaviour
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
         _pausePanel.SetActive(false);
+        _hudScoreText.gameObject.SetActive(true);
+        Time.timeScale = 1f;
     }
 
     public void RestartButton()
@@ -193,12 +214,12 @@ public class PlayControllerScript : MonoBehaviour
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
     }
 
-    public void ExitButton()
+    public void HomeButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.2f));
-        StartCoroutine(ScenesControllerScript.Instance.FadeOutScene(0.2f));
-        Application.Quit();
+        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+        StartCoroutine(ScenesControllerScript.Instance.LoadScene("Menu"));
+        Time.timeScale = 1f;
     }
 
     public void MusicButton()
@@ -227,5 +248,41 @@ public class PlayControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
+    }
+
+    public void Score(int points)
+    {
+        _score += points;
+        _hudScoreText.text = _score.ToString("N0");
+        _scoreText.text = _score.ToString("N0");
+        SoundsControllerScript.Instance.PlayPingSound();
+    }
+
+    public void Die()
+    {
+        Time.timeScale = 0f;
+        _alive = false;
+        SoundsControllerScript.Instance.PlayDieSound();
+        //TODO: Update Die Panel
+        if (MusicControllerScript.Instance.On)
+        {
+            _musicOffImage.SetActive(false);
+        }
+        else
+        {
+            _musicOffImage.SetActive(true);
+        }
+        if (SoundsControllerScript.Instance.On)
+        {
+            _soundsOffImage.SetActive(false);
+        }
+        else
+        {
+            _soundsOffImage.SetActive(true);
+        }
+        SoundsControllerScript.Instance.PlayGuiClickSound();
+        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+        _hudScoreText.gameObject.SetActive(false);
+        _pausePanel.SetActive(true);
     }
 }

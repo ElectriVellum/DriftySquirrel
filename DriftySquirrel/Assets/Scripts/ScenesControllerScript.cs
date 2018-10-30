@@ -80,15 +80,19 @@ public class ScenesControllerScript : MonoBehaviour
     public IEnumerator LoadScene(string sceneName)
     {
         _loading = true;
-        StartCoroutine(FadeOutScene(0.7f));
-        yield return new WaitForSeconds(0.7f);
+        yield return StartCoroutine(FadeOutScene(0.7f));
+        //StartCoroutine(FadeOutScene(0.7f));
+        //yield return Coroutines.WaitForRealSeconds(0.7f);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
             _progress = asyncLoad.progress;
             yield return null;
         }
-        StartCoroutine(FadeInScene(0.7f));
+        //StartCoroutine(FadeInScene(0.7f));
+        Debug.Log("Before Fade In");
+        yield return StartCoroutine(FadeInScene(0.7f));
+        Debug.Log("After Fade In");
         _loading = false;
         _progress = 0f;
     }
@@ -101,7 +105,7 @@ public class ScenesControllerScript : MonoBehaviour
         }
         _loading = true;
         StartCoroutine(FadeOutScene(0.7f));
-        yield return new WaitForSeconds(0.7f);
+        yield return Coroutines.WaitForRealSeconds(0.7f);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
         while (!asyncLoad.isDone)
         {
@@ -121,7 +125,7 @@ public class ScenesControllerScript : MonoBehaviour
         }
         _loading = true;
         StartCoroutine(FadeOutScene(fadeOutDuration));
-        yield return new WaitForSeconds(fadeOutDuration);
+        yield return Coroutines.WaitForRealSeconds(fadeOutDuration);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
@@ -141,7 +145,7 @@ public class ScenesControllerScript : MonoBehaviour
         }
         _loading = true;
         StartCoroutine(FadeOutScene(fadeOutDuration));
-        yield return new WaitForSeconds(fadeOutDuration);
+        yield return Coroutines.WaitForRealSeconds(fadeOutDuration);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
         while (!asyncLoad.isDone)
         {
@@ -166,7 +170,7 @@ public class ScenesControllerScript : MonoBehaviour
         {
             _panel.color = Color.Lerp(_outColor, _inColor, elapsed);
             yield return null;
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
         }
         _panel.color = _inColor;
         if (_deactivateCanvas)
@@ -193,7 +197,7 @@ public class ScenesControllerScript : MonoBehaviour
         {
             _panel.color = Color.Lerp(_inColor, _outColor, elapsed);
             yield return null;
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
         }
         _panel.color = _outColor;
         _fading = false;

@@ -80,7 +80,7 @@ public class MenuControllerScript : MonoBehaviour
 
     private IEnumerator ShowPlayer()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return Coroutines.WaitForRealSeconds(0.1f);
         _player.SetActive(true);
     }
 
@@ -106,6 +106,7 @@ public class MenuControllerScript : MonoBehaviour
 
     public void PlayButton()
     {
+        Time.timeScale = 0f;
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));

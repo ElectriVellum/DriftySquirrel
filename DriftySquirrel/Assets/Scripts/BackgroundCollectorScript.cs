@@ -48,7 +48,7 @@ public class BackgroundCollectorScript : MonoBehaviour
         else if (collision.tag == "Ground")
         {
             var temp = collision.transform.position;
-            var width = ((BoxCollider2D)collision).size.x;
+            var width = ((BoxCollider2D)collision).size.x * collision.transform.localScale.x;
             temp.x = _lastGroundX + width;
             collision.transform.position = temp;
             _lastGroundX = temp.x;
