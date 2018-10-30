@@ -23,7 +23,9 @@ public class PlayControllerScript : MonoBehaviour
         _soundsOffImage = null;
         _score = 0;
         _hudScoreText = null;
-        _pausePanel = null;
+        _endPanel = null;
+        _pausedLabel = null;
+        _gameOverLabel = null;
         _scoreText = null;
         _brownSquirrel = null;
         _redSquirrel = null;
@@ -56,7 +58,15 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private Text _hudScoreText;
     [SerializeField()]
-    private GameObject _pausePanel;
+    private GameObject _endPanel;
+    [SerializeField()]
+    private GameObject _pausedLabel;
+    [SerializeField()]
+    private GameObject _gameOverLabel;
+    [SerializeField()]
+    private GameObject _resumeButton;
+    [SerializeField()]
+    private GameObject _continueButton;
     [SerializeField()]
     private Text _scoreText;
     [SerializeField()]
@@ -190,7 +200,11 @@ public class PlayControllerScript : MonoBehaviour
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         _hudScoreText.gameObject.SetActive(false);
-        _pausePanel.SetActive(true);
+        _pausedLabel.SetActive(true);
+        _gameOverLabel.SetActive(false);
+        _resumeButton.SetActive(true);
+        _continueButton.SetActive(false);
+        _endPanel.SetActive(true);
     }
 
     public void FlyButton()
@@ -202,9 +216,14 @@ public class PlayControllerScript : MonoBehaviour
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
-        _pausePanel.SetActive(false);
+        _endPanel.SetActive(false);
         _hudScoreText.gameObject.SetActive(true);
         Time.timeScale = 1f;
+    }
+
+    public void ContinueButton()
+    {
+
     }
 
     public void RestartButton()
@@ -263,7 +282,6 @@ public class PlayControllerScript : MonoBehaviour
         Time.timeScale = 0f;
         _alive = false;
         SoundsControllerScript.Instance.PlayDieSound();
-        //TODO: Update Die Panel
         if (MusicControllerScript.Instance.On)
         {
             _musicOffImage.SetActive(false);
@@ -283,6 +301,10 @@ public class PlayControllerScript : MonoBehaviour
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         _hudScoreText.gameObject.SetActive(false);
-        _pausePanel.SetActive(true);
+        _pausedLabel.SetActive(false);
+        _gameOverLabel.SetActive(true);
+        _resumeButton.SetActive(false);
+        _continueButton.SetActive(true);
+        _endPanel.SetActive(true);
     }
 }
