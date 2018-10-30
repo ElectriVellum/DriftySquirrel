@@ -1,6 +1,7 @@
 ﻿using SA.Foundation.Templates;
 using SA.iOS.GameKit;
 using UnityEngine;
+using UnityEngine.Monetization;
 
 public class GameControllerScript : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class GameControllerScript : MonoBehaviour
     }
 
     public const string LEADERBOARD_ID = "com.electrivellum.driftysquirrel.leaderboard";
+    public const string ADS_PLACEMENTID = "rewardedVideo";
+    public const string ADS_GAMEID = "2881619";
+    //public const string ADS_GAMEID = "2881620";
+    public const bool ADS_TESTMODE = true;
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";
@@ -48,6 +53,7 @@ public class GameControllerScript : MonoBehaviour
 
     private void Start()
     {
+        Monetization.Initialize(ADS_GAMEID, ADS_TESTMODE);
         ISN_GKLocalPlayer.Authenticate((SA_Result result) => {
             if (result.IsSucceeded)
             {

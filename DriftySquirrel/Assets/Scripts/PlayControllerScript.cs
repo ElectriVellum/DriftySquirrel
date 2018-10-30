@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Monetization;
 
 public class PlayControllerScript : MonoBehaviour
 {
+    private static int _continueCount;
+    private static int _continueScore;
     private static PlayControllerScript _instance;
 
     public static PlayControllerScript Instance
@@ -176,6 +180,12 @@ public class PlayControllerScript : MonoBehaviour
         _squirrel.SetActive(true);
         Time.timeScale = 1f;
         _didFly = true;
+        if (_continueScore > 0)
+        {
+            _continueCount++;
+            Score(_continueScore);
+            _continueScore = 0;
+        }
     }
 
     public void PauseButton()
@@ -223,11 +233,38 @@ public class PlayControllerScript : MonoBehaviour
 
     public void ContinueButton()
     {
+        SoundsControllerScript.Instance.PlayGuiClickSound();
+        StartCoroutine(WaitForAd());
+    }
 
+    private IEnumerator WaitForAd()
+    {
+        while (!Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID))
+        {
+            yield return null;
+        }
+        ShowAdPlacementContent ad = null;
+        ad = Monetization.GetPlacementContent(GameControllerScript.ADS_PLACEMENTID) as ShowAdPlacementContent;
+        if (ad != null)
+        {
+            ad.Show(AdFinished);
+        }
+    }
+
+    private void AdFinished(ShowResult result)
+    {
+        if (result == ShowResult.Finished)
+        {
+            _continueScore = _score;
+            StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
+        }
     }
 
     public void RestartButton()
     {
+        _continueCount = 0;
+        _continueScore = 0;
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
@@ -235,6 +272,8 @@ public class PlayControllerScript : MonoBehaviour
 
     public void HomeButton()
     {
+        _continueCount = 0;
+        _continueScore = 0;
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Menu"));
@@ -305,6 +344,7 @@ public class PlayControllerScript : MonoBehaviour
         _gameOverLabel.SetActive(true);
         _resumeButton.SetActive(false);
         _continueButton.SetActive(true);
+        _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID);
         _endPanel.SetActive(true);
     }
 }
