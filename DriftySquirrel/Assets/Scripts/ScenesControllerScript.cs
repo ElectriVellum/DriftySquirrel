@@ -60,7 +60,10 @@ public class ScenesControllerScript : MonoBehaviour
 
     private void SceneManager_SceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
-        _canvas.worldCamera = Camera.main;
+        if (_canvas != null)
+        {
+            _canvas.worldCamera = Camera.main;
+        }
     }
 
 
