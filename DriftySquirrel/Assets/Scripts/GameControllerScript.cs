@@ -1,5 +1,7 @@
-﻿using SA.Foundation.Templates;
+﻿#if UNITY_IOS
+using SA.Foundation.Templates;
 using SA.iOS.GameKit;
+#endif
 using UnityEngine;
 using UnityEngine.Monetization;
 
@@ -15,10 +17,13 @@ public class GameControllerScript : MonoBehaviour
         }
     }
 
-    public const string LEADERBOARD_ID = "com.electrivellum.driftysquirrel.leaderboard";
+    public const string IOS_LEADERBOARD_ID = "com.electrivellum.driftysquirrel.leaderboard";
     public const string ADS_PLACEMENTID = "rewardedVideo";
+#if UNITY_IOS
     public const string ADS_GAMEID = "2881619";
-    //public const string ADS_GAMEID = "2881620";
+#elif UNITY_ANDROID
+    public const string ADS_GAMEID = "2881620";
+#endif
     public const bool ADS_TESTMODE = false;
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
@@ -40,6 +45,7 @@ public class GameControllerScript : MonoBehaviour
     [SerializeField()]
     private bool _resetPlayerPrefs;
 
+#if UNITY_IOS
     private ISN_GKLocalPlayer _localPlayer;
 
     public ISN_GKLocalPlayer LocalPlayer
@@ -49,6 +55,7 @@ public class GameControllerScript : MonoBehaviour
             return _localPlayer;
         }
     }
+#endif
 
     public GameControllerScript()
     {
@@ -63,7 +70,11 @@ public class GameControllerScript : MonoBehaviour
 
     private void Start()
     {
-        Monetization.Initialize(ADS_GAMEID, ADS_TESTMODE);
+        if (Monetization.isSupported)
+        {
+            Monetization.Initialize(ADS_GAMEID, ADS_TESTMODE);
+        }
+#if UNITY_IOS
         ISN_GKLocalPlayer.Authenticate((SA_Result result) =>
         {
             if (result.IsSucceeded)
@@ -75,6 +86,7 @@ public class GameControllerScript : MonoBehaviour
                 _localPlayer = null;
             }
         });
+#endif
     }
 
     private void MakeSingleton()
@@ -242,7 +254,8 @@ public class GameControllerScript : MonoBehaviour
 
     public void ReportScore(int score)
     {
-        ISN_GKScore scoreReporter = new ISN_GKScore(LEADERBOARD_ID);
+#if UNITY_IOS
+        ISN_GKScore scoreReporter = new ISN_GKScore(IOS_LEADERBOARD_ID);
         scoreReporter.Value = score;
         scoreReporter.Context = 1;
 
@@ -257,6 +270,7 @@ public class GameControllerScript : MonoBehaviour
                 Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
             }
         });
+#endif
         if (score > HighScore)
         {
             HighScore = score;

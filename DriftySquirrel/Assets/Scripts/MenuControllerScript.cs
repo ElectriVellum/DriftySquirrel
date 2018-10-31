@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+#if UNITY_IOS
 using SA.iOS.GameKit;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,6 +59,7 @@ public class MenuControllerScript : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
         if (MusicControllerScript.Instance.On)
         {
             _musicOffImage.SetActive(false);
@@ -98,10 +101,12 @@ public class MenuControllerScript : MonoBehaviour
 
     public void GameCenterButton()
     {
+#if UNITY_IOS
         SoundsControllerScript.Instance.PlayGuiClickSound();
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
         viewController.Show();
+#endif
     }
 
     public void PlayButton()
@@ -150,12 +155,14 @@ public class MenuControllerScript : MonoBehaviour
 
     public void LeaderboardButton()
     {
+#if UNITY_IOS
         SoundsControllerScript.Instance.PlayGuiClickSound();
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        viewController.LeaderboardIdentifier = GameControllerScript.LEADERBOARD_ID;
+        viewController.LeaderboardIdentifier = GameControllerScript.IOS_LEADERBOARD_ID;
         viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
         viewController.Show();
+#endif
     }
 
     public void ExitButton()

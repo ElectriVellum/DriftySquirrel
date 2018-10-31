@@ -248,15 +248,21 @@ public class PlayControllerScript : MonoBehaviour
 
     private IEnumerator WaitForAd()
     {
-        while (!Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID))
+        if (Monetization.isInitialized)
         {
-            yield return null;
-        }
-        ShowAdPlacementContent ad = null;
-        ad = Monetization.GetPlacementContent(GameControllerScript.ADS_PLACEMENTID) as ShowAdPlacementContent;
-        if (ad != null)
-        {
-            ad.Show(AdFinished);
+            while (!Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID))
+            {
+                yield return null;
+            }
+            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_PLACEMENTID) as ShowAdPlacementContent;
+            if (ad != null)
+            {
+                var options = new ShowAdCallbacks
+                {
+                    finishCallback = AdFinished
+                };
+                ad.Show(options);
+            }
         }
     }
 
@@ -274,6 +280,7 @@ public class PlayControllerScript : MonoBehaviour
     {
         _continueCount = 0;
         _continueScore = 0;
+        GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
@@ -283,10 +290,10 @@ public class PlayControllerScript : MonoBehaviour
     {
         _continueCount = 0;
         _continueScore = 0;
+        GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
         StartCoroutine(ScenesControllerScript.Instance.LoadScene("Menu"));
-        Time.timeScale = 1f;
     }
 
     public void MusicButton()
