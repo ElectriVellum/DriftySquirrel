@@ -158,7 +158,7 @@ public class PlayControllerScript : MonoBehaviour
         StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
         if (Random.Range(0, 100) <= 40)
         {
-
+            NonRewardedAd();
         }
     }
 
@@ -247,25 +247,24 @@ public class PlayControllerScript : MonoBehaviour
     public void ContinueButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(WaitForRewardedAd());
+        RewardedAd();
     }
 
-    private IEnumerator WaitForNonRewardedAd()
+    private void NonRewardedAd()
     {
         if (Monetization.isInitialized)
         {
-            while (!Monetization.IsReady(GameControllerScript.ADS_NONREWARDED_PLACEMENTID))
+            if (Monetization.IsReady(GameControllerScript.ADS_NONREWARDED_PLACEMENTID))
             {
-                yield return null;
-            }
-            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_NONREWARDED_PLACEMENTID) as ShowAdPlacementContent;
-            if (ad != null)
-            {
-                var options = new ShowAdCallbacks
+                var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_NONREWARDED_PLACEMENTID) as ShowAdPlacementContent;
+                if (ad != null)
                 {
-                    finishCallback = NonRewardedAdFinished
-                };
-                ad.Show(options);
+                    var options = new ShowAdCallbacks
+                    {
+                        finishCallback = NonRewardedAdFinished
+                    };
+                    ad.Show(options);
+                }
             }
         }
     }
@@ -274,22 +273,21 @@ public class PlayControllerScript : MonoBehaviour
     {
     }
 
-    private IEnumerator WaitForRewardedAd()
+    private void RewardedAd()
     {
         if (Monetization.isInitialized)
         {
-            while (!Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID))
+            if (Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID))
             {
-                yield return null;
-            }
-            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_REWARDED_PLACEMENTID) as ShowAdPlacementContent;
-            if (ad != null)
-            {
-                var options = new ShowAdCallbacks
+                var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_REWARDED_PLACEMENTID) as ShowAdPlacementContent;
+                if (ad != null)
                 {
-                    finishCallback = RewardedAdFinished
-                };
-                ad.Show(options);
+                    var options = new ShowAdCallbacks
+                    {
+                        finishCallback = RewardedAdFinished
+                    };
+                    ad.Show(options);
+                }
             }
         }
     }
