@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TreeScript : MonoBehaviour
 {
@@ -37,7 +35,7 @@ public class TreeScript : MonoBehaviour
         for (int heightIndex = 0; heightIndex < _height; heightIndex++)
         {
             var trunkTile = _trunkTiles[Random.Range(0, _trunkTiles.Length)];
-            var trunk = Instantiate(trunkTile.Prefab, transform.position + new Vector3(0f, yPosition, 0f), Quaternion.identity, transform);
+            Instantiate(trunkTile.Prefab, transform.position + new Vector3(0f, yPosition, 0f), Quaternion.identity, transform);
             yPosition += (_tileSize.y * trunkTile.Size.y);
         }
     }

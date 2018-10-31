@@ -40,6 +40,16 @@ public class GameControllerScript : MonoBehaviour
     [SerializeField()]
     private bool _resetPlayerPrefs;
 
+    private ISN_GKLocalPlayer _localPlayer;
+
+    public ISN_GKLocalPlayer LocalPlayer
+    {
+        get
+        {
+            return _localPlayer;
+        }
+    }
+
     public GameControllerScript()
     {
         _resetPlayerPrefs = false;
@@ -54,20 +64,15 @@ public class GameControllerScript : MonoBehaviour
     private void Start()
     {
         Monetization.Initialize(ADS_GAMEID, ADS_TESTMODE);
-        ISN_GKLocalPlayer.Authenticate((SA_Result result) => {
+        ISN_GKLocalPlayer.Authenticate((SA_Result result) =>
+        {
             if (result.IsSucceeded)
             {
-                Debug.Log("Authenticate is succeeded!");
-                ISN_GKLocalPlayer player = ISN_GKLocalPlayer.LocalPlayer;
-                Debug.Log(player.PlayerID);
-                Debug.Log(player.Alias);
-                Debug.Log(player.DisplayName);
-                Debug.Log(player.Authenticated);
-                Debug.Log(player.Underage);
+                _localPlayer = ISN_GKLocalPlayer.LocalPlayer;
             }
             else
             {
-                Debug.Log("Authenticate is failed! Error with code: " + result.Error.Code + " and description: " + result.Error.Message);
+                _localPlayer = null;
             }
         });
     }
@@ -241,7 +246,8 @@ public class GameControllerScript : MonoBehaviour
         scoreReporter.Value = score;
         scoreReporter.Context = 1;
 
-        scoreReporter.Report((result) => {
+        scoreReporter.Report((result) =>
+        {
             if (result.IsSucceeded)
             {
                 Debug.Log("Score Report Success");

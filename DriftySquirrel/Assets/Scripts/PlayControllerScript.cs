@@ -265,8 +265,8 @@ public class PlayControllerScript : MonoBehaviour
         if (result == ShowResult.Finished)
         {
             _continueScore = _score;
-            StartCoroutine(MusicControllerScript.Instance.FadeOut(0f));
-            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play", 0f, 0.7f));
+            StartCoroutine(MusicControllerScript.Instance.FadeOut(0.1f));
+            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play", 0.1f, 0.7f));
         }
     }
 
