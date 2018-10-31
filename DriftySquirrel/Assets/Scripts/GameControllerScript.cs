@@ -37,13 +37,13 @@ public class GameControllerScript : MonoBehaviour
         White,
     }
 
+    [SerializeField()]
+    private bool _resetPlayerPrefs;
+
     public GameControllerScript()
     {
         _resetPlayerPrefs = false;
     }
-
-    [SerializeField()]
-    private bool _resetPlayerPrefs;
 
     private void Awake()
     {

@@ -18,35 +18,6 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
-    public PlayControllerScript()
-    {
-        _backgroundMusic = null;
-        _pauseButton = null;
-        _instructionPanel = null;
-        _musicOffImage = null;
-        _soundsOffImage = null;
-        _score = 0;
-        _hudScoreText = null;
-        _endPanel = null;
-        _pausedLabel = null;
-        _gameOverLabel = null;
-        _scoreText = null;
-        _brownSquirrel = null;
-        _redSquirrel = null;
-        _whiteSquirrel = null;
-        _squirrel = null;
-        _rigidbody2D = null;
-        _animator = null;
-
-        _camera = null;
-        _cameraOffsetX = 0f;
-
-        _forwardSpeed = 3f;
-        _bounceSpeed = 5f;
-        _didFly = false;
-        _alive = true;
-    }
-
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
@@ -79,6 +50,11 @@ public class PlayControllerScript : MonoBehaviour
     private GameObject _redSquirrel;
     [SerializeField()]
     private GameObject _whiteSquirrel;
+    [SerializeField()]
+    private Transform _treeSpawner;
+    [SerializeField()]
+    private GameObject _treePrefab;
+
     private GameObject _squirrel;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
@@ -90,6 +66,38 @@ public class PlayControllerScript : MonoBehaviour
     private float _bounceSpeed;
     private bool _didFly;
     private bool _alive;
+
+    public PlayControllerScript()
+    {
+        _backgroundMusic = null;
+        _pauseButton = null;
+        _instructionPanel = null;
+        _musicOffImage = null;
+        _soundsOffImage = null;
+        _score = 0;
+        _hudScoreText = null;
+        _endPanel = null;
+        _pausedLabel = null;
+        _gameOverLabel = null;
+        _scoreText = null;
+        _brownSquirrel = null;
+        _redSquirrel = null;
+        _whiteSquirrel = null;
+        _treeSpawner = null;
+        _treePrefab = null;
+
+        _squirrel = null;
+        _rigidbody2D = null;
+        _animator = null;
+
+        _camera = null;
+        _cameraOffsetX = 0f;
+
+        _forwardSpeed = 3f;
+        _bounceSpeed = 5f;
+        _didFly = false;
+        _alive = true;
+    }
 
     private void Awake()
     {
@@ -186,6 +194,7 @@ public class PlayControllerScript : MonoBehaviour
             Score(_continueScore);
             _continueScore = 0;
         }
+        StartCoroutine(GenerateTrees());
     }
 
     public void PauseButton()
@@ -256,8 +265,8 @@ public class PlayControllerScript : MonoBehaviour
         if (result == ShowResult.Finished)
         {
             _continueScore = _score;
-            StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
-            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
+            StartCoroutine(MusicControllerScript.Instance.FadeOut(0f));
+            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play", 0f, 0.7f));
         }
     }
 
@@ -346,5 +355,15 @@ public class PlayControllerScript : MonoBehaviour
         _continueButton.SetActive(true);
         _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID);
         _endPanel.SetActive(true);
+    }
+
+    private IEnumerator GenerateTrees()
+    {
+        while(_alive)
+        {
+            yield return new WaitForSeconds(Random.Range(1f,3f));
+            var treeScript = Instantiate(_treePrefab, _treeSpawner.position, Quaternion.identity, transform).GetComponent<TreeScript>();
+            treeScript.Generate();
+        }
     }
 }

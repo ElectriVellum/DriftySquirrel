@@ -53,5 +53,9 @@ public class BackgroundCollectorScript : MonoBehaviour
             collision.transform.position = temp;
             _lastGroundX = temp.x;
         }
+        else if (collision.tag == "Tree")
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }

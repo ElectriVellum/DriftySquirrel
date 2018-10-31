@@ -1210,7 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c23477bf1b24d74a7d47444bf2a27d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumVolume: 0.5
+  _maximumVolume: 1
   _guiClickAudioClip: {fileID: 8300000, guid: 354835ec8f7574ba59f431279235e703, type: 3}
   _flyAudioClip: {fileID: 8300000, guid: 510ac0515c75942d2b45ee4b88e65187, type: 3}
   _pingAudioClip: {fileID: 8300000, guid: cf2f244d26638411cae6cf6df4b331d1, type: 3}
@@ -2521,7 +2521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67d4c14bff485480b8a3f31ca1d2f8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resetPlayerPrefs: 0
+  _resetPlayerPrefs: 1
 --- !u!4 &1537763177
 Transform:
   m_ObjectHideFlags: 0
@@ -2653,7 +2653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8022c7438eb4c98bb78beba0291459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumVolume: 0.25
+  _maximumVolume: 1
 --- !u!82 &1585860370
 AudioSource:
   m_ObjectHideFlags: 0

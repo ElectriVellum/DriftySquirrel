@@ -3,9 +3,9 @@
 public class PlayerScript : MonoBehaviour
 {
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "TreeHolder")
+        if (collision.tag == "Tree")
         {
             PlayControllerScript.Instance.Score(1);
         }
@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Tree")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Branch")
         {
             PlayControllerScript.Instance.Die();
         }

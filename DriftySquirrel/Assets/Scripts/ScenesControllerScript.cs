@@ -81,18 +81,13 @@ public class ScenesControllerScript : MonoBehaviour
     {
         _loading = true;
         yield return StartCoroutine(FadeOutScene(0.7f));
-        //StartCoroutine(FadeOutScene(0.7f));
-        //yield return Coroutines.WaitForRealSeconds(0.7f);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
             _progress = asyncLoad.progress;
             yield return null;
         }
-        //StartCoroutine(FadeInScene(0.7f));
-        Debug.Log("Before Fade In");
         yield return StartCoroutine(FadeInScene(0.7f));
-        Debug.Log("After Fade In");
         _loading = false;
         _progress = 0f;
     }
@@ -104,15 +99,14 @@ public class ScenesControllerScript : MonoBehaviour
             yield return null;
         }
         _loading = true;
-        StartCoroutine(FadeOutScene(0.7f));
-        yield return Coroutines.WaitForRealSeconds(0.7f);
+        yield return StartCoroutine(FadeOutScene(0.7f));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
         while (!asyncLoad.isDone)
         {
             _progress = asyncLoad.progress;
             yield return null;
         }
-        StartCoroutine(FadeInScene(0.7f));
+        yield return StartCoroutine(FadeInScene(0.7f));
         _loading = false;
         _progress = 0f;
     }
@@ -124,15 +118,14 @@ public class ScenesControllerScript : MonoBehaviour
             yield return null;
         }
         _loading = true;
-        StartCoroutine(FadeOutScene(fadeOutDuration));
-        yield return Coroutines.WaitForRealSeconds(fadeOutDuration);
+        yield return StartCoroutine(FadeOutScene(fadeOutDuration));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
             _progress = asyncLoad.progress;
             yield return null;
         }
-        StartCoroutine(FadeInScene(fadeInDuration));
+        yield return StartCoroutine(FadeInScene(fadeInDuration));
         _loading = false;
         _progress = 0f;
     }
@@ -144,15 +137,14 @@ public class ScenesControllerScript : MonoBehaviour
             yield return null;
         }
         _loading = true;
-        StartCoroutine(FadeOutScene(fadeOutDuration));
-        yield return Coroutines.WaitForRealSeconds(fadeOutDuration);
+        yield return StartCoroutine(FadeOutScene(fadeOutDuration));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
         while (!asyncLoad.isDone)
         {
             _progress = asyncLoad.progress;
             yield return null;
         }
-        StartCoroutine(FadeInScene(fadeInDuration));
+        yield return StartCoroutine(FadeInScene(fadeInDuration));
         _loading = false;
         _progress = 0f;
     }

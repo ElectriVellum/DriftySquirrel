@@ -80,7 +80,7 @@ public class MenuControllerScript : MonoBehaviour
 
     private IEnumerator ShowPlayer()
     {
-        yield return Coroutines.WaitForRealSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         _player.SetActive(true);
     }
 

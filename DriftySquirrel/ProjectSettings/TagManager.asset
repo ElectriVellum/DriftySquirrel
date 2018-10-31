@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Background
   - Ground
-  - TreeHolder
+  - Branch
   - Tree
   layers:
   - Default
@@ -21,9 +21,9 @@ TagManager:
   - Background
   - Ground
   - Player
+  - Branch
   - Tree
-  - TreeCollector
-  - TreeHolder
+  - 
   - 
   - 
   - 

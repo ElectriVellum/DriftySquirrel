@@ -86,7 +86,7 @@ public class MusicControllerScript : MonoBehaviour
         }
         _fading = true;
         var startVolume = 0.2f;
-        var fullVolume = _audioSource.volume;
+        var fullVolume = _maximumVolume * Mathf.Clamp01(GameControllerScript.Instance.MusicVolume);
         _audioSource.volume = 0f;
         _audioSource.clip = audioClip;
         _audioSource.Play();
