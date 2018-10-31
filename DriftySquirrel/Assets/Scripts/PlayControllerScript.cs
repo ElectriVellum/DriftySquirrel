@@ -156,6 +156,10 @@ public class PlayControllerScript : MonoBehaviour
         _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x);
         StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
         StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
+        if (Random.Range(0, 100) <= 40)
+        {
+
+        }
     }
 
     private void Update()
@@ -243,30 +247,54 @@ public class PlayControllerScript : MonoBehaviour
     public void ContinueButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(WaitForAd());
+        StartCoroutine(WaitForRewardedAd());
     }
 
-    private IEnumerator WaitForAd()
+    private IEnumerator WaitForNonRewardedAd()
     {
         if (Monetization.isInitialized)
         {
-            while (!Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID))
+            while (!Monetization.IsReady(GameControllerScript.ADS_NONREWARDED_PLACEMENTID))
             {
                 yield return null;
             }
-            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_PLACEMENTID) as ShowAdPlacementContent;
+            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_NONREWARDED_PLACEMENTID) as ShowAdPlacementContent;
             if (ad != null)
             {
                 var options = new ShowAdCallbacks
                 {
-                    finishCallback = AdFinished
+                    finishCallback = NonRewardedAdFinished
                 };
                 ad.Show(options);
             }
         }
     }
 
-    private void AdFinished(ShowResult result)
+    private void NonRewardedAdFinished(ShowResult result)
+    {
+    }
+
+    private IEnumerator WaitForRewardedAd()
+    {
+        if (Monetization.isInitialized)
+        {
+            while (!Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID))
+            {
+                yield return null;
+            }
+            var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_REWARDED_PLACEMENTID) as ShowAdPlacementContent;
+            if (ad != null)
+            {
+                var options = new ShowAdCallbacks
+                {
+                    finishCallback = RewardedAdFinished
+                };
+                ad.Show(options);
+            }
+        }
+    }
+
+    private void RewardedAdFinished(ShowResult result)
     {
         if (result == ShowResult.Finished)
         {
@@ -360,15 +388,15 @@ public class PlayControllerScript : MonoBehaviour
         _gameOverLabel.SetActive(true);
         _resumeButton.SetActive(false);
         _continueButton.SetActive(true);
-        _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_PLACEMENTID);
+        _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
         _endPanel.SetActive(true);
     }
 
     private IEnumerator GenerateTrees()
     {
-        while(_alive)
+        while (_alive)
         {
-            yield return new WaitForSeconds(Random.Range(1f,3f));
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
             var treeScript = Instantiate(_treePrefab, _treeSpawner.position, Quaternion.identity, transform).GetComponent<TreeScript>();
             treeScript.Generate();
         }

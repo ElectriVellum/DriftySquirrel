@@ -18,7 +18,8 @@ public class GameControllerScript : MonoBehaviour
     }
 
     public const string IOS_LEADERBOARD_ID = "com.electrivellum.driftysquirrel.leaderboard";
-    public const string ADS_PLACEMENTID = "rewardedVideo";
+    public const string ADS_REWARDED_PLACEMENTID = "rewardedVideo";
+    public const string ADS_NONREWARDED_PLACEMENTID = "video";
 #if UNITY_IOS
     public const string ADS_GAMEID = "2881619";
 #elif UNITY_ANDROID
