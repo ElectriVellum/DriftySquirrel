@@ -19,7 +19,7 @@ public class GameControllerScript : MonoBehaviour
     public const string ADS_PLACEMENTID = "rewardedVideo";
     public const string ADS_GAMEID = "2881619";
     //public const string ADS_GAMEID = "2881620";
-    public const bool ADS_TESTMODE = true;
+    public const bool ADS_TESTMODE = false;
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";
