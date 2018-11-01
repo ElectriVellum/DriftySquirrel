@@ -107,7 +107,7 @@ public class GameControllerScript : MonoBehaviour
 
     public bool CheckFirstRun()
     {
-        if (!PlayerPrefs.HasKey(MUSIC_ON))
+        if (PlayerPrefs.HasKey(MUSIC_ON))
         {
             return false;
         }

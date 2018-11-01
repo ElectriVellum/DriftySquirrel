@@ -160,7 +160,7 @@ public class PlayControllerScript : MonoBehaviour
         _camera = Camera.main;
         _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x);
         MusicControllerScript.Instance.FadeIn(_backgroundMusic);
-        if (Random.Range(0, 100) <= 25)
+        if (Random.Range(0, 100) <= 25 && _continueScore == 0)
         {
             NonRewardedAd();
         }
