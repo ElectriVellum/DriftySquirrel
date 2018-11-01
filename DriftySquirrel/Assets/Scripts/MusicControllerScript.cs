@@ -14,14 +14,6 @@ public class MusicControllerScript : MonoBehaviour
         }
     }
 
-    public MusicControllerScript()
-    {
-        _audioSource = null;
-        _fading = false;
-        _maximumVolume = 0.5f;
-        _fadeDuration = 0.5f;
-    }
-
     private AudioSource _audioSource;
     private bool _fading;
 
@@ -31,6 +23,14 @@ public class MusicControllerScript : MonoBehaviour
 
     [SerializeField()]
     private float _fadeDuration;
+
+    public MusicControllerScript()
+    {
+        _audioSource = null;
+        _fading = false;
+        _maximumVolume = 0.5f;
+        _fadeDuration = 0.5f;
+    }
 
     private void Awake()
     {

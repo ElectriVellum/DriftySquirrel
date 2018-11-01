@@ -88,7 +88,6 @@ public class ScenesControllerScript : MonoBehaviour
 
     [SerializeField()]
     private float _fadeInDuration;
-
     [SerializeField()]
     private float _fadeOutDuration;
 
@@ -124,11 +123,15 @@ public class ScenesControllerScript : MonoBehaviour
     {
         _canvas = null;
         _panel = null;
+
         _inColor = new Color(0f, 0f, 0f, 0f);
         _outColor = new Color(0f, 0f, 0f, 1f);
+
         _deactivateCanvas = true;
+
         _fadeInDuration = 0.7f;
         _fadeOutDuration = 0.7f;
+
         _fading = false;
         _loading = false;
         _progress = 0f;

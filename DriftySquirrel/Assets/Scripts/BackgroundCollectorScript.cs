@@ -10,6 +10,15 @@ public class BackgroundCollectorScript : MonoBehaviour
     private float _lastBackgroundX;
     private float _lastGroundX;
 
+    public BackgroundCollectorScript()
+    {
+        _backgrounds = null;
+        _grounds = null;
+
+        _lastBackgroundX = 0f;
+        _lastGroundX = 0f;
+    }
+
     private void Awake()
     {
         _backgrounds = GameObject.FindGameObjectsWithTag("Background");

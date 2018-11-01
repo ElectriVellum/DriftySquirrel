@@ -13,12 +13,6 @@ public class SoundsControllerScript : MonoBehaviour
         }
     }
 
-    public SoundsControllerScript()
-    {
-        _audioSource = null;
-        _maximumVolume = 0.65f;
-    }
-
     private AudioSource _audioSource;
 
     [SerializeField()]
@@ -34,6 +28,17 @@ public class SoundsControllerScript : MonoBehaviour
     [SerializeField()]
     private AudioClip _dieAudioClip;
 
+    public SoundsControllerScript()
+    {
+        _audioSource = null;
+
+        _maximumVolume = 0.65f;
+
+        _guiClickAudioClip = null;
+        _flyAudioClip = null;
+        _pingAudioClip = null;
+        _dieAudioClip = null;
+    }
 
     private void Awake()
     {

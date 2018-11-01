@@ -63,6 +63,9 @@ public class GameControllerScript : MonoBehaviour
     public GameControllerScript()
     {
         _resetPlayerPrefs = false;
+#if UNITY_IOS
+        _localPlayer = null;
+#endif
     }
 
     private void Awake()

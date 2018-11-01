@@ -17,20 +17,6 @@ public class MenuControllerScript : MonoBehaviour
         }
     }
 
-    public MenuControllerScript()
-    {
-        _backgroundMusic = null;
-        _musicOffImage = null;
-        _soundsOffImage = null;
-        _scorePanel = null;
-        _highScoreText = null;
-        _medalText = null;
-        _bronzeMedalImage = null;
-        _silverMedalImage = null;
-        _goldMedalImage = null;
-        _player = null;
-    }
-
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
@@ -52,6 +38,20 @@ public class MenuControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _player;
 
+    public MenuControllerScript()
+    {
+        _backgroundMusic = null;
+        _musicOffImage = null;
+        _soundsOffImage = null;
+        _scorePanel = null;
+        _highScoreText = null;
+        _medalText = null;
+        _bronzeMedalImage = null;
+        _silverMedalImage = null;
+        _goldMedalImage = null;
+        _player = null;
+    }
+
     private void Awake()
     {
         MakeInstance();
@@ -60,6 +60,14 @@ public class MenuControllerScript : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1f;
+        StartCoroutine(AfterStartCoroutine());
+        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
+        ScenesControllerScript.Instance.FadeInScene();
+    }
+
+    private IEnumerator AfterStartCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
         if (MusicControllerScript.Instance.On)
         {
             _musicOffImage.SetActive(false);
@@ -76,14 +84,6 @@ public class MenuControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        StartCoroutine(ShowPlayer());
-        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
-        ScenesControllerScript.Instance.FadeInScene();
-    }
-
-    private IEnumerator ShowPlayer()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
         _player.SetActive(true);
     }
 

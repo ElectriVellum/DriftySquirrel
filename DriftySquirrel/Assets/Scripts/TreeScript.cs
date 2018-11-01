@@ -5,13 +5,9 @@ public class TreeScript : MonoBehaviour
     [SerializeField()]
     private GameObject[] _branches;
     [SerializeField()]
-    private int _minimumLeftBranch1Y;
+    private int _minimumBranchOffset;
     [SerializeField()]
-    private int _maximumLeftBranch1Y;
-    [SerializeField()]
-    private int _minimumLeftBranch2YOffset;
-    [SerializeField()]
-    private int _maximumLeftBranch2YOffset;
+    private int _maximumBranchOffset;
 
     [SerializeField()]
     private float _minimumXOffset;
@@ -30,6 +26,9 @@ public class TreeScript : MonoBehaviour
 
     public TreeScript()
     {
+        _branches = null;
+        _minimumBranchOffset = 3;
+        _maximumBranchOffset = 5;
         _minimumXOffset = 0f;
         _maximumXOffset = 0f;
         _minimumYOffset = -1f;
@@ -43,26 +42,26 @@ public class TreeScript : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x + Random.Range(_minimumXOffset, _maximumXOffset), transform.position.y + Random.Range(_minimumYOffset, _maximumYOffset), 0f);
         var yPosition = 0f;
-        var branch1Height = Random.Range(_minimumLeftBranch1Y, _maximumLeftBranch1Y);
-        var branch2Height = branch1Height + Random.Range(_minimumLeftBranch2YOffset, _maximumLeftBranch2YOffset);
-        var branch3Height = branch1Height + (branch1Height - branch2Height / 2);
-        var firstLeft = Random.Range(0, 100) >= 50;
+        var leftBranch = Random.Range(0, 100) >= 50;
+        var nextBranchHeight = Random.Range(_minimumBranchOffset, _maximumBranchOffset);
         for (int heightIndex = 0; heightIndex < _height; heightIndex++)
         {
             var trunkTile = _trunkTiles[Random.Range(0, _trunkTiles.Length)];
             var trunk = Instantiate(trunkTile.Prefab, transform.position + new Vector3(0f, yPosition, 0f), Quaternion.identity, transform);
-            if (heightIndex == branch1Height || heightIndex == branch2Height || heightIndex == branch3Height)
+            if (heightIndex == nextBranchHeight)
             {
-                if ((firstLeft && (heightIndex == branch1Height || heightIndex == branch3Height)) || (!firstLeft && heightIndex == branch2Height))
+                if (leftBranch)
                 {
-                    var position = trunk.transform.position + new Vector3(-_tileSize.x / 2f, _tileSize.y / 2f, 0f);
+                    var position = trunk.transform.position + new Vector3(-_tileSize.x / 2f, 0f, 0f);
                     Instantiate(_branches[Random.Range(0, _branches.Length)], position, Quaternion.identity, transform);
                 }
-                else if ((!firstLeft && (heightIndex == branch1Height || heightIndex == branch3Height)) || (firstLeft && heightIndex == branch2Height))
+                else
                 {
-                    var position = trunk.transform.position + new Vector3(_tileSize.x / 2f, _tileSize.y / 2f, 0f);
-                    Instantiate(_branches[Random.Range(0,_branches.Length)], position, Quaternion.identity, transform).transform.localScale = new Vector3(-1f,1f,1f);
+                    var position = trunk.transform.position + new Vector3(_tileSize.x / 2f, 0f, 0f);
+                    Instantiate(_branches[Random.Range(0, _branches.Length)], position, Quaternion.identity, transform).transform.localScale = new Vector3(-1f, 1f, 1f);
                 }
+                leftBranch = !leftBranch;
+                nextBranchHeight += Random.Range(_minimumBranchOffset, _maximumBranchOffset);
             }
             yPosition += (_tileSize.y * trunkTile.Size.y);
         }

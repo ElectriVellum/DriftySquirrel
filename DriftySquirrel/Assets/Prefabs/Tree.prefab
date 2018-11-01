@@ -81,16 +81,14 @@ MonoBehaviour:
   - {fileID: 1525298197037742, guid: 6ad46c96b61494b8f96a18f7a731d540, type: 2}
   - {fileID: 1184963452756052, guid: e04276543a7504f5ca2bce744d125bc5, type: 2}
   - {fileID: 1321467332988606, guid: 73f1e41c596474211bb244e41091e3ff, type: 2}
-  _minimumLeftBranch1Y: 6
-  _maximumLeftBranch1Y: 9
-  _minimumLeftBranch2YOffset: 9
-  _maximumLeftBranch2YOffset: 12
+  _minimumBranchOffset: 6
+  _maximumBranchOffset: 8
   _minimumXOffset: 0
   _maximumXOffset: 0
   _minimumYOffset: -1
   _maximumYOffset: 1
   _tileSize: {x: 0.64, y: 0.64}
-  _height: 22
+  _height: 30
   _trunkTiles:
   - _prefab: {fileID: 1841008670932292, guid: 9275651b4a4464603a0ea1f4e2d62870, type: 2}
     _size: {x: 1, y: 1}

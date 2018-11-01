@@ -101,6 +101,7 @@ public class PlayControllerScript : MonoBehaviour
         _bounceSpeed = 5f;
         _didFly = false;
         _alive = true;
+
         _adFinished = false;
     }
 
@@ -243,7 +244,10 @@ public class PlayControllerScript : MonoBehaviour
 
     public void FlyButton()
     {
-        _didFly = true;
+        if (_alive)
+        {
+            _didFly = true;
+        }
     }
 
     public void ResumeButton()
@@ -361,9 +365,16 @@ public class PlayControllerScript : MonoBehaviour
 
     public void Die()
     {
-        Time.timeScale = 0f;
         _alive = false;
+        _animator.SetTrigger("Die");
         SoundsControllerScript.Instance.PlayDieSound();
+        StartCoroutine(DieCoroutine());
+    }
+
+    private IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(0.8f);
+        Time.timeScale = 0f;
         if (MusicControllerScript.Instance.On)
         {
             _musicOffImage.SetActive(false);
@@ -395,9 +406,9 @@ public class PlayControllerScript : MonoBehaviour
     {
         while (_alive)
         {
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
             var treeScript = Instantiate(_treePrefab, _treeSpawner.position, Quaternion.identity, transform).GetComponent<TreeScript>();
             treeScript.Generate();
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
         }
     }
 }
