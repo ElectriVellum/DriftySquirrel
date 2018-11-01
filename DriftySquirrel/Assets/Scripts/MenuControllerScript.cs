@@ -77,8 +77,8 @@ public class MenuControllerScript : MonoBehaviour
             _soundsOffImage.SetActive(true);
         }
         StartCoroutine(ShowPlayer());
-        StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
-        StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
+        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
+        ScenesControllerScript.Instance.FadeInScene();
     }
 
     private IEnumerator ShowPlayer()
@@ -113,8 +113,8 @@ public class MenuControllerScript : MonoBehaviour
     {
         Time.timeScale = 0f;
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
-        StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
+        MusicControllerScript.Instance.FadeOut();
+        ScenesControllerScript.Instance.LoadScene("Play");
     }
 
     public void ScoresButton()
@@ -168,8 +168,14 @@ public class MenuControllerScript : MonoBehaviour
     public void ExitButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.2f));
-        StartCoroutine(ScenesControllerScript.Instance.FadeOutScene(0.2f));
+        MusicControllerScript.Instance.FadeOut(0.2f);
+        ScenesControllerScript.Instance.FadeOutScene(0.2f);
+        StartCoroutine(ExitCoroutine());
+    }
+
+    private IEnumerator ExitCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
         Application.Quit();
     }
 

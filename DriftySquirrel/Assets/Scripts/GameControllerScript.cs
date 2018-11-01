@@ -24,8 +24,10 @@ public class GameControllerScript : MonoBehaviour
     public const string ADS_GAMEID = "2881619";
 #elif UNITY_ANDROID
     public const string ADS_GAMEID = "2881620";
+#elif UNITY_EDITOR
+    public const string ADS_GAMEID = "1111111";
 #endif
-    public const bool ADS_TESTMODE = false;
+    public const bool ADS_TESTMODE = true;
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";

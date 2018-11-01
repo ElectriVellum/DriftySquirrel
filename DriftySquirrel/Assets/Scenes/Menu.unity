@@ -2521,7 +2521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67d4c14bff485480b8a3f31ca1d2f8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resetPlayerPrefs: 1
+  _resetPlayerPrefs: 0
 --- !u!4 &1537763177
 Transform:
   m_ObjectHideFlags: 0
@@ -2654,6 +2654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maximumVolume: 1
+  _fadeDuration: 0.5
 --- !u!82 &1585860370
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2794,6 +2795,8 @@ MonoBehaviour:
   _inColor: {r: 0, g: 0, b: 0, a: 0}
   _outColor: {r: 0, g: 0, b: 0, a: 1}
   _deactivateCanvas: 1
+  _fadeInDuration: 0.7
+  _fadeOutDuration: 0.7
 --- !u!4 &1695765452
 Transform:
   m_ObjectHideFlags: 0

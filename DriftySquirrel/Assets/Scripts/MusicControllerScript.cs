@@ -17,7 +17,9 @@ public class MusicControllerScript : MonoBehaviour
     public MusicControllerScript()
     {
         _audioSource = null;
+        _fading = false;
         _maximumVolume = 0.5f;
+        _fadeDuration = 0.5f;
     }
 
     private AudioSource _audioSource;
@@ -26,6 +28,9 @@ public class MusicControllerScript : MonoBehaviour
     [SerializeField()]
     [Range(0f, 1f)]
     private float _maximumVolume;
+
+    [SerializeField()]
+    private float _fadeDuration;
 
     private void Awake()
     {
@@ -78,7 +83,27 @@ public class MusicControllerScript : MonoBehaviour
         }
     }
 
-    public IEnumerator FadeIn(AudioClip audioClip, float duration)
+    public void FadeIn(AudioClip audioClip)
+    {
+        StartCoroutine(FadeInCoroutine(audioClip, _fadeDuration));
+    }
+
+    public void FadeIn(AudioClip audioClip, float duration)
+    {
+        StartCoroutine(FadeInCoroutine(audioClip, duration));
+    }
+
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOutCoroutine(_fadeDuration));
+    }
+
+    public void FadeOut(float duration)
+    {
+        StartCoroutine(FadeOutCoroutine(duration));
+    }
+
+    private IEnumerator FadeInCoroutine(AudioClip audioClip, float duration)
     {
         while (_fading)
         {
@@ -102,7 +127,7 @@ public class MusicControllerScript : MonoBehaviour
         _fading = false;
     }
 
-    public IEnumerator FadeOut(float duration)
+    private IEnumerator FadeOutCoroutine(float duration)
     {
         while (_fading)
         {

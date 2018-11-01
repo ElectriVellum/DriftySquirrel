@@ -15,16 +15,62 @@ public class ScenesControllerScript : MonoBehaviour
         }
     }
 
-    public ScenesControllerScript()
+    public delegate void FadeCompleteEventHandler();
+
+    public delegate void LoadingStartedEventHandler();
+
+    public delegate void LoadingCompleteEventHandler();
+
+    public delegate void LoadingProgressChangedEventHandler();
+
+    public FadeCompleteEventHandler FadeInComplete;
+
+    public FadeCompleteEventHandler FadeOutComplete;
+
+    public LoadingStartedEventHandler LoadingStarted;
+
+    public LoadingCompleteEventHandler LoadingComplete;
+
+    public LoadingProgressChangedEventHandler LoadingProgressChanged;
+
+    protected void OnFadeInComplete()
     {
-        _canvas = null;
-        _panel = null;
-        _inColor = new Color(0f, 0f, 0f, 0f);
-        _outColor = new Color(0f, 0f, 0f, 1f);
-        _deactivateCanvas = true;
-        _fading = false;
-        _loading = false;
-        _progress = 0f;
+        if (FadeInComplete != null)
+        {
+            FadeInComplete.Invoke();
+        }
+    }
+
+    protected void OnFadeOutComplete()
+    {
+        if (FadeOutComplete != null)
+        {
+            FadeOutComplete.Invoke();
+        }
+    }
+
+    protected void OnLoadingStarted()
+    {
+        if (LoadingStarted != null)
+        {
+            LoadingStarted.Invoke();
+        }
+    }
+
+    protected void OnLoadingComplete()
+    {
+        if (LoadingComplete != null)
+        {
+            LoadingComplete.Invoke();
+        }
+    }
+
+    protected void OnLoadingProgressChanged()
+    {
+        if (LoadingProgressChanged != null)
+        {
+            LoadingProgressChanged.Invoke();
+        }
     }
 
     [SerializeField()]
@@ -40,9 +86,31 @@ public class ScenesControllerScript : MonoBehaviour
     [SerializeField()]
     private bool _deactivateCanvas;
 
+    [SerializeField()]
+    private float _fadeInDuration;
+
+    [SerializeField()]
+    private float _fadeOutDuration;
+
     private bool _fading;
     private bool _loading;
     private float _progress;
+
+    public bool Fading
+    {
+        get
+        {
+            return _fading;
+        }
+    }
+
+    public bool Loading
+    {
+        get
+        {
+            return _loading;
+        }
+    }
 
     public float Progress
     {
@@ -52,20 +120,37 @@ public class ScenesControllerScript : MonoBehaviour
         }
     }
 
+    public ScenesControllerScript()
+    {
+        _canvas = null;
+        _panel = null;
+        _inColor = new Color(0f, 0f, 0f, 0f);
+        _outColor = new Color(0f, 0f, 0f, 1f);
+        _deactivateCanvas = true;
+        _fadeInDuration = 0.7f;
+        _fadeOutDuration = 0.7f;
+        _fading = false;
+        _loading = false;
+        _progress = 0f;
+    }
+
     private void Awake()
     {
         MakeSingleton();
         SceneManager.sceneLoaded += SceneManager_SceneLoaded;
     }
 
-    private void SceneManager_SceneLoaded(Scene arg0, LoadSceneMode arg1)
+    private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        if (_canvas != null)
+        if (loadSceneMode == LoadSceneMode.Single && _canvas != null)
         {
             _canvas.worldCamera = Camera.main;
         }
+        if (_loading)
+        {
+            _loading = false;
+        }
     }
-
 
     private void MakeSingleton()
     {
@@ -80,79 +165,64 @@ public class ScenesControllerScript : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadScene(string sceneName)
+    public void LoadScene(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
-        _loading = true;
-        yield return StartCoroutine(FadeOutScene(0.7f));
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        while (!asyncLoad.isDone)
-        {
-            _progress = asyncLoad.progress;
-            yield return null;
-        }
-        yield return StartCoroutine(FadeInScene(0.7f));
-        _loading = false;
-        _progress = 0f;
+        StartCoroutine(LoadSceneCoroutine(sceneName, loadSceneMode));
     }
 
-    public IEnumerator LoadScene(string sceneName, LoadSceneMode loadSceneMode)
+    public void FadeInScene()
+    {
+        StartCoroutine(FadeInSceneCoroutine(_fadeInDuration));
+    }
+
+    public void FadeInScene(float duration)
+    {
+        StartCoroutine(FadeInSceneCoroutine(duration));
+    }
+
+    public void FadeOutScene()
+    {
+        StartCoroutine(FadeOutSceneCoroutine(_fadeOutDuration));
+    }
+
+    public void FadeOutScene(float duration)
+    {
+        StartCoroutine(FadeOutSceneCoroutine(duration));
+    }
+
+    private IEnumerator LoadSceneCoroutine(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         while (_loading)
         {
             yield return null;
         }
+        OnLoadingStarted();
+        yield return StartCoroutine(FadeOutSceneCoroutine(_fadeOutDuration));
         _loading = true;
-        yield return StartCoroutine(FadeOutScene(0.7f));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
-        while (!asyncLoad.isDone)
-        {
-            _progress = asyncLoad.progress;
-            yield return null;
-        }
-        yield return StartCoroutine(FadeInScene(0.7f));
-        _loading = false;
-        _progress = 0f;
-    }
-
-    public IEnumerator LoadScene(string sceneName, float fadeOutDuration, float fadeInDuration)
-    {
         while (_loading)
         {
+            if (Mathf.Abs(_progress - asyncLoad.progress) > Mathf.Epsilon)
+            {
+                _progress = asyncLoad.progress;
+                OnLoadingProgressChanged();
+            }
             yield return null;
         }
-        _loading = true;
-        yield return StartCoroutine(FadeOutScene(fadeOutDuration));
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        while (!asyncLoad.isDone)
+        if (Mathf.Abs(_progress) > Mathf.Epsilon)
         {
-            _progress = asyncLoad.progress;
+            _progress = 0f;
+            OnLoadingProgressChanged();
+        }
+        yield return StartCoroutine(FadeInSceneCoroutine(_fadeInDuration));
+        while (_fading)
+        {
             yield return null;
         }
-        yield return StartCoroutine(FadeInScene(fadeInDuration));
-        _loading = false;
-        _progress = 0f;
+        OnLoadingComplete();
     }
 
-    public IEnumerator LoadScene(string sceneName, LoadSceneMode loadSceneMode, float fadeOutDuration, float fadeInDuration)
-    {
-        while (_loading)
-        {
-            yield return null;
-        }
-        _loading = true;
-        yield return StartCoroutine(FadeOutScene(fadeOutDuration));
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
-        while (!asyncLoad.isDone)
-        {
-            _progress = asyncLoad.progress;
-            yield return null;
-        }
-        yield return StartCoroutine(FadeInScene(fadeInDuration));
-        _loading = false;
-        _progress = 0f;
-    }
-
-    public IEnumerator FadeInScene(float duration)
+    private IEnumerator FadeInSceneCoroutine(float duration)
     {
         while (_fading)
         {
@@ -173,9 +243,10 @@ public class ScenesControllerScript : MonoBehaviour
             _canvas.gameObject.SetActive(false);
         }
         _fading = false;
+        OnFadeInComplete();
     }
 
-    public IEnumerator FadeOutScene(float duration)
+    private IEnumerator FadeOutSceneCoroutine(float duration)
     {
         while (_fading)
         {
@@ -196,5 +267,6 @@ public class ScenesControllerScript : MonoBehaviour
         }
         _panel.color = _outColor;
         _fading = false;
+        OnFadeOutComplete();
     }
 }

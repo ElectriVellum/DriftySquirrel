@@ -23,7 +23,7 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _pauseButton;
     [SerializeField()]
-    public GameObject _instructionPanel;
+    private GameObject _instructionPanel;
     [SerializeField()]
     private GameObject _musicOffImage;
     [SerializeField()]
@@ -67,6 +67,8 @@ public class PlayControllerScript : MonoBehaviour
     private bool _didFly;
     private bool _alive;
 
+    private bool _adFinished;
+
     public PlayControllerScript()
     {
         _backgroundMusic = null;
@@ -79,6 +81,8 @@ public class PlayControllerScript : MonoBehaviour
         _endPanel = null;
         _pausedLabel = null;
         _gameOverLabel = null;
+        _resumeButton = null;
+        _continueButton = null;
         _scoreText = null;
         _brownSquirrel = null;
         _redSquirrel = null;
@@ -97,6 +101,7 @@ public class PlayControllerScript : MonoBehaviour
         _bounceSpeed = 5f;
         _didFly = false;
         _alive = true;
+        _adFinished = false;
     }
 
     private void Awake()
@@ -154,9 +159,8 @@ public class PlayControllerScript : MonoBehaviour
         _animator = _squirrel.GetComponent<Animator>();
         _camera = Camera.main;
         _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x);
-        StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
-        StartCoroutine(ScenesControllerScript.Instance.FadeInScene(0.7f));
-        if (Random.Range(0, 100) <= 40)
+        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
+        if (Random.Range(0, 100) <= 25)
         {
             NonRewardedAd();
         }
@@ -169,6 +173,13 @@ public class PlayControllerScript : MonoBehaviour
             var temp = _camera.transform.position;
             temp.x = _squirrel.transform.position.x + _cameraOffsetX;
             _camera.transform.position = temp;
+        }
+        if (_adFinished)
+        {
+            _adFinished = false;
+            _continueScore = _score;
+            MusicControllerScript.Instance.FadeOut();
+            ScenesControllerScript.Instance.LoadScene("Play");
         }
     }
 
@@ -221,7 +232,7 @@ public class PlayControllerScript : MonoBehaviour
             _soundsOffImage.SetActive(true);
         }
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+        MusicControllerScript.Instance.FadeOut();
         _hudScoreText.gameObject.SetActive(false);
         _pausedLabel.SetActive(true);
         _gameOverLabel.SetActive(false);
@@ -238,7 +249,7 @@ public class PlayControllerScript : MonoBehaviour
     public void ResumeButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeIn(_backgroundMusic, 0.5f));
+        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
         _endPanel.SetActive(false);
         _hudScoreText.gameObject.SetActive(true);
         Time.timeScale = 1f;
@@ -250,7 +261,7 @@ public class PlayControllerScript : MonoBehaviour
         RewardedAd();
     }
 
-    private void NonRewardedAd()
+    public void NonRewardedAd()
     {
         if (Monetization.isInitialized)
         {
@@ -259,11 +270,7 @@ public class PlayControllerScript : MonoBehaviour
                 var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_NONREWARDED_PLACEMENTID) as ShowAdPlacementContent;
                 if (ad != null)
                 {
-                    var options = new ShowAdCallbacks
-                    {
-                        finishCallback = NonRewardedAdFinished
-                    };
-                    ad.Show(options);
+                    ad.Show(NonRewardedAdFinished);
                 }
             }
         }
@@ -282,11 +289,7 @@ public class PlayControllerScript : MonoBehaviour
                 var ad = Monetization.GetPlacementContent(GameControllerScript.ADS_REWARDED_PLACEMENTID) as ShowAdPlacementContent;
                 if (ad != null)
                 {
-                    var options = new ShowAdCallbacks
-                    {
-                        finishCallback = RewardedAdFinished
-                    };
-                    ad.Show(options);
+                    ad.Show(RewardedAdFinished);
                 }
             }
         }
@@ -296,9 +299,7 @@ public class PlayControllerScript : MonoBehaviour
     {
         if (result == ShowResult.Finished)
         {
-            _continueScore = _score;
-            StartCoroutine(MusicControllerScript.Instance.FadeOut(0.1f));
-            StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play", 0.1f, 0.7f));
+            _adFinished = true;
         }
     }
 
@@ -308,8 +309,8 @@ public class PlayControllerScript : MonoBehaviour
         _continueScore = 0;
         GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
-        StartCoroutine(ScenesControllerScript.Instance.LoadScene("Play"));
+        MusicControllerScript.Instance.FadeOut();
+        ScenesControllerScript.Instance.LoadScene("Play");
     }
 
     public void HomeButton()
@@ -318,8 +319,8 @@ public class PlayControllerScript : MonoBehaviour
         _continueScore = 0;
         GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
-        StartCoroutine(ScenesControllerScript.Instance.LoadScene("Menu"));
+        MusicControllerScript.Instance.FadeOut();
+        ScenesControllerScript.Instance.LoadScene("Menu");
     }
 
     public void MusicButton()
@@ -380,7 +381,7 @@ public class PlayControllerScript : MonoBehaviour
             _soundsOffImage.SetActive(true);
         }
         SoundsControllerScript.Instance.PlayGuiClickSound();
-        StartCoroutine(MusicControllerScript.Instance.FadeOut(0.5f));
+        MusicControllerScript.Instance.FadeOut();
         _hudScoreText.gameObject.SetActive(false);
         _pausedLabel.SetActive(false);
         _gameOverLabel.SetActive(true);
