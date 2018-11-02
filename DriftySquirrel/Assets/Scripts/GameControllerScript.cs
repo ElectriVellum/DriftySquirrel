@@ -27,7 +27,7 @@ public class GameControllerScript : MonoBehaviour
 #elif UNITY_EDITOR
     public const string ADS_GAMEID = "1111111";
 #endif
-    public const bool ADS_TESTMODE = true;
+    public const bool ADS_TESTMODE = false;
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";
