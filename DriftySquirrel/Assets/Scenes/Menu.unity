@@ -579,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192f739394853426284e2e9953752663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _facebookShareImage: {fileID: 2800000, guid: c57a9f01146ca4b0ca797ccba64a3b7f, type: 3}
+  _facebookShareImage: {fileID: 2800000, guid: b43fb4c109a54424ea60db5530cb6a1e, type: 3}
   _backgroundMusic: {fileID: 8300000, guid: 0f9eef555f8d246e2af3560643c1f322, type: 3}
   _musicOffImage: {fileID: 1710548375}
   _soundsOffImage: {fileID: 2038993759}
