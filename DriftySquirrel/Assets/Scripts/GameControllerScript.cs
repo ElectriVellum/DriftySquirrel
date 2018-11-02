@@ -28,6 +28,7 @@ public class GameControllerScript : MonoBehaviour
     public const string ADS_GAMEID = "1111111";
 #endif
     public const bool ADS_TESTMODE = false;
+    private const string REVIEW_REQUESTED_VERSION = "Review Requested Version";
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";
@@ -110,7 +111,7 @@ public class GameControllerScript : MonoBehaviour
 
     public bool CheckFirstRun()
     {
-        if (PlayerPrefs.HasKey(MUSIC_ON))
+        if (PlayerPrefs.HasKey(REVIEW_REQUESTED_VERSION))
         {
             return false;
         }
@@ -124,6 +125,7 @@ public class GameControllerScript : MonoBehaviour
     {
         if (CheckFirstRun() || _resetPlayerPrefs)
         {
+            ReviewRequestedVersion = string.Empty;
             MusicOn = true;
             MusicVolume = 0.25f;
             SoundsOn = true;
@@ -133,6 +135,18 @@ public class GameControllerScript : MonoBehaviour
             RedSquirrelUnlocked = false;
             WhiteSquirrelUnlocked = false;
             RewardActive = false;
+        }
+    }
+
+    public string ReviewRequestedVersion
+    {
+        get
+        {
+            return PlayerPrefs.GetString(REVIEW_REQUESTED_VERSION, string.Empty);
+        }
+        set
+        {
+            PlayerPrefs.SetString(REVIEW_REQUESTED_VERSION, value);
         }
     }
 

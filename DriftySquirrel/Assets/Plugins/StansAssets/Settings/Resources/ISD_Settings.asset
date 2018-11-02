@@ -28,6 +28,9 @@ MonoBehaviour:
   - IsOptional: 0
     IsEmbeded: 0
     Type: 54
+  - IsOptional: 0
+    IsEmbeded: 0
+    Type: 79
   EmbededFrameworks: []
   Libraries: []
   Flags: []
@@ -162,7 +165,7 @@ MonoBehaviour:
       Enabled: 0
       merchants: []
     InAppPurchase:
-      Enabled: 0
+      Enabled: 1
     Maps:
       Enabled: 0
       options: 

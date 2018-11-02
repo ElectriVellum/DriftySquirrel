@@ -2,6 +2,7 @@
 #if UNITY_IOS
 using SA.Foundation.Utility;
 using SA.iOS.Social;
+using SA.iOS.StoreKit;
 #endif
 using UnityEngine;
 using UnityEngine.Monetization;
@@ -418,6 +419,14 @@ public class PlayControllerScript : MonoBehaviour
         _continueButton.SetActive(true);
         _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
         _endPanel.SetActive(true);
+#if UNITY_IOS
+        yield return new WaitForSeconds(2F);
+        if (GameControllerScript.Instance.ReviewRequestedVersion != Application.version.ToString())
+        {
+            ISN_SKStoreReviewController.RequestReview();
+            GameControllerScript.Instance.ReviewRequestedVersion = Application.version.ToString();
+        }
+#endif
     }
 
     private IEnumerator GenerateTrees()
