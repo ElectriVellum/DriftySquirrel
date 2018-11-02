@@ -15,7 +15,7 @@ MonoBehaviour:
   Contacts: 0
   Photos: 0
   ReplayKit: 0
-  Social: 0
+  Social: 1
   AVKit: 0
   AppDelegate: 0
   UserNotifications: 0

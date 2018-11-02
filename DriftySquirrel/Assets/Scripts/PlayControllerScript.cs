@@ -1,8 +1,12 @@
 ﻿using System.Collections;
+#if UNITY_IOS
+using SA.Foundation.Templates;
+using SA.iOS.Social;
+#endif
 using UnityEngine;
+using UnityEngine.Monetization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Monetization;
 
 public class PlayControllerScript : MonoBehaviour
 {
@@ -18,6 +22,8 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
+    [SerializeField()]
+    private Texture2D _facebookShareImage;
     [SerializeField()]
     private AudioClip _backgroundMusic;
     [SerializeField()]
@@ -71,6 +77,7 @@ public class PlayControllerScript : MonoBehaviour
 
     public PlayControllerScript()
     {
+        _facebookShareImage = null;
         _backgroundMusic = null;
         _pauseButton = null;
         _instructionPanel = null;
@@ -354,6 +361,19 @@ public class PlayControllerScript : MonoBehaviour
             _soundsOffImage.SetActive(true);
         }
     }
+
+    public void FacebookButton()
+    {
+#if UNITY_IOS
+        ISN_Facebook.Post("I am passing time on Drifty Squirrel with " + _score.ToString() + " points. Check it out!", _facebookShareImage, OnFacebookPostResult);
+#endif
+    }
+
+#if UNITY_IOS
+    private void OnFacebookPostResult(SA_Result result)
+    {
+    }
+#endif
 
     public void Score(int points)
     {
