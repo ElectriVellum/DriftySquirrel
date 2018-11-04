@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SpawnerScript : MonoBehaviour
 {
@@ -10,6 +11,22 @@ public class SpawnerScript : MonoBehaviour
         Gorge,
         River,
     }
+
+    private List<GameObject> _landFillLeftTiles;
+    private List<GameObject> _landFillTiles;
+    private List<GameObject> _landFillRightTiles;
+    private List<GameObject> _landSurfaceLeftTiles;
+    private List<GameObject> _landSurfaceUp1Tiles;
+    private List<GameObject> _landSurfaceUp2Tiles;
+    private List<GameObject> _landSurfaceUp3Tiles;
+    private List<GameObject> _landSurfaceTiles;
+    private List<GameObject> _landSurfaceDown1Tiles;
+    private List<GameObject> _landSurfaceDown2Tiles;
+    private List<GameObject> _landSurfaceDown3Tiles;
+    private List<GameObject> _landSurfaceRightTiles;
+    private List<GameObject> _waterFillTiles;
+    private List<GameObject> _waterSurfaceTiles;
+    private List<GameObject> _animatedSpikesTiles;
 
     [SerializeField()]
     private GameObject _zeroTile;
@@ -44,6 +61,8 @@ public class SpawnerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _waterSurfaceTile;
     [SerializeField()]
+    private GameObject _animatedSpikesTile;
+    [SerializeField()]
     private Transform _tilesHolder;
 
     private Vector3 _zeroPosition;
@@ -61,6 +80,22 @@ public class SpawnerScript : MonoBehaviour
 
     public SpawnerScript()
     {
+        _landFillLeftTiles = new List<GameObject>();
+        _landFillTiles = new List<GameObject>();
+        _landFillRightTiles = new List<GameObject>();
+        _landSurfaceLeftTiles = new List<GameObject>();
+        _landSurfaceUp1Tiles = new List<GameObject>();
+        _landSurfaceUp2Tiles = new List<GameObject>();
+        _landSurfaceUp3Tiles = new List<GameObject>();
+        _landSurfaceTiles = new List<GameObject>();
+        _landSurfaceDown1Tiles = new List<GameObject>();
+        _landSurfaceDown2Tiles = new List<GameObject>();
+        _landSurfaceDown3Tiles = new List<GameObject>();
+        _landSurfaceRightTiles = new List<GameObject>();
+        _waterFillTiles = new List<GameObject>();
+        _waterSurfaceTiles = new List<GameObject>();
+        _animatedSpikesTiles = new List<GameObject>();
+
         _zeroTile = null;
         _tileSize = Vector2.zero;
         _landFillLeftTile = null;
@@ -77,6 +112,7 @@ public class SpawnerScript : MonoBehaviour
         _landSurfaceRightTile = null;
         _waterFillTile = null;
         _waterSurfaceTile = null;
+        _animatedSpikesTile = null;
         _tilesHolder = null;
 
         _zeroPosition = Vector3.zero;
@@ -118,26 +154,26 @@ public class SpawnerScript : MonoBehaviour
                 }
                 else
                 {
-                    switch (Random.Range(0, 3))
+                    switch (Random.Range(0, 4))
                     {
                         case 0:
-                            _nextGenerationLength = Random.Range(4, 21);
+                            _nextGenerationLength = Random.Range(4, 31);
                             _nextGenerationElevation = Random.Range(_currentGenerationElevation - 1, _currentGenerationElevation + 2);
                             _nextGenerationElevation = Mathf.Clamp(_nextGenerationElevation, 2, 5);
                             _nextGenerationType = GenerationType.Land;
                             break;
                         case 1:
-                            _nextGenerationLength = Random.Range(4, 7);
+                            _nextGenerationLength = Random.Range(2, 5);
                             _nextGenerationElevation = _currentGenerationElevation;
                             _nextGenerationType = GenerationType.Pit;
                             break;
                         case 2:
-                            _nextGenerationLength = Random.Range(4, 7);
+                            _nextGenerationLength = Random.Range(4, 9);
                             _nextGenerationElevation = _currentGenerationElevation;
                             _nextGenerationType = GenerationType.River;
                             break;
                         case 3:
-                            _nextGenerationLength = Random.Range(4, 21);
+                            _nextGenerationLength = Random.Range(4, 41);
                             _nextGenerationElevation = _currentGenerationElevation;
                             _nextGenerationType = GenerationType.Gorge;
                             break;
@@ -155,142 +191,115 @@ public class SpawnerScript : MonoBehaviour
                     {
                         if (_currentGenerationIndex == 0 && _lastGenerationType != GenerationType.Land)
                         {
-                            //Left
                             if (currentElevation == _currentGenerationElevation - 1)
                             {
-                                //Surface
-                                var tile = Instantiate(_landSurfaceLeftTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                NextLandSurfaceLeftTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                             }
                             else
                             {
-                                //Fill
-                                var tile = Instantiate(_landFillLeftTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                NextLandFillLeftTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                             }
                         }
                         else if (_currentGenerationIndex == _currentGenerationLength - 1 && _nextGenerationType != GenerationType.Land)
                         {
-                            //Right
                             if (currentElevation == _currentGenerationElevation - 1)
                             {
-                                //Surface
-                                var tile = Instantiate(_landSurfaceRightTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                NextLandSurfaceRightTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                             }
                             else
                             {
-                                //Fill
-                                var tile = Instantiate(_landFillRightTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                NextLandFillRightTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                             }
                         }
                         else
                         {
                             if (_lastGenerationElevation < _currentGenerationElevation)
                             {
-                                //Raise 1
                                 if (_currentGenerationIndex == 0)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceUp2Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceUp2Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else if (currentElevation == _currentGenerationElevation - 2)
                                     {
-                                        //Fill Surface
-                                        var tile = Instantiate(_landSurfaceUp1Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceUp1Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 2)
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
-                                //Raise 2
                                 else if (_currentGenerationIndex == 1)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceUp3Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceUp3Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
                                 else
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
                             }
                             else if (_lastGenerationElevation > _currentGenerationElevation)
                             {
-                                //Lower 1
                                 if (_currentGenerationIndex == 0)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceDown1Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
-                                        //Fill Surface
-                                        tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceDown1Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f));
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
-                                //Lower 2
                                 else if (_currentGenerationIndex == 1)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceDown2Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
-                                        tile = Instantiate(_landSurfaceDown3Tile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceDown2Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f));
+                                        NextLandSurfaceDown3Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
                                 else
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        //Surface
-                                        var tile = Instantiate(_landSurfaceTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                     else
                                     {
-                                        //Fill
-                                        var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                     }
                                 }
                             }
                             else
                             {
-                                //Middle
                                 if (currentElevation == _currentGenerationElevation - 1)
                                 {
-                                    //Surface
-                                    var tile = Instantiate(_landSurfaceTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                    NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                 }
                                 else
                                 {
-                                    //Fill
-                                    var tile = Instantiate(_landFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                                    NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                                 }
                             }
                         }
@@ -300,7 +309,32 @@ public class SpawnerScript : MonoBehaviour
                     _currentGenerationIndex++;
                     break;
                 case GenerationType.Pit:
-
+                    for (int currentElevation = 0; currentElevation < _currentGenerationElevation; currentElevation++)
+                    {
+                        if (currentElevation != _currentGenerationElevation - 1 && _currentGenerationIndex == 0)
+                        {
+                            NextLandFillTile(_zeroPosition + new Vector3((_globalGenerationIndex * _tileSize.x) - _tileSize.x, currentElevation * _tileSize.y, 0f));
+                        }
+                        if (currentElevation == _currentGenerationElevation - 1)
+                        {
+                            if (Random.Range(0,11) > 6)
+                            {
+                                NextAnimatedSpikesTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            }
+                        }
+                        if (currentElevation == _currentGenerationElevation - 2)
+                        {
+                            NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                        }
+                        else if (currentElevation < _currentGenerationElevation - 2)
+                        {
+                            NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                        }
+                        if (currentElevation != _currentGenerationElevation - 1 && _currentGenerationIndex == _currentGenerationLength - 1)
+                        {
+                            NextLandFillTile(_zeroPosition + new Vector3((_globalGenerationIndex * _tileSize.x) + _tileSize.x, currentElevation * _tileSize.y, 0f));
+                        }
+                    }
                     _globalGenerationIndex++;
                     _currentGenerationIndex++;
                     break;
@@ -313,13 +347,11 @@ public class SpawnerScript : MonoBehaviour
                     {
                         if (currentElevation == _currentGenerationElevation - 1)
                         {
-                            //Surface
-                            var tile = Instantiate(_waterSurfaceTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                            NextWaterSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                         }
                         else
                         {
-                            //Fill
-                            var tile = Instantiate(_waterFillTile, _zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f), Quaternion.identity, _tilesHolder);
+                            NextWaterFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
                         }
                     }
                     _globalGenerationIndex++;
@@ -335,5 +367,245 @@ public class SpawnerScript : MonoBehaviour
     {
         _zeroPosition = _zeroTile.transform.position;
         Destroy(_zeroTile);
+    }
+
+    private GameObject NextLandFillLeftTile(Vector3 position)
+    {
+        foreach (var tile in _landFillLeftTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landFillLeftTile, position, Quaternion.identity, _tilesHolder);
+        _landFillLeftTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandFillTile(Vector3 position)
+    {
+        foreach (var tile in _landFillTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landFillTile, position, Quaternion.identity, _tilesHolder);
+        _landFillTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandFillRightTile(Vector3 position)
+    {
+        foreach (var tile in _landFillRightTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landFillRightTile, position, Quaternion.identity, _tilesHolder);
+        _landFillRightTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceLeftTile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceLeftTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceLeftTile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceLeftTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceUp1Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceUp1Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceUp1Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceUp1Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceUp2Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceUp2Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceUp2Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceUp2Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceUp3Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceUp3Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceUp3Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceUp3Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceTile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceTile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceDown1Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceDown1Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceDown1Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceDown1Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceDown2Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceDown2Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceDown2Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceDown2Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceDown3Tile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceDown3Tiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceDown3Tile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceDown3Tiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextLandSurfaceRightTile(Vector3 position)
+    {
+        foreach (var tile in _landSurfaceRightTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_landSurfaceRightTile, position, Quaternion.identity, _tilesHolder);
+        _landSurfaceRightTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextWaterFillTile(Vector3 position)
+    {
+        foreach (var tile in _waterFillTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_waterFillTile, position, Quaternion.identity, _tilesHolder);
+        _waterFillTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextWaterSurfaceTile(Vector3 position)
+    {
+        foreach (var tile in _waterSurfaceTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_waterSurfaceTile, position, Quaternion.identity, _tilesHolder);
+        _waterSurfaceTiles.Add(newTile);
+        return newTile;
+    }
+
+    private GameObject NextAnimatedSpikesTile(Vector3 position)
+    {
+        foreach (var tile in _animatedSpikesTiles)
+        {
+            if (!tile.activeSelf)
+            {
+                tile.transform.position = position;
+                tile.SetActive(true);
+                return tile;
+            }
+        }
+        var newTile = Instantiate(_animatedSpikesTile, position, Quaternion.identity, _tilesHolder);
+        _animatedSpikesTiles.Add(newTile);
+        return newTile;
     }
 }

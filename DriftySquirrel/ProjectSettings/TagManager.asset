@@ -4,13 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Background
-  - Ground
-  - Branch
-  - Tree
-  - GroundWater
+  - Killers
+  - Backgrounds
+  - Trees
+  - Canopies
+  - GroundWaters
   - GroundSpikes
-  - Collectible
+  - Grounds
+  - Collectibles
+  - GroundWatersFront
   layers:
   - Default
   - TransparentFX
@@ -21,15 +23,15 @@ TagManager:
   - 
   - 
   - Collector
-  - Background
-  - GroundWater
+  - Backgrounds
+  - GroundWaters
   - GroundSpikes
-  - Ground
-  - Collectible
+  - Grounds
+  - Collectibles
   - Player
-  - Branch
-  - Tree
-  - 
+  - Canopies
+  - Trees
+  - Killers
   - 
   - 
   - 
@@ -48,33 +50,39 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Killers
+    uniqueID: 3487010703
+    locked: 0
+  - name: Backgrounds
     uniqueID: 108839175
     locked: 0
-  - name: Tree
+  - name: Trees
     uniqueID: 436139129
     locked: 0
-  - name: GroundWater
+  - name: Canopies
+    uniqueID: 2058984115
+    locked: 0
+  - name: GroundWaters
     uniqueID: 3109264833
     locked: 0
   - name: GroundSpikes
     uniqueID: 220024557
     locked: 0
-  - name: Ground
+  - name: Grounds
     uniqueID: 3055627265
     locked: 0
-  - name: Collectible
+  - name: Collectibles
     uniqueID: 274184983
     locked: 0
   - name: Player
     uniqueID: 22082193
     locked: 0
-  - name: GroundWaterFront
+  - name: GroundWatersFront
     uniqueID: 581024617
     locked: 0
   - name: GUI
     uniqueID: 2438390453
     locked: 0
-  - name: SceneController
+  - name: SceneControllers
     uniqueID: 3420389933
     locked: 0

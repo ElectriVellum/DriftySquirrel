@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4997334985902288}
   - component: {fileID: 212066988565141148}
-  - component: {fileID: 60222681437836900}
+  - component: {fileID: 60983263559668910}
   m_Layer: 10
   m_Name: Water_Surface
-  m_TagString: GroundWater
+  m_TagString: GroundWaters
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60222681437836900
+--- !u!60 &60983263559668910
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,7 +57,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 1.26, y: 1.26}
     newSize: {x: 1.28, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -65,13 +65,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.08, y: 0.37}
-      - {x: -0.42, y: 0.22}
-      - {x: -0.64, y: 0.28}
-      - {x: -0.64, y: -0.64}
-      - {x: 0.64, y: -0.64}
-      - {x: 0.64, y: 0.35999998}
-      - {x: 0.58, y: 0.37}
+    - - {x: 0.45999998, y: 0.37}
+      - {x: 0.17999999, y: 0.37}
+      - {x: 0.089999996, y: 0.35999998}
+      - {x: -0.63, y: 0.26999998}
+      - {x: -0.63, y: -0.63}
+      - {x: 0.63, y: -0.63}
+      - {x: 0.63, y: 0.29}
+      - {x: 0.5, y: 0.35}
 --- !u!212 &212066988565141148
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -104,10 +105,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1185702463
-  m_SortingLayer: 3
+  m_SortingLayerID: 581024617
+  m_SortingLayer: 10
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300044, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
+  m_Sprite: {fileID: 21300038, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

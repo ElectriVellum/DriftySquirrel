@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4919737177165628}
   - component: {fileID: 212741192016184804}
-  - component: {fileID: 61810726387983404}
+  - component: {fileID: 61976385259688302}
   m_Layer: 12
   m_Name: RockGrass_Surface_Right
-  m_TagString: Ground
+  m_TagString: Grounds
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61810726387983404
+--- !u!61 &61976385259688302
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,14 +57,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 1.26, y: 1.26}
     newSize: {x: 1.28, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1.26, y: 1.26}
   m_EdgeRadius: 0
 --- !u!212 &212741192016184804
 SpriteRenderer:
@@ -99,9 +99,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1239340031
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300032, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
+  m_Sprite: {fileID: 21300030, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

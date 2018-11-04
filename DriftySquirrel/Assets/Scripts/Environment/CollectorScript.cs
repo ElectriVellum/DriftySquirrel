@@ -13,7 +13,7 @@ public class CollectorScript : MonoBehaviour
 
     private void Awake()
     {
-        _backgrounds = GameObject.FindGameObjectsWithTag("Background");
+        _backgrounds = GameObject.FindGameObjectsWithTag("Backgrounds");
         _lastBackgroundX = _backgrounds[0].transform.position.x;
         foreach (var item in _backgrounds)
         {
@@ -26,7 +26,7 @@ public class CollectorScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Background")
+        if (collision.tag == "Backgrounds")
         {
             var temp = collision.transform.position;
             var width = ((BoxCollider2D)collision).size.x;
@@ -34,9 +34,9 @@ public class CollectorScript : MonoBehaviour
             collision.transform.position = temp;
             _lastBackgroundX = temp.x;
         }
-        else if (collision.tag == "Ground" || collision.tag == "GroundWater" || collision.tag == "GroundSpikes" || collision.tag == "Collectible")
+        else if (collision.tag == "Grounds" || collision.tag == "GroundWaters" || collision.tag == "GroundSpikes" || collision.tag == "Collectibles")
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }

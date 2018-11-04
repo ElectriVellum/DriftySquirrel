@@ -1,17 +1,11 @@
 fileFormatVersion: 2
-guid: 7c30df5ad39e448ce88eb8ef2ee3c38d
+guid: c5424e46963c948ee9af870bbdab6787
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Spikes_0
-    21300002: Spikes_1
-    21300004: Spikes_2
-    21300006: Spikes_3
-    21300008: Spikes_4
-    21300010: Spikes_5
-    21300012: Spikes_6
-    21300014: Spikes_7
-    21300016: Spikes_8
-    21300018: Spikes_9
+    21300000: Chest_0
+    21300002: Chest_1
+    21300004: Chest_2
+    21300006: Chest_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -127,87 +121,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spikes_0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 257
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 83559dd7917b84aa0b8752d27d06da7f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_1
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 257
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1e7ab81f96f0b4950a1f08a1218f5610
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_2
-      rect:
-        serializedVersion: 2
-        x: 257
-        y: 257
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9cae4f7848781499f886ee3cc835d907
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_3
-      rect:
-        serializedVersion: 2
-        x: 385
-        y: 257
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 177e9fe5540454e5d8826e3291ba72eb
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_4
+      name: Chest_0
       rect:
         serializedVersion: 2
         x: 1
@@ -215,19 +129,19 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1aa193b03612c4671b00619e404391a1
+      spriteID: 138b20d0e9f92424da4ad037e00912f6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spikes_5
+      name: Chest_1
       rect:
         serializedVersion: 2
         x: 129
@@ -235,59 +149,19 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5e3de37b95a14c1dbdb01b1590bede0
+      spriteID: 1bc605d319130496080e1d9f51c3da28
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spikes_6
-      rect:
-        serializedVersion: 2
-        x: 257
-        y: 129
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 78f579391532a4b4ea508aee6324eb40
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_7
-      rect:
-        serializedVersion: 2
-        x: 385
-        y: 129
-        width: 126
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4158dadfa7bf0430fbaf429dfb9f63eb
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spikes_8
+      name: Chest_2
       rect:
         serializedVersion: 2
         x: 1
@@ -295,19 +169,19 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58b1f7312219b49d49e047ede8949aa1
+      spriteID: 1c30154b2d8a44d1ea37dfb596e349e5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spikes_9
+      name: Chest_3
       rect:
         serializedVersion: 2
         x: 129
@@ -315,13 +189,13 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a3cc1e4c6c9c48a9aaf76c9283e7b81
+      spriteID: 7783d79f23e0d4842910d9e491ba03f2
       vertices: []
       indices: 
       edges: []
@@ -329,7 +203,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ad091805505b94f50b26334e5ba0239d
+    spriteID: 3412afa77b44d49858c384a3c8965590
     vertices: []
     indices: 
     edges: []

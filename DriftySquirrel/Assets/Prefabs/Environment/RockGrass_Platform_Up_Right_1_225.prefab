@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4795542956082034}
   - component: {fileID: 212342105036791840}
-  - component: {fileID: 60766760202095148}
+  - component: {fileID: 60831146882687168}
   m_Layer: 12
   m_Name: RockGrass_Platform_Up_Right_1_225
-  m_TagString: Ground
+  m_TagString: Grounds
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60766760202095148
+--- !u!60 &60831146882687168
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,20 +57,19 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 1.26, y: 1.26}
+    newSize: {x: 1.26, y: 1.26}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.64, y: 0.02}
-      - {x: -0.64, y: -0.59999996}
-      - {x: -0.61, y: -0.64}
-      - {x: 0.64, y: -0.64}
-      - {x: 0.64, y: -0.59999996}
-      - {x: -0.5, y: 0.02}
+    - - {x: -0.59999996, y: -0.63}
+      - {x: 0.63, y: -0.63}
+      - {x: 0.63, y: -0.59999996}
+      - {x: -0.63, y: 0.02}
+      - {x: -0.63, y: -0.61}
 --- !u!212 &212342105036791840
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -104,14 +103,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1239340031
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300068, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
+  m_Sprite: {fileID: 21300060, guid: b62c775f752ca49ac83b9e1f52499291, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1.26, y: 1.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

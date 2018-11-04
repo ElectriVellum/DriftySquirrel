@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider2D))]
@@ -272,17 +273,11 @@ public class SquirrelScript : MonoBehaviour
         _animator.SetBool("Falling", falling);
         _animator.SetBool("Ducking", _ducked);
         _animator.SetBool("Stunned", _stunned);
-        //_animator.SetBool("Alive", _alive);
-        //_animator.SetBool("Grounded", _grounded);
-        //_animator.SetFloat("HorizontalVelocity", velocity.x);
-        //_animator.SetFloat("VerticalVelocity", velocity.y);
-        //_animator.SetBool("Ducked", _ducked);
-        //_animator.SetBool("Stunned", _stunned);
     }
 
     private bool CheckGrounded()
     {
-        var groundPoint = new Vector2(transform.position.x, transform.position.y) + _capsuleCollider2D.offset + new Vector2(0f, -_capsuleCollider2D.size.y / 2f - 0.01f);
+        var groundPoint = new Vector2(transform.position.x, transform.position.y) + _capsuleCollider2D.offset + new Vector2(0f, -_capsuleCollider2D.size.y / 2f - 0.15f);
         var ground = Physics2D.OverlapPoint(groundPoint, _groundLayer);
         if (ground != null)
         {
@@ -362,6 +357,14 @@ public class SquirrelScript : MonoBehaviour
             _camera = null;
             _cameraOffsetX = 0f;
             _cameraOffsetY = 0f;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag =="GroundWaters" || collision.gameObject.tag == "GroundSpikes" || collision.gameObject.tag == "Killer" || collision.gameObject.tag == "Canopies")
+        {
+            SceneManager.LoadScene("Test");
         }
     }
 }
