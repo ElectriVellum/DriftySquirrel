@@ -665,7 +665,7 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   scriptingDefineSymbols:
-    4: GAME_KIT_API_ENABLED
+    4: GAME_KIT_API_ENABLED;STORE_KIT_API_ENABLED;SOCIAL_API_ENABLED
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

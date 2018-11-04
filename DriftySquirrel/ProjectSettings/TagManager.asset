@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - Branch
   - Tree
+  - GroundWater
+  - GroundSpikes
+  - Collectible
   layers:
   - Default
   - TransparentFX
@@ -17,15 +20,15 @@ TagManager:
   - UI
   - 
   - 
-  - BackgroundCollector
+  - Collector
   - Background
+  - GroundWater
+  - GroundSpikes
   - Ground
+  - Collectible
   - Player
   - Branch
   - Tree
-  - 
-  - 
-  - 
   - 
   - 
   - 
@@ -51,16 +54,25 @@ TagManager:
   - name: Tree
     uniqueID: 436139129
     locked: 0
+  - name: GroundWater
+    uniqueID: 3109264833
+    locked: 0
+  - name: GroundSpikes
+    uniqueID: 220024557
+    locked: 0
   - name: Ground
     uniqueID: 3055627265
     locked: 0
-  - name: GUI_Back
-    uniqueID: 1564424783
+  - name: Collectible
+    uniqueID: 274184983
     locked: 0
   - name: Player
     uniqueID: 22082193
     locked: 0
-  - name: GUI_Front
+  - name: GroundWaterFront
+    uniqueID: 581024617
+    locked: 0
+  - name: GUI
     uniqueID: 2438390453
     locked: 0
   - name: SceneController
