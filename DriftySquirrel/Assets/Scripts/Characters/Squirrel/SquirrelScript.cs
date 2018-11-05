@@ -365,6 +365,7 @@ public class SquirrelScript : MonoBehaviour
         if (_alive)
         {
             _alive = false;
+            _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _animator.SetTrigger("Die");
             ReleaseCamera();
             StartCoroutine(DieCoroutine());
@@ -405,7 +406,7 @@ public class SquirrelScript : MonoBehaviour
         }
         if (collision.gameObject.tag == "Collectibles")
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }

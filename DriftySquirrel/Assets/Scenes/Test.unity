@@ -363,6 +363,11 @@ Prefab:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 50074869565363406, guid: 17e78a7f00fa2434c85ce26ce6854fb4,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17e78a7f00fa2434c85ce26ce6854fb4, type: 2}
   m_IsPrefabAsset: 0
@@ -511,9 +516,9 @@ MonoBehaviour:
   _pitSpikesChance: 4
   _pitCollectibleChance: 7
   _pitChestChance: 1
-  _nextCollectibleChance: 5
+  _nextCollectibleChance: 100
   _minimumBranchOffset: 3
-  _maximumBranchOffset: 5
+  _maximumBranchOffset: 4
 --- !u!1001 &712141206
 Prefab:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class Pooler
         }
         if (_pool.Count < _maximumSize)
         {
-            var newItem = Object.Instantiate(_prefabs[Random.Range(0,_prefabs.Length)]);
+            var newItem = Object.Instantiate(_prefabs[Random.Range(0, _prefabs.Length)]);
             _pool.Add(newItem);
             return newItem;
         }
@@ -224,5 +224,13 @@ public class Pooler
             return newItem;
         }
         return null;
+    }
+
+    public void Remove(GameObject item)
+    {
+        if (_pool.Contains(item))
+        {
+            _pool.Remove(item);
+        }
     }
 }

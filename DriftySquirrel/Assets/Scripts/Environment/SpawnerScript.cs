@@ -121,9 +121,9 @@ public class SpawnerScript : MonoBehaviour
         _pitSpikesChance = 40;
         _pitCollectibleChance = 70;
         _pitChestChance = 10;
-        _nextCollectibleChance = 50;
+        _nextCollectibleChance = 100;
         _minimumBranchOffset = 3;
-        _maximumBranchOffset = 5;
+        _maximumBranchOffset = 4;
 
         _zeroPosition = Vector3.zero;
         _globalGenerationIndex = 0;
