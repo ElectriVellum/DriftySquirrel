@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class SquirrelScript : MonoBehaviour
 {
     [SerializeField()]
@@ -12,7 +12,9 @@ public class SquirrelScript : MonoBehaviour
     [SerializeField()]
     private bool _cameraFollowY;
     [SerializeField()]
-    private LayerMask _groundLayer;
+    private LayerMask _groundLayers;
+    [SerializeField()]
+    private LayerMask _obstacleLayers;
     [SerializeField()]
     private float _speed;
     [SerializeField()]
@@ -31,7 +33,6 @@ public class SquirrelScript : MonoBehaviour
     private Animator _animator;
     private CapsuleCollider2D _capsuleCollider2D;
     private Rigidbody2D _rigidbody2D;
-    private SpriteRenderer _spriteRenderer;
 
     private Camera _camera;
     private float _cameraOffsetX;
@@ -130,7 +131,8 @@ public class SquirrelScript : MonoBehaviour
     {
         _cameraFollowX = true;
         _cameraFollowY = false;
-        _groundLayer = 0;
+        _groundLayers = 0;
+        _obstacleLayers = 0;
         _speed = 8f;
         _speedLevel = 1f;
         _flySpeed = 4f;
@@ -142,7 +144,6 @@ public class SquirrelScript : MonoBehaviour
         _animator = null;
         _capsuleCollider2D = null;
         _rigidbody2D = null;
-        _spriteRenderer = null;
 
         _camera = null;
         _cameraOffsetX = 0f;
@@ -163,7 +164,6 @@ public class SquirrelScript : MonoBehaviour
         _animator = GetComponent<Animator>();
         _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -260,6 +260,15 @@ public class SquirrelScript : MonoBehaviour
         //{
         //    StopDucking();
         //}
+        var obstacle = ObstacleCheck();
+        if (obstacle)
+        {
+            UpdateDirection(0f);
+        }
+        else
+        {
+            UpdateDirection(1f);
+        }
         _grounded = CheckGrounded();
         var velocity = _rigidbody2D.velocity;
         if ((velocity.x < 0f && transform.localScale.x > 0f) || (velocity.x > 0f && transform.localScale.x < 0f))
@@ -278,10 +287,21 @@ public class SquirrelScript : MonoBehaviour
     private bool CheckGrounded()
     {
         var groundPoint = new Vector2(transform.position.x, transform.position.y) + _capsuleCollider2D.offset + new Vector2(0f, -_capsuleCollider2D.size.y / 2f - 0.15f);
-        var ground = Physics2D.OverlapPoint(groundPoint, _groundLayer);
+        var ground = Physics2D.OverlapPoint(groundPoint, _groundLayers);
         if (ground != null)
         {
             _jumped = false;
+            return true;
+        }
+        return false;
+    }
+
+    private bool ObstacleCheck()
+    {
+        var obstaclePoint = new Vector2(transform.position.x, transform.position.y) + _capsuleCollider2D.offset + new Vector2(_capsuleCollider2D.size.x / 2f + 0.15f, 0f);
+        var obstacle = Physics2D.OverlapPoint(obstaclePoint, _obstacleLayers);
+        if (obstacle != null)
+        {
             return true;
         }
         return false;
@@ -340,6 +360,23 @@ public class SquirrelScript : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        if (_alive)
+        {
+            _alive = false;
+            _animator.SetTrigger("Die");
+            ReleaseCamera();
+            StartCoroutine(DieCoroutine());
+        }
+    }
+
+    private IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Test");
+    }
+
     public void CaptureCamera()
     {
         if (_camera == null)
@@ -362,9 +399,13 @@ public class SquirrelScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag =="GroundWaters" || collision.gameObject.tag == "GroundSpikes" || collision.gameObject.tag == "Killer" || collision.gameObject.tag == "Canopies")
+        if (collision.gameObject.tag == "GroundWaters" || collision.gameObject.tag == "GroundSpikes" || collision.gameObject.tag == "Killers" || collision.gameObject.tag == "Canopies")
         {
-            SceneManager.LoadScene("Test");
+            Die();
+        }
+        if (collision.gameObject.tag == "Collectibles")
+        {
+            Destroy(collision.gameObject);
         }
     }
 }

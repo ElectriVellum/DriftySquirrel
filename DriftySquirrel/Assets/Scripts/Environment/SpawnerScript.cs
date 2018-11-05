@@ -12,58 +12,67 @@ public class SpawnerScript : MonoBehaviour
         River,
     }
 
-    private List<GameObject> _landFillLeftTiles;
-    private List<GameObject> _landFillTiles;
-    private List<GameObject> _landFillRightTiles;
-    private List<GameObject> _landSurfaceLeftTiles;
-    private List<GameObject> _landSurfaceUp1Tiles;
-    private List<GameObject> _landSurfaceUp2Tiles;
-    private List<GameObject> _landSurfaceUp3Tiles;
-    private List<GameObject> _landSurfaceTiles;
-    private List<GameObject> _landSurfaceDown1Tiles;
-    private List<GameObject> _landSurfaceDown2Tiles;
-    private List<GameObject> _landSurfaceDown3Tiles;
-    private List<GameObject> _landSurfaceRightTiles;
-    private List<GameObject> _waterFillTiles;
-    private List<GameObject> _waterSurfaceTiles;
-    private List<GameObject> _animatedSpikesTiles;
-
     [SerializeField()]
     private GameObject _zeroTile;
     [SerializeField()]
     private Vector2 _tileSize;
     [SerializeField()]
-    private GameObject _landFillLeftTile;
+    private Pooler _landFillLeftTile;
     [SerializeField()]
-    private GameObject _landFillTile;
+    private Pooler _landFillTile;
     [SerializeField()]
-    private GameObject _landFillRightTile;
+    private Pooler _landFillRightTile;
     [SerializeField()]
-    private GameObject _landSurfaceLeftTile;
+    private Pooler _landSurfaceLeftTile;
     [SerializeField()]
-    private GameObject _landSurfaceUp1Tile;
+    private Pooler _landSurfaceUp2251Tile;
     [SerializeField()]
-    private GameObject _landSurfaceUp2Tile;
+    private Pooler _landSurfaceUp2252Tile;
     [SerializeField()]
-    private GameObject _landSurfaceUp3Tile;
+    private Pooler _landSurfaceUp45225Tile;
     [SerializeField()]
-    private GameObject _landSurfaceTile;
+    private Pooler _landSurfaceTile;
     [SerializeField()]
-    private GameObject _landSurfaceDown1Tile;
+    private Pooler _landSurfaceDown2251Tile;
     [SerializeField()]
-    private GameObject _landSurfaceDown2Tile;
+    private Pooler _landSurfaceDown2252Tile;
     [SerializeField()]
-    private GameObject _landSurfaceDown3Tile;
+    private Pooler _landSurfaceDown45225Tile;
     [SerializeField()]
-    private GameObject _landSurfaceRightTile;
+    private Pooler _landSurfaceRightTile;
     [SerializeField()]
-    private GameObject _waterFillTile;
+    private Pooler _waterFillTile;
     [SerializeField()]
-    private GameObject _waterSurfaceTile;
+    private Pooler _waterSurfaceTile;
     [SerializeField()]
-    private GameObject _animatedSpikesTile;
+    private Pooler _animatedDriftNutTile;
+    [SerializeField()]
+    private Pooler _animatedSpikesTile;
+    [SerializeField()]
+    private Pooler _animatedCollectibleTile;
+    [SerializeField()]
+    private Pooler _animatedChestTile;
+    [SerializeField()]
+    private Pooler _treeTrunkTile;
+    [SerializeField()]
+    private Pooler _canopy1LeftTile;
+    [SerializeField()]
+    private Pooler _canopy1RightTile;
+
     [SerializeField()]
     private Transform _tilesHolder;
+    [SerializeField()]
+    private int _pitSpikesChance;
+    [SerializeField()]
+    private int _pitCollectibleChance;
+    [SerializeField()]
+    private int _pitChestChance;
+    [SerializeField()]
+    private int _nextCollectibleChance;
+    [SerializeField()]
+    private int _minimumBranchOffset;
+    [SerializeField()]
+    private int _maximumBranchOffset;
 
     private Vector3 _zeroPosition;
     private int _globalGenerationIndex;
@@ -77,43 +86,44 @@ public class SpawnerScript : MonoBehaviour
     private int _nextGenerationLength;
     private int _nextGenerationElevation;
     private GenerationType _nextGenerationType;
+    private bool _pitSpikes;
+    private bool _pitCollectible;
+    private bool _pitChest;
+    private int _nextTreeIndex;
 
     public SpawnerScript()
     {
-        _landFillLeftTiles = new List<GameObject>();
-        _landFillTiles = new List<GameObject>();
-        _landFillRightTiles = new List<GameObject>();
-        _landSurfaceLeftTiles = new List<GameObject>();
-        _landSurfaceUp1Tiles = new List<GameObject>();
-        _landSurfaceUp2Tiles = new List<GameObject>();
-        _landSurfaceUp3Tiles = new List<GameObject>();
-        _landSurfaceTiles = new List<GameObject>();
-        _landSurfaceDown1Tiles = new List<GameObject>();
-        _landSurfaceDown2Tiles = new List<GameObject>();
-        _landSurfaceDown3Tiles = new List<GameObject>();
-        _landSurfaceRightTiles = new List<GameObject>();
-        _waterFillTiles = new List<GameObject>();
-        _waterSurfaceTiles = new List<GameObject>();
-        _animatedSpikesTiles = new List<GameObject>();
-
         _zeroTile = null;
         _tileSize = Vector2.zero;
         _landFillLeftTile = null;
         _landFillTile = null;
         _landFillRightTile = null;
         _landSurfaceLeftTile = null;
-        _landSurfaceUp1Tile = null;
-        _landSurfaceUp2Tile = null;
-        _landSurfaceUp3Tile = null;
+        _landSurfaceUp2251Tile = null;
+        _landSurfaceUp2252Tile = null;
+        _landSurfaceUp45225Tile = null;
         _landSurfaceTile = null;
-        _landSurfaceDown1Tile = null;
-        _landSurfaceDown2Tile = null;
-        _landSurfaceDown3Tile = null;
+        _landSurfaceDown2251Tile = null;
+        _landSurfaceDown2252Tile = null;
+        _landSurfaceDown45225Tile = null;
         _landSurfaceRightTile = null;
         _waterFillTile = null;
         _waterSurfaceTile = null;
+        _animatedDriftNutTile = null;
         _animatedSpikesTile = null;
+        _animatedCollectibleTile = null;
+        _animatedChestTile = null;
+        _treeTrunkTile = null;
+        _canopy1LeftTile = null;
+        _canopy1RightTile = null;
+
         _tilesHolder = null;
+        _pitSpikesChance = 40;
+        _pitCollectibleChance = 70;
+        _pitChestChance = 10;
+        _nextCollectibleChance = 50;
+        _minimumBranchOffset = 3;
+        _maximumBranchOffset = 5;
 
         _zeroPosition = Vector3.zero;
         _globalGenerationIndex = 0;
@@ -127,11 +137,10 @@ public class SpawnerScript : MonoBehaviour
         _nextGenerationLength = 4;
         _nextGenerationElevation = 3;
         _nextGenerationType = GenerationType.River;
-    }
-
-    private void Awake()
-    {
-
+        _pitSpikes = false;
+        _pitCollectible = false;
+        _pitChest = false;
+        _nextTreeIndex = 20;
     }
 
     private void Update()
@@ -166,6 +175,9 @@ public class SpawnerScript : MonoBehaviour
                             _nextGenerationLength = Random.Range(2, 5);
                             _nextGenerationElevation = _currentGenerationElevation;
                             _nextGenerationType = GenerationType.Pit;
+                            _pitSpikes = Random.Range(0, 101) <= _pitSpikesChance;
+                            _pitCollectible = Random.Range(0, 101) <= _pitCollectibleChance;
+                            _pitChest = Random.Range(0, 101) <= _pitChestChance;
                             break;
                         case 2:
                             _nextGenerationLength = Random.Range(4, 9);
@@ -183,7 +195,47 @@ public class SpawnerScript : MonoBehaviour
                 }
                 _currentGenerationIndex = 0;
             }
+            if (_globalGenerationIndex == _nextTreeIndex)
+            {
+                if (_currentGenerationType == GenerationType.Land || _currentGenerationType == GenerationType.Gorge)
+                {
+                    var leftBranch = (Random.Range(0, 101) <= 50);
+                    var nextBranchHeightIndex = Random.Range(_minimumBranchOffset, _maximumBranchOffset);
 
+                    for (int treeHeightIndex = 0; treeHeightIndex < 12; treeHeightIndex++)
+                    {
+                        _treeTrunkTile.Next(GridPosition(_globalGenerationIndex, treeHeightIndex), _tilesHolder);
+                        if (treeHeightIndex == nextBranchHeightIndex)
+                        {
+                            var branchSize = 1; //Random.Range(1, 4);
+                            if (leftBranch && branchSize == 1)
+                            {
+                                SpawnCollectible(GridPosition(_globalGenerationIndex - 1, treeHeightIndex + 1));
+                                _canopy1LeftTile.Next(GridPosition(_globalGenerationIndex - 1, treeHeightIndex), _tilesHolder);
+                            }
+                            else if (!leftBranch && branchSize == 1)
+                            {
+                                SpawnCollectible(GridPosition(_globalGenerationIndex + 1, treeHeightIndex + 1));
+                                _canopy1RightTile.Next(GridPosition(_globalGenerationIndex + 1, treeHeightIndex), _tilesHolder);
+                            }
+                            else if (leftBranch && branchSize == 2)
+                            {
+                                SpawnCollectible(GridPosition(_globalGenerationIndex - 1, treeHeightIndex + 1));
+                                _canopy1LeftTile.Next(GridPosition(_globalGenerationIndex - 1, treeHeightIndex), _tilesHolder);
+                            }
+                            else if (!leftBranch && branchSize == 2)
+                            {
+                                SpawnCollectible(GridPosition(_globalGenerationIndex + 1, treeHeightIndex + 1));
+                                _canopy1RightTile.Next(GridPosition(_globalGenerationIndex + 1, treeHeightIndex), _tilesHolder);
+                            }
+                            //TODO: Finish Branches
+                            leftBranch = !leftBranch;
+                            nextBranchHeightIndex += Random.Range(_minimumBranchOffset, _maximumBranchOffset);
+                        }
+                    }
+                }
+                _nextTreeIndex += Random.Range(6, 9);
+            }
             switch (_currentGenerationType)
             {
                 case GenerationType.Land:
@@ -193,22 +245,22 @@ public class SpawnerScript : MonoBehaviour
                         {
                             if (currentElevation == _currentGenerationElevation - 1)
                             {
-                                NextLandSurfaceLeftTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                _landSurfaceLeftTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                             }
                             else
                             {
-                                NextLandFillLeftTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                _landFillLeftTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                             }
                         }
                         else if (_currentGenerationIndex == _currentGenerationLength - 1 && _nextGenerationType != GenerationType.Land)
                         {
                             if (currentElevation == _currentGenerationElevation - 1)
                             {
-                                NextLandSurfaceRightTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                _landSurfaceRightTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                             }
                             else
                             {
-                                NextLandFillRightTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                _landFillRightTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                             }
                         }
                         else
@@ -219,37 +271,37 @@ public class SpawnerScript : MonoBehaviour
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceUp2Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceUp2251Tile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else if (currentElevation == _currentGenerationElevation - 2)
                                     {
-                                        NextLandSurfaceUp1Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceUp45225Tile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 2)
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                                 else if (_currentGenerationIndex == 1)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceUp3Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceUp2252Tile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                                 else
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                             }
@@ -259,35 +311,35 @@ public class SpawnerScript : MonoBehaviour
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceDown1Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f));
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceDown2251Tile.Next(GridPosition(_globalGenerationIndex, currentElevation + 1), _tilesHolder);
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                                 else if (_currentGenerationIndex == 1)
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceDown2Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, (currentElevation + 1) * _tileSize.y, 0f));
-                                        NextLandSurfaceDown3Tile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceDown2252Tile.Next(GridPosition(_globalGenerationIndex, currentElevation + 1), _tilesHolder);
+                                        _landSurfaceDown45225Tile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else if (currentElevation < _currentGenerationElevation - 1)
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                                 else
                                 {
                                     if (currentElevation == _currentGenerationElevation - 1)
                                     {
-                                        NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landSurfaceTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                     else
                                     {
-                                        NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                        _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                     }
                                 }
                             }
@@ -295,11 +347,11 @@ public class SpawnerScript : MonoBehaviour
                             {
                                 if (currentElevation == _currentGenerationElevation - 1)
                                 {
-                                    NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                    _landSurfaceTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                 }
                                 else
                                 {
-                                    NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                    _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                                 }
                             }
                         }
@@ -313,26 +365,34 @@ public class SpawnerScript : MonoBehaviour
                     {
                         if (currentElevation != _currentGenerationElevation - 1 && _currentGenerationIndex == 0)
                         {
-                            NextLandFillTile(_zeroPosition + new Vector3((_globalGenerationIndex * _tileSize.x) - _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _landFillTile.Next(GridPosition(_globalGenerationIndex - 1, currentElevation), _tilesHolder);
                         }
                         if (currentElevation == _currentGenerationElevation - 1)
                         {
-                            if (Random.Range(0,11) > 6)
+                            if (_pitSpikes)
                             {
-                                NextAnimatedSpikesTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                                _animatedSpikesTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
+                            }
+                            else if (_pitCollectible)
+                            {
+                                SpawnCollectible(GridPosition(_globalGenerationIndex, currentElevation));
+                            }
+                            else if (_pitChest && _currentGenerationIndex == 1)
+                            {
+                                _animatedChestTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                             }
                         }
-                        if (currentElevation == _currentGenerationElevation - 2)
+                        else if (currentElevation == _currentGenerationElevation - 2)
                         {
-                            NextLandSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _landSurfaceTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                         }
                         else if (currentElevation < _currentGenerationElevation - 2)
                         {
-                            NextLandFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _landFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                         }
                         if (currentElevation != _currentGenerationElevation - 1 && _currentGenerationIndex == _currentGenerationLength - 1)
                         {
-                            NextLandFillTile(_zeroPosition + new Vector3((_globalGenerationIndex * _tileSize.x) + _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _landFillTile.Next(GridPosition(_globalGenerationIndex + 1, currentElevation), _tilesHolder);
                         }
                     }
                     _globalGenerationIndex++;
@@ -347,11 +407,11 @@ public class SpawnerScript : MonoBehaviour
                     {
                         if (currentElevation == _currentGenerationElevation - 1)
                         {
-                            NextWaterSurfaceTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _waterSurfaceTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                         }
                         else
                         {
-                            NextWaterFillTile(_zeroPosition + new Vector3(_globalGenerationIndex * _tileSize.x, currentElevation * _tileSize.y, 0f));
+                            _waterFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                         }
                     }
                     _globalGenerationIndex++;
@@ -360,6 +420,7 @@ public class SpawnerScript : MonoBehaviour
                 default:
                     break;
             }
+
         }
     }
 
@@ -367,245 +428,19 @@ public class SpawnerScript : MonoBehaviour
     {
         _zeroPosition = _zeroTile.transform.position;
         Destroy(_zeroTile);
+        _nextTreeIndex += Random.Range(6, 9);
     }
 
-    private GameObject NextLandFillLeftTile(Vector3 position)
+    private Vector3 GridPosition(int distance, int elevation)
     {
-        foreach (var tile in _landFillLeftTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landFillLeftTile, position, Quaternion.identity, _tilesHolder);
-        _landFillLeftTiles.Add(newTile);
-        return newTile;
+        return _zeroPosition + new Vector3(distance * _tileSize.x, elevation * _tileSize.y, 0f);
     }
 
-    private GameObject NextLandFillTile(Vector3 position)
+    private void SpawnCollectible(Vector3 position)
     {
-        foreach (var tile in _landFillTiles)
+        if (Random.Range(0, 101) <= _nextCollectibleChance)
         {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
+            _animatedCollectibleTile.Next(position, _tilesHolder);
         }
-        var newTile = Instantiate(_landFillTile, position, Quaternion.identity, _tilesHolder);
-        _landFillTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandFillRightTile(Vector3 position)
-    {
-        foreach (var tile in _landFillRightTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landFillRightTile, position, Quaternion.identity, _tilesHolder);
-        _landFillRightTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceLeftTile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceLeftTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceLeftTile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceLeftTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceUp1Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceUp1Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceUp1Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceUp1Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceUp2Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceUp2Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceUp2Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceUp2Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceUp3Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceUp3Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceUp3Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceUp3Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceTile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceTile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceDown1Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceDown1Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceDown1Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceDown1Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceDown2Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceDown2Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceDown2Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceDown2Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceDown3Tile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceDown3Tiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceDown3Tile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceDown3Tiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextLandSurfaceRightTile(Vector3 position)
-    {
-        foreach (var tile in _landSurfaceRightTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_landSurfaceRightTile, position, Quaternion.identity, _tilesHolder);
-        _landSurfaceRightTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextWaterFillTile(Vector3 position)
-    {
-        foreach (var tile in _waterFillTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_waterFillTile, position, Quaternion.identity, _tilesHolder);
-        _waterFillTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextWaterSurfaceTile(Vector3 position)
-    {
-        foreach (var tile in _waterSurfaceTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_waterSurfaceTile, position, Quaternion.identity, _tilesHolder);
-        _waterSurfaceTiles.Add(newTile);
-        return newTile;
-    }
-
-    private GameObject NextAnimatedSpikesTile(Vector3 position)
-    {
-        foreach (var tile in _animatedSpikesTiles)
-        {
-            if (!tile.activeSelf)
-            {
-                tile.transform.position = position;
-                tile.SetActive(true);
-                return tile;
-            }
-        }
-        var newTile = Instantiate(_animatedSpikesTile, position, Quaternion.identity, _tilesHolder);
-        _animatedSpikesTiles.Add(newTile);
-        return newTile;
     }
 }

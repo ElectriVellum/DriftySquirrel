@@ -34,7 +34,7 @@ public class CollectorScript : MonoBehaviour
             collision.transform.position = temp;
             _lastBackgroundX = temp.x;
         }
-        else if (collision.tag == "Grounds" || collision.tag == "GroundWaters" || collision.tag == "GroundSpikes" || collision.tag == "Collectibles")
+        else if (collision.tag == "Grounds" || collision.tag == "GroundWaters" || collision.tag == "GroundSpikes" || collision.tag == "Collectibles" || collision.tag == "Trees" || collision.tag == "Canopies")
         {
             collision.gameObject.SetActive(false);
         }

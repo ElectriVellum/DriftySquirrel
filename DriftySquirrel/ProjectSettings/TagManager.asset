@@ -12,7 +12,6 @@ TagManager:
   - GroundSpikes
   - Grounds
   - Collectibles
-  - GroundWatersFront
   layers:
   - Default
   - TransparentFX
