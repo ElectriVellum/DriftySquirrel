@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212232047639173044}
   - component: {fileID: 58726989377212940}
   - component: {fileID: 95479983765510274}
+  - component: {fileID: 114283076487162698}
   m_Layer: 13
   m_Name: Nut_1
   m_TagString: Collectibles
@@ -56,7 +57,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 1
 --- !u!95 &95479983765510274
 Animator:
   serializedVersion: 3
@@ -75,6 +76,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114283076487162698
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1571609216900714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448e48919d9cf43f0a65b67f2f4a630e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _acornsCount: 1
+  _scoreCount: 2
+  _driftNut: 0
+  _powerLeaf: 0
 --- !u!212 &212232047639173044
 SpriteRenderer:
   m_ObjectHideFlags: 1

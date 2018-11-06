@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider2D))]
@@ -243,7 +242,7 @@ public class SquirrelScript : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(_direction) > Mathf.Epsilon)
+        if (Mathf.Abs(_direction) > Mathf.Epsilon && Mathf.Abs(_rigidbody2D.velocity.x) > Mathf.Epsilon && _alive)
         {
             PlayControllerScript.Instance.AddTime(Time.deltaTime);
         }
@@ -367,6 +366,7 @@ public class SquirrelScript : MonoBehaviour
     {
         if (_alive)
         {
+            UpdateDirection(0f);
             _alive = false;
             _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _animator.SetTrigger("Die");
@@ -431,7 +431,12 @@ public class SquirrelScript : MonoBehaviour
         }
         if (_alive && collision.gameObject.tag == "Collectibles")
         {
-            SoundsControllerScript.Instance.PlayPingSound();
+            var collectible = collision.GetComponent<CollectibleScript>() as CollectibleScript;
+            if (collectible != null)
+            {
+                SoundsControllerScript.Instance.PlayPingSound();
+                PlayControllerScript.Instance.Collect(collectible);
+            }
             collision.gameObject.SetActive(false);
         }
     }

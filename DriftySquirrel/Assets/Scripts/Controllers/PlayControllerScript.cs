@@ -167,10 +167,10 @@ public class PlayControllerScript : MonoBehaviour
         while (true)
         {
             var time = TimeSpan.FromSeconds(_time);
-            var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString();
+            var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString().PadLeft(2, ' ').Substring(0, 2);
             _hudTimeText.text = timeString;
             _timeText.text = timeString;
-            yield return new WaitForSeconds(0.9f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
@@ -437,5 +437,14 @@ public class PlayControllerScript : MonoBehaviour
             GameControllerScript.Instance.ReviewRequestedVersion = Application.version.ToString();
         }
 #endif
+    }
+
+    public void Collect(CollectibleScript collectible)
+    {
+        if (collectible != null)
+        {
+            AddAcorns(collectible.AcornsCount);
+            AddScore(collectible.ScoreCount);
+        }
     }
 }
