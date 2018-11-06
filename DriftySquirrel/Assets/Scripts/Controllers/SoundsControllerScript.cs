@@ -22,11 +22,19 @@ public class SoundsControllerScript : MonoBehaviour
     [SerializeField()]
     private AudioClip _guiClickAudioClip;
     [SerializeField()]
-    private AudioClip _flyAudioClip;
+    private AudioClip _jumpAudioClip;
+    [SerializeField()]
+    private AudioClip _driftAudioClip;
     [SerializeField()]
     private AudioClip _pingAudioClip;
     [SerializeField()]
-    private AudioClip _dieAudioClip;
+    private AudioClip _canopyDieAudioClip;
+    [SerializeField()]
+    private AudioClip _waterDieAudioClip;
+    [SerializeField()]
+    private AudioClip _spikesDieAudioClip;
+    [SerializeField()]
+    private AudioClip _gorgeDieAudioClip;
 
     public SoundsControllerScript()
     {
@@ -35,9 +43,13 @@ public class SoundsControllerScript : MonoBehaviour
         _maximumVolume = 0.65f;
 
         _guiClickAudioClip = null;
-        _flyAudioClip = null;
+        _jumpAudioClip = null;
+        _driftAudioClip = null;
         _pingAudioClip = null;
-        _dieAudioClip = null;
+        _canopyDieAudioClip = null;
+        _waterDieAudioClip = null;
+        _spikesDieAudioClip = null;
+        _gorgeDieAudioClip = null;
     }
 
     private void Awake()
@@ -118,9 +130,14 @@ public class SoundsControllerScript : MonoBehaviour
         PlaySound(_guiClickAudioClip);
     }
 
-    public void PlayFlySound()
+    public void PlayJumpSound()
     {
-        PlaySound(_flyAudioClip);
+        PlaySound(_jumpAudioClip);
+    }
+
+    public void PlayDriftSound()
+    {
+        PlaySound(_driftAudioClip);
     }
 
     public void PlayPingSound()
@@ -128,8 +145,23 @@ public class SoundsControllerScript : MonoBehaviour
         PlaySound(_pingAudioClip);
     }
 
-    public void PlayDieSound()
+    public void PlayCanopyDieSound()
     {
-        PlaySound(_dieAudioClip);
+        PlaySound(_canopyDieAudioClip);
+    }
+
+    public void PlayWaterDieSound()
+    {
+        PlaySound(_waterDieAudioClip);
+    }
+
+    public void PlaySpikesDieSound()
+    {
+        PlaySound(_spikesDieAudioClip);
+    }
+
+    public void PlayGorgeDieSound()
+    {
+        PlaySound(_gorgeDieAudioClip);
     }
 }

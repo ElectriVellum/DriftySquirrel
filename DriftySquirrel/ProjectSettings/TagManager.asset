@@ -12,6 +12,7 @@ TagManager:
   - GroundSpikes
   - Grounds
   - Collectibles
+  - Leaves
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - Canopies
   - Trees
   - Killers
-  - 
+  - Leaves
   - 
   - 
   - 
@@ -72,6 +73,9 @@ TagManager:
     locked: 0
   - name: Collectibles
     uniqueID: 274184983
+    locked: 0
+  - name: Leaves
+    uniqueID: 2329323325
     locked: 0
   - name: Player
     uniqueID: 22082193

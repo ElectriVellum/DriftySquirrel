@@ -7,6 +7,86 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody2D))]
 public class SquirrelScript : MonoBehaviour
 {
+    public enum DieReason
+    {
+        Canopy,
+        Spikes,
+        Water,
+        Gorge,
+    }
+
+    public delegate void RunStartEventHandler();
+    public delegate void AttackEventHandler();
+    public delegate void JumpEventHandler();
+    public delegate void DriftEventHandler();
+    public delegate void DuckEventHandler();
+    public delegate void StunEventHandler();
+    public delegate void DieEventHandler(DieReason reason);
+
+    public event RunStartEventHandler OnRunStartEvent;
+    public event AttackEventHandler OnAttackEvent;
+    public event JumpEventHandler OnJumpEvent;
+    public event DriftEventHandler OnDriftEvent;
+    public event DuckEventHandler OnDuckEvent;
+    public event StunEventHandler OnStunEvent;
+    public event DieEventHandler OnDieEvent;
+
+    protected virtual void OnRunStart()
+    {
+        if (OnRunStartEvent != null)
+        {
+            OnRunStartEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnAttack()
+    {
+        if (OnAttackEvent != null)
+        {
+            OnAttackEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnJump()
+    {
+        if (OnJumpEvent != null)
+        {
+            OnJumpEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnDrift()
+    {
+        if (OnDriftEvent != null)
+        {
+            OnDriftEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnDuck()
+    {
+        if (OnDuckEvent != null)
+        {
+            OnDuckEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnStun()
+    {
+        if (OnStunEvent != null)
+        {
+            OnStunEvent.Invoke();
+        }
+    }
+
+    protected virtual void OnDie(DieReason reason)
+    {
+        if (OnDieEvent != null)
+        {
+            OnDieEvent.Invoke(reason);
+        }
+    }
+
     [SerializeField()]
     private bool _cameraFollowX;
     [SerializeField()]
@@ -29,6 +109,8 @@ public class SquirrelScript : MonoBehaviour
     private bool _canFly;
     [SerializeField()]
     private bool _canFlyFromFall;
+    [SerializeField()]
+    private GameObject[] _leaves;
 
     private Animator _animator;
     private CapsuleCollider2D _capsuleCollider2D;
@@ -41,91 +123,12 @@ public class SquirrelScript : MonoBehaviour
     private bool _alive;
     private float _direction;
     private bool _grounded;
+    private bool _obstacle;
     private bool _jumped;
     private bool _ducked;
     private bool _stunned;
     private bool _attackTrigger;
     private bool _jumpTrigger;
-
-    public bool CanFly
-    {
-        get
-        {
-            return _canFly;
-        }
-        set
-        {
-            _canFly = value;
-        }
-    }
-
-    public bool CanFlyFromFall
-    {
-        get
-        {
-            return _canFlyFromFall;
-        }
-        set
-        {
-            _canFlyFromFall = value;
-        }
-    }
-
-    public bool Alive
-    {
-        get
-        {
-            return _alive;
-        }
-    }
-
-    public float Direction
-    {
-        get
-        {
-            return _direction;
-        }
-    }
-
-    public bool Grounded
-    {
-        get
-        {
-            return _grounded;
-        }
-    }
-
-    public bool Ducked
-    {
-        get
-        {
-            return _ducked;
-        }
-    }
-
-    public bool Stunned
-    {
-        get
-        {
-            return _stunned;
-        }
-    }
-
-    public bool AttackTrigger
-    {
-        get
-        {
-            return _attackTrigger;
-        }
-    }
-
-    public bool JumpTrigger
-    {
-        get
-        {
-            return _jumpTrigger;
-        }
-    }
 
     public SquirrelScript()
     {
@@ -140,6 +143,7 @@ public class SquirrelScript : MonoBehaviour
         _flyForce = 5f;
         _canFly = true;
         _canFlyFromFall = false;
+        _leaves = null;
 
         _animator = null;
         _capsuleCollider2D = null;
@@ -152,6 +156,7 @@ public class SquirrelScript : MonoBehaviour
         _alive = true;
         _direction = 0f;
         _grounded = false;
+        _obstacle = false;
         _jumped = false;
         _ducked = false;
         _stunned = false;
@@ -179,6 +184,8 @@ public class SquirrelScript : MonoBehaviour
                     velocity.y = _jumpForce;
                     _jumpTrigger = false;
                     _jumped = true;
+                    OnJump();
+                    SoundsControllerScript.Instance.PlayJumpSound();
                 }
             }
             else
@@ -202,7 +209,9 @@ public class SquirrelScript : MonoBehaviour
                     }
                     velocity.y = _flyForce;
                     _jumpTrigger = false;
-                    _animator.SetTrigger("Fly");
+                    _animator.SetTrigger("Drift");
+                    OnDrift();
+                    SoundsControllerScript.Instance.PlayDriftSound();
                 }
             }
             _rigidbody2D.velocity = velocity;
@@ -234,38 +243,18 @@ public class SquirrelScript : MonoBehaviour
 
     private void Update()
     {
-        //var horizontal = Input.GetAxis("Horizontal");
-        //_direction = horizontal;
-        //if (Input.GetButtonDown("Jump"))
-        //{
-        //    Jump();
-        //}
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        //    Attack();
-        //}
-        //if (Input.GetKeyDown("c"))
-        //{
-        //    StartStunning();
-        //}
-        //if (Input.GetKeyUp("c"))
-        //{
-        //    StopStunning();
-        //}
-        //if (Input.GetKeyDown("v"))
-        //{
-        //    StartDucking();
-        //}
-        //if (Input.GetKeyUp("v"))
-        //{
-        //    StopDucking();
-        //}
-        var obstacle = ObstacleCheck();
-        if (obstacle)
+        if (Mathf.Abs(_direction) > Mathf.Epsilon)
         {
-            UpdateDirection(0f);
+            PlayControllerScript.Instance.AddTime(Time.deltaTime);
         }
-        else
+        var obstacle = ObstacleCheck();
+        if (obstacle && !_obstacle)
+        {
+            _obstacle = true;
+            UpdateDirection(0f);
+            StartCoroutine(Stun());
+        }
+        else if (!obstacle & _obstacle)
         {
             UpdateDirection(1f);
         }
@@ -282,6 +271,13 @@ public class SquirrelScript : MonoBehaviour
         _animator.SetBool("Falling", falling);
         _animator.SetBool("Ducking", _ducked);
         _animator.SetBool("Stunned", _stunned);
+    }
+
+    private IEnumerator Stun()
+    {
+        StartStunning();
+        yield return new WaitForSeconds(0.5f);
+        StopStunning();
     }
 
     private bool CheckGrounded()
@@ -309,7 +305,12 @@ public class SquirrelScript : MonoBehaviour
 
     public void UpdateDirection(float direction)
     {
+        var wasRunning = Mathf.Abs(direction) > Mathf.Epsilon;
         _direction = direction;
+        if (Mathf.Abs(direction) > Mathf.Epsilon && !wasRunning)
+        {
+            OnRunStart();
+        }
     }
 
     public void StartDucking()
@@ -317,6 +318,7 @@ public class SquirrelScript : MonoBehaviour
         if (_alive && _grounded && !_stunned && !_ducked)
         {
             _ducked = true;
+            OnDuck();
         }
     }
 
@@ -333,6 +335,7 @@ public class SquirrelScript : MonoBehaviour
         if (_alive && !_stunned)
         {
             _stunned = true;
+            OnStun();
         }
     }
 
@@ -360,22 +363,16 @@ public class SquirrelScript : MonoBehaviour
         }
     }
 
-    public void Die()
+    public void Die(DieReason reason)
     {
         if (_alive)
         {
             _alive = false;
             _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _animator.SetTrigger("Die");
+            OnDie(reason);
             ReleaseCamera();
-            StartCoroutine(DieCoroutine());
         }
-    }
-
-    private IEnumerator DieCoroutine()
-    {
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("Test");
     }
 
     public void CaptureCamera()
@@ -398,14 +395,43 @@ public class SquirrelScript : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Canopies")
+        {
+            var leafCount = Random.Range(3, 6);
+            for (int i = 0; i < leafCount; i++)
+            {
+                var leaf = Instantiate(_leaves[Random.Range(0, _leaves.Length)], collision.transform.position, Quaternion.identity);
+            }
+            if (_alive)
+            {
+                Die(DieReason.Canopy);
+                SoundsControllerScript.Instance.PlayCanopyDieSound();
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "GroundWaters" || collision.gameObject.tag == "GroundSpikes" || collision.gameObject.tag == "Killers" || collision.gameObject.tag == "Canopies")
+        if (_alive && collision.gameObject.tag == "GroundSpikes")
         {
-            Die();
+            Die(DieReason.Spikes);
+            SoundsControllerScript.Instance.PlaySpikesDieSound();
         }
-        if (collision.gameObject.tag == "Collectibles")
+        if (_alive && collision.gameObject.tag == "GroundWaters")
         {
+            Die(DieReason.Water);
+            SoundsControllerScript.Instance.PlayWaterDieSound();
+        }
+        if (_alive && collision.gameObject.tag == "Killers")
+        {
+            Die(DieReason.Gorge);
+            SoundsControllerScript.Instance.PlayGorgeDieSound();
+        }
+        if (_alive && collision.gameObject.tag == "Collectibles")
+        {
+            SoundsControllerScript.Instance.PlayPingSound();
             collision.gameObject.SetActive(false);
         }
     }

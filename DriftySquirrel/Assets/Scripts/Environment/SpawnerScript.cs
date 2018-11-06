@@ -168,7 +168,7 @@ public class SpawnerScript : MonoBehaviour
                         case 0:
                             _nextGenerationLength = Random.Range(4, 31);
                             _nextGenerationElevation = Random.Range(_currentGenerationElevation - 1, _currentGenerationElevation + 2);
-                            _nextGenerationElevation = Mathf.Clamp(_nextGenerationElevation, 2, 5);
+                            _nextGenerationElevation = Mathf.Clamp(_nextGenerationElevation, 2, 4);
                             _nextGenerationType = GenerationType.Land;
                             break;
                         case 1:

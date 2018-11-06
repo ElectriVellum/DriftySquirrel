@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 #if UNITY_IOS
 using SA.Foundation.Utility;
 using SA.iOS.Social;
@@ -13,6 +14,7 @@ public class PlayControllerScript : MonoBehaviour
 {
     private static int _continueCount;
     private static int _continueScore;
+    private static float _continueTime;
     private static PlayControllerScript _instance;
 
     public static PlayControllerScript Instance
@@ -34,11 +36,25 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _soundsOffImage;
     [SerializeField()]
+    private int _acorns;
+    [SerializeField()]
     private int _score;
+    [SerializeField()]
+    private float _time;
+    [SerializeField()]
+    private GameObject _hudAcornsLabel;
+    [SerializeField()]
+    private Text _hudAcornsText;
+    [SerializeField()]
+    private GameObject _hudScoreLabel;
     [SerializeField()]
     private Text _hudScoreText;
     [SerializeField()]
-    private GameObject _endPanel;
+    private GameObject _hudTimeLabel;
+    [SerializeField()]
+    private Text _hudTimeText;
+    [SerializeField()]
+    private GameObject _uiPanel;
     [SerializeField()]
     private GameObject _pausedLabel;
     [SerializeField()]
@@ -48,29 +64,13 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _continueButton;
     [SerializeField()]
+    private Text _acornsText;
+    [SerializeField()]
     private Text _scoreText;
     [SerializeField()]
-    private GameObject _brownSquirrel;
+    private Text _timeText;
     [SerializeField()]
-    private GameObject _redSquirrel;
-    [SerializeField()]
-    private GameObject _whiteSquirrel;
-    [SerializeField()]
-    private Transform _treeSpawner;
-    [SerializeField()]
-    private GameObject _treePrefab;
-
-    private GameObject _squirrel;
-    private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
-
-    private Camera _camera;
-    private float _cameraOffsetX;
-
-    private float _forwardSpeed;
-    private float _bounceSpeed;
-    private bool _didFly;
-    private bool _alive;
+    private SquirrelScript _squirrel;
 
     private bool _adFinished;
 
@@ -81,31 +81,24 @@ public class PlayControllerScript : MonoBehaviour
         _instructionPanel = null;
         _musicOffImage = null;
         _soundsOffImage = null;
+        _acorns = 0;
         _score = 0;
+        _time = 0f;
+        _hudAcornsLabel = null;
+        _hudAcornsText = null;
+        _hudScoreLabel = null;
         _hudScoreText = null;
-        _endPanel = null;
+        _hudTimeLabel = null;
+        _hudTimeText = null;
+        _uiPanel = null;
         _pausedLabel = null;
         _gameOverLabel = null;
         _resumeButton = null;
         _continueButton = null;
+        _acornsText = null;
         _scoreText = null;
-        _brownSquirrel = null;
-        _redSquirrel = null;
-        _whiteSquirrel = null;
-        _treeSpawner = null;
-        _treePrefab = null;
-
+        _timeText = null;
         _squirrel = null;
-        _rigidbody2D = null;
-        _animator = null;
-
-        _camera = null;
-        _cameraOffsetX = 0f;
-
-        _forwardSpeed = 3f;
-        _bounceSpeed = 5f;
-        _didFly = false;
-        _alive = true;
 
         _adFinished = false;
     }
@@ -119,73 +112,65 @@ public class PlayControllerScript : MonoBehaviour
         MakeInstance();
     }
 
-    private void FixedUpdate()
-    {
-        if (_alive)
-        {
-            var temp = _squirrel.transform.position;
-            temp.x += _forwardSpeed * Time.deltaTime;
-            _squirrel.transform.position = temp;
-            if (_didFly)
-            {
-                _didFly = false;
-                _rigidbody2D.velocity = new Vector2(0f, _bounceSpeed);
-                _animator.SetTrigger("Fly");
-                SoundsControllerScript.Instance.PlayFlySound();
-            }
-            if (_rigidbody2D.velocity.y >= 0)
-            {
-                _squirrel.transform.rotation = Quaternion.identity;
-            }
-            else
-            {
-                var angle = 0f;
-                angle = Mathf.Lerp(0f, -90f, -_rigidbody2D.velocity.y / 16f);
-                _squirrel.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            }
-        }
-    }
-
     private void Start()
     {
-        switch (GameControllerScript.Instance.SelectedSquirrel)
+        _squirrel.OnRunStartEvent += _squirrel_OnRunStartEvent;
+        _squirrel.OnAttackEvent += _squirrel_OnAttackEvent;
+        _squirrel.OnJumpEvent += _squirrel_OnJumpEvent;
+        _squirrel.OnDriftEvent += _squirrel_OnDriftEvent;
+        _squirrel.OnDuckEvent += _squirrel_OnDuckEvent;
+        _squirrel.OnStunEvent += _squirrel_OnStunEvent;
+        _squirrel.OnDieEvent += _squirrel_OnDieEvent;
+
+        StartCoroutine(UpdateTime());
+        if (_continueScore > 0)
         {
-            case GameControllerScript.Squirrels.Brown:
-                _squirrel = _brownSquirrel;
-                break;
-            case GameControllerScript.Squirrels.Red:
-                _squirrel = _redSquirrel;
-                break;
-            case GameControllerScript.Squirrels.White:
-            default:
-                _squirrel = _whiteSquirrel;
-                break;
-        }
-        _rigidbody2D = _squirrel.GetComponent<Rigidbody2D>();
-        _animator = _squirrel.GetComponent<Animator>();
-        _camera = Camera.main;
-        _cameraOffsetX = (_camera.transform.position.x - _squirrel.transform.position.x);
-        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
-        if (Random.Range(0, 100) <= 25 && _continueScore == 0)
-        {
-            NonRewardedAd();
+            _continueCount++;
+            AddScore(_continueScore);
+            AddTime(_continueTime);
+            _continueScore = 0;
+            _continueTime = 0f;
         }
     }
 
-    private void Update()
+    private void _squirrel_OnRunStartEvent()
     {
-        if (_alive)
+    }
+
+    private void _squirrel_OnAttackEvent()
+    {
+    }
+
+    private void _squirrel_OnJumpEvent()
+    {
+    }
+
+    private void _squirrel_OnDriftEvent()
+    {
+    }
+
+    private void _squirrel_OnDuckEvent()
+    {
+    }
+
+    private void _squirrel_OnStunEvent()
+    {
+    }
+
+    private void _squirrel_OnDieEvent(SquirrelScript.DieReason reason)
+    {
+        Die();
+    }
+
+    private IEnumerator UpdateTime()
+    {
+        while (true)
         {
-            var temp = _camera.transform.position;
-            temp.x = _squirrel.transform.position.x + _cameraOffsetX;
-            _camera.transform.position = temp;
-        }
-        if (_adFinished)
-        {
-            _adFinished = false;
-            _continueScore = _score;
-            MusicControllerScript.Instance.FadeOut();
-            ScenesControllerScript.Instance.LoadScene("Play");
+            var time = TimeSpan.FromSeconds(_time);
+            var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString();
+            _hudTimeText.text = timeString;
+            _timeText.text = timeString;
+            yield return new WaitForSeconds(0.9f);
         }
     }
 
@@ -205,17 +190,15 @@ public class PlayControllerScript : MonoBehaviour
     {
         _instructionPanel.SetActive(false);
         _pauseButton.SetActive(true);
+        _hudAcornsLabel.gameObject.SetActive(true);
+        _hudAcornsText.gameObject.SetActive(true);
+        _hudScoreLabel.gameObject.SetActive(true);
         _hudScoreText.gameObject.SetActive(true);
-        _squirrel.SetActive(true);
+        _hudTimeLabel.gameObject.SetActive(true);
+        _hudTimeText.gameObject.SetActive(true);
+        _squirrel.gameObject.SetActive(true);
         Time.timeScale = 1f;
-        _didFly = true;
-        if (_continueScore > 0)
-        {
-            _continueCount++;
-            Score(_continueScore);
-            _continueScore = 0;
-        }
-        StartCoroutine(GenerateTrees());
+        _squirrel.Jump();
     }
 
     public void PauseButton()
@@ -239,28 +222,37 @@ public class PlayControllerScript : MonoBehaviour
         }
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
+        _pauseButton.SetActive(false);
+        _hudAcornsLabel.gameObject.SetActive(false);
+        _hudAcornsText.gameObject.SetActive(false);
+        _hudScoreLabel.gameObject.SetActive(false);
         _hudScoreText.gameObject.SetActive(false);
+        _hudTimeLabel.gameObject.SetActive(false);
+        _hudTimeText.gameObject.SetActive(false);
         _pausedLabel.SetActive(true);
         _gameOverLabel.SetActive(false);
         _resumeButton.SetActive(true);
         _continueButton.SetActive(false);
-        _endPanel.SetActive(true);
+        _uiPanel.SetActive(true);
     }
 
-    public void FlyButton()
+    public void JumpButton()
     {
-        if (_alive)
-        {
-            _didFly = true;
-        }
+        _squirrel.Jump();
     }
 
     public void ResumeButton()
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeIn(_backgroundMusic);
-        _endPanel.SetActive(false);
+        _uiPanel.SetActive(false);
+        _pauseButton.SetActive(true);
+        _hudAcornsLabel.gameObject.SetActive(true);
+        _hudAcornsText.gameObject.SetActive(true);
+        _hudScoreLabel.gameObject.SetActive(true);
         _hudScoreText.gameObject.SetActive(true);
+        _hudTimeLabel.gameObject.SetActive(true);
+        _hudTimeText.gameObject.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -316,6 +308,7 @@ public class PlayControllerScript : MonoBehaviour
     {
         _continueCount = 0;
         _continueScore = 0;
+        _continueTime = 0f;
         GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
@@ -326,6 +319,7 @@ public class PlayControllerScript : MonoBehaviour
     {
         _continueCount = 0;
         _continueScore = 0;
+        _continueTime = 0f;
         GameControllerScript.Instance.ReportScore(_score);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
@@ -374,19 +368,29 @@ public class PlayControllerScript : MonoBehaviour
 #endif
     }
 
-    public void Score(int points)
+    public void AddAcorns(int acorns)
     {
-        _score += points;
+        _acorns += acorns;
+        _hudAcornsText.text = _score.ToString("N0");
+        _acornsText.text = _score.ToString("N0");
+        SoundsControllerScript.Instance.PlayPingSound();
+    }
+
+    public void AddScore(int score)
+    {
+        _score += score;
         _hudScoreText.text = _score.ToString("N0");
         _scoreText.text = _score.ToString("N0");
         SoundsControllerScript.Instance.PlayPingSound();
     }
 
+    public void AddTime(float seconds)
+    {
+        _time += seconds;
+    }
+
     public void Die()
     {
-        _alive = false;
-        _animator.SetTrigger("Die");
-        SoundsControllerScript.Instance.PlayDieSound();
         StartCoroutine(DieCoroutine());
     }
 
@@ -412,13 +416,19 @@ public class PlayControllerScript : MonoBehaviour
         }
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
+        _pauseButton.SetActive(false);
+        _hudAcornsLabel.gameObject.SetActive(false);
+        _hudAcornsText.gameObject.SetActive(false);
+        _hudScoreLabel.gameObject.SetActive(false);
         _hudScoreText.gameObject.SetActive(false);
+        _hudTimeLabel.gameObject.SetActive(false);
+        _hudTimeText.gameObject.SetActive(false);
         _pausedLabel.SetActive(false);
         _gameOverLabel.SetActive(true);
         _resumeButton.SetActive(false);
         _continueButton.SetActive(true);
         _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
-        _endPanel.SetActive(true);
+        _uiPanel.SetActive(true);
 #if UNITY_IOS
         yield return new WaitForSeconds(2F);
         if (GameControllerScript.Instance.ReviewRequestedVersion != Application.version.ToString())
@@ -427,15 +437,5 @@ public class PlayControllerScript : MonoBehaviour
             GameControllerScript.Instance.ReviewRequestedVersion = Application.version.ToString();
         }
 #endif
-    }
-
-    private IEnumerator GenerateTrees()
-    {
-        while (_alive)
-        {
-            var treeScript = Instantiate(_treePrefab, _treeSpawner.position, Quaternion.identity, transform).GetComponent<TreeScript>();
-            treeScript.Generate();
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
-        }
     }
 }

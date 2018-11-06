@@ -161,7 +161,7 @@ public class MenuControllerScript : MonoBehaviour
         SoundsControllerScript.Instance.PlayGuiClickSound();
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
-        viewController.LeaderboardIdentifier = GameControllerScript.IOS_LEADERBOARD_ID;
+        viewController.LeaderboardIdentifier = GameControllerScript.IOS_SCORE_LEADERBOARD_ID;
         viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
         viewController.Show();
 #endif
