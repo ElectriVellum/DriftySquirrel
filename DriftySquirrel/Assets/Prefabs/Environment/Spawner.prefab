@@ -105,6 +105,10 @@ MonoBehaviour:
     _prefabs:
     - {fileID: 1435586192870494, guid: f600af37ebe184f57a1d49a52cfa2753, type: 2}
     _maximumSize: 2147483647
+  _waterFillFrontTile:
+    _prefabs:
+    - {fileID: 1959664849551266, guid: 3b41f450ebd9644f68d08a788cbde8ba, type: 2}
+    _maximumSize: 2147483647
   _waterSurfaceTile:
     _prefabs:
     - {fileID: 1781791457287984, guid: 583f76d66887749ef88a57ce361b9f5a, type: 2}

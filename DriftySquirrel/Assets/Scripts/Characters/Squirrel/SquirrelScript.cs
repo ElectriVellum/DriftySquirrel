@@ -434,7 +434,7 @@ public class SquirrelScript : MonoBehaviour
             var collectible = collision.GetComponent<CollectibleScript>() as CollectibleScript;
             if (collectible != null)
             {
-                SoundsControllerScript.Instance.PlayPingSound();
+                SoundsControllerScript.Instance.PlayDingSound();
                 PlayControllerScript.Instance.Collect(collectible);
             }
             collision.gameObject.SetActive(false);

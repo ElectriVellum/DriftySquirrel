@@ -198,7 +198,6 @@ public class PlayControllerScript : MonoBehaviour
         _hudTimeText.gameObject.SetActive(true);
         _squirrel.gameObject.SetActive(true);
         Time.timeScale = 1f;
-        _squirrel.Jump();
     }
 
     public void PauseButton()
@@ -373,7 +372,7 @@ public class PlayControllerScript : MonoBehaviour
         _acorns += acorns;
         _hudAcornsText.text = _score.ToString("N0");
         _acornsText.text = _score.ToString("N0");
-        SoundsControllerScript.Instance.PlayPingSound();
+        SoundsControllerScript.Instance.PlayDingSound();
     }
 
     public void AddScore(int score)
@@ -381,7 +380,7 @@ public class PlayControllerScript : MonoBehaviour
         _score += score;
         _hudScoreText.text = _score.ToString("N0");
         _scoreText.text = _score.ToString("N0");
-        SoundsControllerScript.Instance.PlayPingSound();
+        SoundsControllerScript.Instance.PlayDingSound();
     }
 
     public void AddTime(float seconds)
@@ -396,7 +395,7 @@ public class PlayControllerScript : MonoBehaviour
 
     private IEnumerator DieCoroutine()
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.5f);
         Time.timeScale = 0f;
         if (MusicControllerScript.Instance.On)
         {
@@ -414,7 +413,6 @@ public class PlayControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
         _pauseButton.SetActive(false);
         _hudAcornsLabel.gameObject.SetActive(false);

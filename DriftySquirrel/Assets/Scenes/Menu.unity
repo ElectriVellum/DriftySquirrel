@@ -1213,13 +1213,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maximumVolume: 1
   _guiClickAudioClip: {fileID: 8300000, guid: 354835ec8f7574ba59f431279235e703, type: 3}
-  _jumpAudioClip: {fileID: 8300000, guid: 510ac0515c75942d2b45ee4b88e65187, type: 3}
-  _driftAudioClip: {fileID: 8300000, guid: 510ac0515c75942d2b45ee4b88e65187, type: 3}
-  _pingAudioClip: {fileID: 8300000, guid: cf2f244d26638411cae6cf6df4b331d1, type: 3}
-  _canopyDieAudioClip: {fileID: 8300000, guid: 53695d6909085413cb2a04b4a826d421, type: 3}
-  _waterDieAudioClip: {fileID: 8300000, guid: 53695d6909085413cb2a04b4a826d421, type: 3}
-  _spikesDieAudioClip: {fileID: 8300000, guid: 53695d6909085413cb2a04b4a826d421, type: 3}
-  _gorgeDieAudioClip: {fileID: 8300000, guid: 53695d6909085413cb2a04b4a826d421, type: 3}
+  _jumpAudioClip: {fileID: 8300000, guid: 1663b055921b84666821b704950abcfb, type: 3}
+  _driftAudioClip: {fileID: 8300000, guid: 1663b055921b84666821b704950abcfb, type: 3}
+  _dingAudioClip: {fileID: 8300000, guid: d19226e3f740b499a8fb59b129be6509, type: 3}
+  _canopyDieAudioClip: {fileID: 8300000, guid: eaf869c1a2f4446c68b5abe216855fdb, type: 3}
+  _waterDieAudioClip: {fileID: 8300000, guid: 4046c8caac458423ca51807740852d04, type: 3}
+  _spikesDieAudioClip: {fileID: 8300000, guid: e1539e3250b6349bda0b8f3845815f1d, type: 3}
+  _gorgeDieAudioClip: {fileID: 8300000, guid: e1539e3250b6349bda0b8f3845815f1d, type: 3}
 --- !u!82 &569693673
 AudioSource:
   m_ObjectHideFlags: 0

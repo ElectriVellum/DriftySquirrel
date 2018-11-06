@@ -43,6 +43,8 @@ public class SpawnerScript : MonoBehaviour
     [SerializeField()]
     private Pooler _waterFillTile;
     [SerializeField()]
+    private Pooler _waterFillFrontTile;
+    [SerializeField()]
     private Pooler _waterSurfaceTile;
     [SerializeField()]
     private Pooler _animatedDriftNutTile;
@@ -108,6 +110,7 @@ public class SpawnerScript : MonoBehaviour
         _landSurfaceDown45225Tile = null;
         _landSurfaceRightTile = null;
         _waterFillTile = null;
+        _waterFillFrontTile = null;
         _waterSurfaceTile = null;
         _animatedDriftNutTile = null;
         _animatedSpikesTile = null;
@@ -412,6 +415,7 @@ public class SpawnerScript : MonoBehaviour
                         else
                         {
                             _waterFillTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
+                            _waterFillFrontTile.Next(GridPosition(_globalGenerationIndex, currentElevation), _tilesHolder);
                         }
                     }
                     _globalGenerationIndex++;

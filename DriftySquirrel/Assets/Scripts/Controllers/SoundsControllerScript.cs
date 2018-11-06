@@ -26,7 +26,7 @@ public class SoundsControllerScript : MonoBehaviour
     [SerializeField()]
     private AudioClip _driftAudioClip;
     [SerializeField()]
-    private AudioClip _pingAudioClip;
+    private AudioClip _dingAudioClip;
     [SerializeField()]
     private AudioClip _canopyDieAudioClip;
     [SerializeField()]
@@ -45,7 +45,7 @@ public class SoundsControllerScript : MonoBehaviour
         _guiClickAudioClip = null;
         _jumpAudioClip = null;
         _driftAudioClip = null;
-        _pingAudioClip = null;
+        _dingAudioClip = null;
         _canopyDieAudioClip = null;
         _waterDieAudioClip = null;
         _spikesDieAudioClip = null;
@@ -140,9 +140,9 @@ public class SoundsControllerScript : MonoBehaviour
         PlaySound(_driftAudioClip);
     }
 
-    public void PlayPingSound()
+    public void PlayDingSound()
     {
-        PlaySound(_pingAudioClip);
+        PlaySound(_dingAudioClip, 0.2f);
     }
 
     public void PlayCanopyDieSound()
