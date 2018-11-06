@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 #if UNITY_IOS
 using SA.Foundation.Utility;
 using SA.iOS.GameKit;
@@ -28,7 +29,11 @@ public class MenuControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _scorePanel;
     [SerializeField()]
+    private Text _acornsText;
+    [SerializeField()]
     private Text _highScoreText;
+    [SerializeField()]
+    private Text _bestTimeText;
     [SerializeField()]
     private Text _medalText;
     [SerializeField()]
@@ -46,7 +51,9 @@ public class MenuControllerScript : MonoBehaviour
         _musicOffImage = null;
         _soundsOffImage = null;
         _scorePanel = null;
+        _acornsText = null;
         _highScoreText = null;
+        _bestTimeText = null;
         _medalText = null;
         _bronzeMedalImage = null;
         _silverMedalImage = null;
@@ -121,32 +128,38 @@ public class MenuControllerScript : MonoBehaviour
 
     public void ScoresButton()
     {
+        var acorns = GameControllerScript.Instance.Acorns;
         var highScore = GameControllerScript.Instance.HighScore;
+        var bestTime = GameControllerScript.Instance.BestTime;
+        _acornsText.text = acorns.ToString("N0") + " Acorns";
         _highScoreText.text = highScore.ToString("N0");
-        if (highScore <= 10)
+        var time = TimeSpan.FromSeconds(bestTime);
+        var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
+        _bestTimeText.text = timeString;
+        if (highScore <= 20)
         {
-            _medalText.text = "None";
+            _medalText.text = "No Medal Awarded";
             _goldMedalImage.SetActive(false);
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(false);
         }
-        else if (highScore <= 20)
+        else if (highScore <= 40)
         {
-            _medalText.text = "Bronze";
+            _medalText.text = "Bronze Medal";
             _goldMedalImage.SetActive(false);
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(true);
         }
-        else if (highScore <= 40)
+        else if (highScore <= 100)
         {
-            _medalText.text = "Silver";
+            _medalText.text = "Silver Medal";
             _goldMedalImage.SetActive(false);
             _silverMedalImage.SetActive(true);
             _bronzeMedalImage.SetActive(false);
         }
         else
         {
-            _medalText.text = "Gold";
+            _medalText.text = "Gold Medal";
             _goldMedalImage.SetActive(true);
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(false);

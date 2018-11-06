@@ -203,7 +203,7 @@ public class SpawnerScript : MonoBehaviour
                 if (_currentGenerationType == GenerationType.Land || _currentGenerationType == GenerationType.Gorge)
                 {
                     var leftBranch = (Random.Range(0, 101) <= 50);
-                    var nextBranchHeightIndex = Random.Range(_minimumBranchOffset, _maximumBranchOffset);
+                    var nextBranchHeightIndex = _currentGenerationElevation + Random.Range(1, 3);
 
                     for (int treeHeightIndex = 0; treeHeightIndex < 12; treeHeightIndex++)
                     {
@@ -358,7 +358,10 @@ public class SpawnerScript : MonoBehaviour
                                 }
                             }
                         }
-
+                        if (_nextGenerationType == GenerationType.Gorge && _currentGenerationIndex == _currentGenerationLength - 1 && currentElevation == 0)
+                        {
+                            _animatedDriftNutTile.Next(GridPosition(_globalGenerationIndex, _currentGenerationElevation), _tilesHolder);
+                        }
                     }
                     _globalGenerationIndex++;
                     _currentGenerationIndex++;

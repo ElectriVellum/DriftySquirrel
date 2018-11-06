@@ -242,11 +242,11 @@ public class SquirrelScript : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(_direction) > Mathf.Epsilon && Mathf.Abs(_rigidbody2D.velocity.x) > Mathf.Epsilon && _alive)
+        var obstacle = ObstacleCheck();
+        if (Mathf.Abs(_direction) > Mathf.Epsilon && Mathf.Abs(_rigidbody2D.velocity.x) > Mathf.Epsilon && _alive && !obstacle)
         {
             PlayControllerScript.Instance.AddTime(Time.deltaTime);
         }
-        var obstacle = ObstacleCheck();
         if (obstacle && !_obstacle)
         {
             _obstacle = true;
@@ -255,6 +255,7 @@ public class SquirrelScript : MonoBehaviour
         }
         else if (!obstacle & _obstacle)
         {
+            _obstacle = false;
             UpdateDirection(1f);
         }
         _grounded = CheckGrounded();
@@ -368,7 +369,10 @@ public class SquirrelScript : MonoBehaviour
         {
             UpdateDirection(0f);
             _alive = false;
-            _rigidbody2D.constraints = RigidbodyConstraints2D.None;
+            if ((_rigidbody2D.constraints & RigidbodyConstraints2D.FreezePositionX) == 0)
+            {
+                _rigidbody2D.constraints = RigidbodyConstraints2D.None;
+            }
             _animator.SetTrigger("Die");
             OnDie(reason);
             ReleaseCamera();
@@ -416,11 +420,14 @@ public class SquirrelScript : MonoBehaviour
     {
         if (_alive && collision.gameObject.tag == "GroundSpikes")
         {
+            UpdateDirection(0f);
             Die(DieReason.Spikes);
             SoundsControllerScript.Instance.PlaySpikesDieSound();
         }
         if (_alive && collision.gameObject.tag == "GroundWaters")
         {
+            UpdateDirection(0f);
+            _rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
             Die(DieReason.Water);
             SoundsControllerScript.Instance.PlayWaterDieSound();
         }

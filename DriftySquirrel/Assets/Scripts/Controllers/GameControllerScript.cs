@@ -35,7 +35,9 @@ public class GameControllerScript : MonoBehaviour
     private const string MUSIC_VOLUME = "Music Volume";
     private const string SOUNDS_ON = "Sounds On";
     private const string SOUNDS_VOLUME = "Sounds Volume";
+    private const string ACORNS = "Acorns";
     private const string HIGH_SCORE = "High Score";
+    private const string BEST_TIME = "Best Time";
 
     [SerializeField()]
     private bool _resetPlayerPrefs;
@@ -199,6 +201,18 @@ public class GameControllerScript : MonoBehaviour
         }
     }
 
+    public int Acorns
+    {
+        get
+        {
+            return PlayerPrefs.GetInt(ACORNS, 0);
+        }
+        set
+        {
+            PlayerPrefs.SetInt(ACORNS, value);
+        }
+    }
+
     public int HighScore
     {
         get
@@ -209,6 +223,40 @@ public class GameControllerScript : MonoBehaviour
         {
             PlayerPrefs.SetInt(HIGH_SCORE, value);
         }
+    }
+
+    public float BestTime
+    {
+        get
+        {
+            return PlayerPrefs.GetFloat(BEST_TIME, 0f);
+        }
+        set
+        {
+            PlayerPrefs.SetFloat(BEST_TIME, value);
+        }
+    }
+
+    public void ReportAcorns(int acorns)
+    {
+#if UNITY_IOS
+        ISN_GKScore scoreReporter = new ISN_GKScore(IOS_ACORNS_LEADERBOARD_ID);
+        scoreReporter.Value = acorns;
+        scoreReporter.Context = 1;
+
+        scoreReporter.Report((result) =>
+        {
+            if (result.IsSucceeded)
+            {
+                Debug.Log("Score Report Success");
+            }
+            else
+            {
+                Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
+            }
+        });
+#endif
+        Acorns = acorns;
     }
 
     public void ReportScore(int score)
@@ -233,6 +281,31 @@ public class GameControllerScript : MonoBehaviour
         if (score > HighScore)
         {
             HighScore = score;
+        }
+    }
+
+    public void ReportTime(float time)
+    {
+#if UNITY_IOS
+        ISN_GKScore scoreReporter = new ISN_GKScore(IOS_TIME_LEADERBOARD_ID);
+        scoreReporter.Value = (long)time;
+        scoreReporter.Context = 1;
+
+        scoreReporter.Report((result) =>
+        {
+            if (result.IsSucceeded)
+            {
+                Debug.Log("Score Report Success");
+            }
+            else
+            {
+                Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
+            }
+        });
+#endif
+        if (time > BestTime)
+        {
+            BestTime = time;
         }
     }
 }

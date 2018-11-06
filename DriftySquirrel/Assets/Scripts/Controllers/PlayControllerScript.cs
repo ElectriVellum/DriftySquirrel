@@ -114,6 +114,7 @@ public class PlayControllerScript : MonoBehaviour
 
     private void Start()
     {
+        _acorns = GameControllerScript.Instance.Acorns;
         _squirrel.OnRunStartEvent += _squirrel_OnRunStartEvent;
         _squirrel.OnAttackEvent += _squirrel_OnAttackEvent;
         _squirrel.OnJumpEvent += _squirrel_OnJumpEvent;
@@ -121,7 +122,7 @@ public class PlayControllerScript : MonoBehaviour
         _squirrel.OnDuckEvent += _squirrel_OnDuckEvent;
         _squirrel.OnStunEvent += _squirrel_OnStunEvent;
         _squirrel.OnDieEvent += _squirrel_OnDieEvent;
-
+        MusicControllerScript.Instance.FadeIn(_backgroundMusic);
         StartCoroutine(UpdateTime());
         if (_continueScore > 0)
         {
@@ -130,6 +131,17 @@ public class PlayControllerScript : MonoBehaviour
             AddTime(_continueTime);
             _continueScore = 0;
             _continueTime = 0f;
+        }
+    }
+
+    private void Update()
+    {
+        if (_adFinished)
+        {
+            _continueScore = _score;
+            _continueTime = _time;
+            MusicControllerScript.Instance.FadeOut();
+            ScenesControllerScript.Instance.LoadScene("Play");
         }
     }
 
@@ -167,7 +179,7 @@ public class PlayControllerScript : MonoBehaviour
         while (true)
         {
             var time = TimeSpan.FromSeconds(_time);
-            var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString().PadLeft(2, ' ').Substring(0, 2);
+            var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
             _hudTimeText.text = timeString;
             _timeText.text = timeString;
             yield return new WaitForSeconds(0.01f);
@@ -308,7 +320,9 @@ public class PlayControllerScript : MonoBehaviour
         _continueCount = 0;
         _continueScore = 0;
         _continueTime = 0f;
+        GameControllerScript.Instance.ReportAcorns(_acorns);
         GameControllerScript.Instance.ReportScore(_score);
+        GameControllerScript.Instance.ReportTime(_time);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
         ScenesControllerScript.Instance.LoadScene("Play");
@@ -319,7 +333,9 @@ public class PlayControllerScript : MonoBehaviour
         _continueCount = 0;
         _continueScore = 0;
         _continueTime = 0f;
+        GameControllerScript.Instance.ReportAcorns(_acorns);
         GameControllerScript.Instance.ReportScore(_score);
+        GameControllerScript.Instance.ReportTime(_time);
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
         ScenesControllerScript.Instance.LoadScene("Menu");
@@ -370,8 +386,8 @@ public class PlayControllerScript : MonoBehaviour
     public void AddAcorns(int acorns)
     {
         _acorns += acorns;
-        _hudAcornsText.text = _score.ToString("N0");
-        _acornsText.text = _score.ToString("N0");
+        _hudAcornsText.text = _acorns.ToString("N0");
+        _acornsText.text = _acorns.ToString("N0");
         SoundsControllerScript.Instance.PlayDingSound();
     }
 
