@@ -29,6 +29,14 @@ public class MenuControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _scorePanel;
     [SerializeField()]
+    private GameObject _helpPanel;
+    [SerializeField()]
+    private GameObject _instructions1Image;
+    [SerializeField()]
+    private GameObject _instructions2Image;
+    [SerializeField()]
+    private GameObject _instructions3Image;
+    [SerializeField()]
     private Text _acornsText;
     [SerializeField()]
     private Text _highScoreText;
@@ -42,8 +50,6 @@ public class MenuControllerScript : MonoBehaviour
     private GameObject _silverMedalImage;
     [SerializeField()]
     private GameObject _goldMedalImage;
-    [SerializeField()]
-    private GameObject _player;
 
     public MenuControllerScript()
     {
@@ -58,7 +64,6 @@ public class MenuControllerScript : MonoBehaviour
         _bronzeMedalImage = null;
         _silverMedalImage = null;
         _goldMedalImage = null;
-        _player = null;
     }
 
     private void Awake()
@@ -178,6 +183,33 @@ public class MenuControllerScript : MonoBehaviour
         viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
         viewController.Show();
 #endif
+    }
+
+    public void HelpButton()
+    {
+        SoundsControllerScript.Instance.PlayGuiClickSound();
+        _helpPanel.SetActive(true);
+    }
+
+    public void InstructionsButton()
+    {
+        SoundsControllerScript.Instance.PlayGuiClickSound();
+        if (_instructions1Image.activeInHierarchy)
+        {
+            _instructions1Image.SetActive(false);
+            _instructions2Image.SetActive(true);
+        }
+        else if (_instructions2Image.activeInHierarchy)
+        {
+            _instructions2Image.SetActive(false);
+            _instructions3Image.SetActive(true);
+        }
+        else
+        {
+            _instructions3Image.SetActive(false);
+            _instructions1Image.SetActive(true);
+            _helpPanel.SetActive(false);
+        }
     }
 
     public void FacebookButton()

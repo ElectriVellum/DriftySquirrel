@@ -28,7 +28,15 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _pauseButton;
     [SerializeField()]
-    private GameObject _instructionPanel;
+    private GameObject _readyPanel;
+    [SerializeField()]
+    private GameObject _readyImage;
+    [SerializeField()]
+    private GameObject _threeImage;
+    [SerializeField()]
+    private GameObject _twoImage;
+    [SerializeField()]
+    private GameObject _oneImage;
     [SerializeField()]
     private GameObject _musicOffImage;
     [SerializeField()]
@@ -72,7 +80,11 @@ public class PlayControllerScript : MonoBehaviour
     {
         _backgroundMusic = null;
         _pauseButton = null;
-        _instructionPanel = null;
+        _readyPanel = null;
+        _readyImage = null;
+        _threeImage = null;
+        _twoImage = null;
+        _oneImage = null;
         _musicOffImage = null;
         _soundsOffImage = null;
         _acorns = 0;
@@ -126,7 +138,7 @@ public class PlayControllerScript : MonoBehaviour
                 NonRewardedAd();
             }
         }
-        _instructionPanel.SetActive(true);
+        _readyPanel.SetActive(true);
     }
 
     private void Update()
@@ -171,11 +183,30 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
-    public void InstructionButton()
+    public void ReadyButton()
     {
-        _instructionPanel.SetActive(false);
+        StartCoroutine(Ready());
+    }
+
+    private IEnumerator Ready()
+    {
+        _readyImage.SetActive(false);
+        _threeImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        _threeImage.SetActive(false);
+        _twoImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        _twoImage.SetActive(false);
+        _oneImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        _oneImage.SetActive(false);
+        _oneImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        _oneImage.SetActive(false);
+        _readyPanel.SetActive(false);
         _hudPanel.SetActive(true);
         _squirrel.gameObject.SetActive(true);
+        SoundsControllerScript.Instance.PlayGuiClickSound();
         Time.timeScale = 1f;
     }
 

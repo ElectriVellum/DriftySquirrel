@@ -29,7 +29,7 @@ public class GameControllerScript : MonoBehaviour
 #elif UNITY_EDITOR
     public const string ADS_GAMEID = "1111111";
 #endif
-    public const bool ADS_TESTMODE = true;
+    public const bool ADS_TESTMODE = false;
     private const string REVIEW_REQUESTED_VERSION = "Review Requested Version";
     private const string MUSIC_ON = "Music On";
     private const string MUSIC_VOLUME = "Music Volume";
@@ -304,7 +304,7 @@ public class GameControllerScript : MonoBehaviour
     {
 #if UNITY_IOS
         ISN_GKScore scoreReporter = new ISN_GKScore(IOS_TIME_LEADERBOARD_ID);
-        scoreReporter.Value = (long)time;
+        scoreReporter.Value = (long)time * 100;
         scoreReporter.Context = 1;
 
         scoreReporter.Report((result) =>

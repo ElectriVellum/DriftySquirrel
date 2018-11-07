@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _acornsCount: 1
-  _scoreCount: 3
+  _scoreCount: 1
   _driftNut: 0
   _powerLeaf: 0
 --- !u!212 &212815105253636782
