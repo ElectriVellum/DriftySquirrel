@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212630635462570970}
   - component: {fileID: 95174346459946704}
   - component: {fileID: 61431123179541578}
+  - component: {fileID: 114904267610109180}
   m_Layer: 13
   m_Name: Animated_Chest
   m_TagString: Collectibles
@@ -85,6 +86,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114904267610109180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1273056018271266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448e48919d9cf43f0a65b67f2f4a630e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _acornsCount: 20
+  _scoreCount: 100
+  _driftNut: 0
+  _powerLeaf: 0
 --- !u!212 &212630635462570970
 SpriteRenderer:
   m_ObjectHideFlags: 1

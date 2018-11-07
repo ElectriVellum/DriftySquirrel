@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 #if UNITY_IOS
-using SA.Foundation.Utility;
-using SA.iOS.Social;
 using SA.iOS.StoreKit;
 #endif
 using UnityEngine;
@@ -42,27 +40,23 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private float _time;
     [SerializeField()]
-    private GameObject _hudAcornsLabel;
+    private GameObject _hudPanel;
     [SerializeField()]
     private Text _hudAcornsText;
     [SerializeField()]
-    private GameObject _hudScoreLabel;
-    [SerializeField()]
     private Text _hudScoreText;
-    [SerializeField()]
-    private GameObject _hudTimeLabel;
     [SerializeField()]
     private Text _hudTimeText;
     [SerializeField()]
-    private GameObject _uiPanel;
+    private GameObject _informationPanel;
     [SerializeField()]
-    private GameObject _pausedLabel;
-    [SerializeField()]
-    private GameObject _gameOverLabel;
+    private Text _informationPanelLabel;
     [SerializeField()]
     private GameObject _resumeButton;
     [SerializeField()]
-    private GameObject _continueButton;
+    private GameObject _continueWithAdButton;
+    [SerializeField()]
+    private GameObject _continueWithFacebookButton;
     [SerializeField()]
     private Text _acornsText;
     [SerializeField()]
@@ -72,7 +66,7 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private SquirrelScript _squirrel;
 
-    private bool _adFinished;
+    private bool _continueFinished;
 
     public PlayControllerScript()
     {
@@ -84,23 +78,21 @@ public class PlayControllerScript : MonoBehaviour
         _acorns = 0;
         _score = 0;
         _time = 0f;
-        _hudAcornsLabel = null;
+        _hudPanel = null;
         _hudAcornsText = null;
-        _hudScoreLabel = null;
         _hudScoreText = null;
-        _hudTimeLabel = null;
         _hudTimeText = null;
-        _uiPanel = null;
-        _pausedLabel = null;
-        _gameOverLabel = null;
+        _informationPanel = null;
+        _informationPanelLabel = null;
         _resumeButton = null;
-        _continueButton = null;
+        _continueWithAdButton = null;
+        _continueWithFacebookButton = null;
         _acornsText = null;
         _scoreText = null;
         _timeText = null;
         _squirrel = null;
 
-        _adFinished = false;
+        _continueFinished = false;
     }
 
     private void Awake()
@@ -114,13 +106,7 @@ public class PlayControllerScript : MonoBehaviour
 
     private void Start()
     {
-        _acorns = GameControllerScript.Instance.Acorns;
-        _squirrel.OnRunStartEvent += _squirrel_OnRunStartEvent;
-        _squirrel.OnAttackEvent += _squirrel_OnAttackEvent;
-        _squirrel.OnJumpEvent += _squirrel_OnJumpEvent;
-        _squirrel.OnDriftEvent += _squirrel_OnDriftEvent;
-        _squirrel.OnDuckEvent += _squirrel_OnDuckEvent;
-        _squirrel.OnStunEvent += _squirrel_OnStunEvent;
+        AddAcorns(GameControllerScript.Instance.Acorns);
         _squirrel.OnDieEvent += _squirrel_OnDieEvent;
         MusicControllerScript.Instance.FadeIn(_backgroundMusic);
         StartCoroutine(UpdateTime());
@@ -132,41 +118,28 @@ public class PlayControllerScript : MonoBehaviour
             _continueScore = 0;
             _continueTime = 0f;
         }
+        GameControllerScript.Instance.PlayCount += 1;
+        if (GameControllerScript.Instance.PlayCount > 5)
+        {
+            if (UnityEngine.Random.Range(0,101) <= 60)
+            {
+                NonRewardedAd();
+            }
+        }
+        _instructionPanel.SetActive(true);
     }
 
     private void Update()
     {
-        if (_adFinished)
+        if (_continueFinished)
         {
+            _continueFinished = false;
             _continueScore = _score;
             _continueTime = _time;
+            GameControllerScript.Instance.ReportAcorns(_acorns);
             MusicControllerScript.Instance.FadeOut();
             ScenesControllerScript.Instance.LoadScene("Play");
         }
-    }
-
-    private void _squirrel_OnRunStartEvent()
-    {
-    }
-
-    private void _squirrel_OnAttackEvent()
-    {
-    }
-
-    private void _squirrel_OnJumpEvent()
-    {
-    }
-
-    private void _squirrel_OnDriftEvent()
-    {
-    }
-
-    private void _squirrel_OnDuckEvent()
-    {
-    }
-
-    private void _squirrel_OnStunEvent()
-    {
     }
 
     private void _squirrel_OnDieEvent(SquirrelScript.DieReason reason)
@@ -201,13 +174,7 @@ public class PlayControllerScript : MonoBehaviour
     public void InstructionButton()
     {
         _instructionPanel.SetActive(false);
-        _pauseButton.SetActive(true);
-        _hudAcornsLabel.gameObject.SetActive(true);
-        _hudAcornsText.gameObject.SetActive(true);
-        _hudScoreLabel.gameObject.SetActive(true);
-        _hudScoreText.gameObject.SetActive(true);
-        _hudTimeLabel.gameObject.SetActive(true);
-        _hudTimeText.gameObject.SetActive(true);
+        _hudPanel.SetActive(true);
         _squirrel.gameObject.SetActive(true);
         Time.timeScale = 1f;
     }
@@ -233,18 +200,12 @@ public class PlayControllerScript : MonoBehaviour
         }
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeOut();
-        _pauseButton.SetActive(false);
-        _hudAcornsLabel.gameObject.SetActive(false);
-        _hudAcornsText.gameObject.SetActive(false);
-        _hudScoreLabel.gameObject.SetActive(false);
-        _hudScoreText.gameObject.SetActive(false);
-        _hudTimeLabel.gameObject.SetActive(false);
-        _hudTimeText.gameObject.SetActive(false);
-        _pausedLabel.SetActive(true);
-        _gameOverLabel.SetActive(false);
+        _hudPanel.SetActive(false);
+        _informationPanelLabel.text = "PAUSED";
         _resumeButton.SetActive(true);
-        _continueButton.SetActive(false);
-        _uiPanel.SetActive(true);
+        _continueWithAdButton.SetActive(false);
+        _continueWithFacebookButton.SetActive(false);
+        _informationPanel.SetActive(true);
     }
 
     public void JumpButton()
@@ -256,14 +217,8 @@ public class PlayControllerScript : MonoBehaviour
     {
         SoundsControllerScript.Instance.PlayGuiClickSound();
         MusicControllerScript.Instance.FadeIn(_backgroundMusic);
-        _uiPanel.SetActive(false);
-        _pauseButton.SetActive(true);
-        _hudAcornsLabel.gameObject.SetActive(true);
-        _hudAcornsText.gameObject.SetActive(true);
-        _hudScoreLabel.gameObject.SetActive(true);
-        _hudScoreText.gameObject.SetActive(true);
-        _hudTimeLabel.gameObject.SetActive(true);
-        _hudTimeText.gameObject.SetActive(true);
+        _informationPanel.SetActive(false);
+        _hudPanel.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -311,7 +266,7 @@ public class PlayControllerScript : MonoBehaviour
     {
         if (result == ShowResult.Finished)
         {
-            _adFinished = true;
+            _continueFinished = true;
         }
     }
 
@@ -369,21 +324,12 @@ public class PlayControllerScript : MonoBehaviour
         }
     }
 
-    public void FacebookButton()
+    public void ContinueWithFacebookButton()
     {
-#if UNITY_IOS
-        SA_ScreenUtil.TakeScreenshot((image) =>
-        {
-            Debug.Log("Image Ready");
-            ISN_Facebook.Post("I am passing time on Drifty Squirrel with " + _score.ToString("N0") + " points. Check it out!", image, (result) =>
-            {
-                Debug.Log("Post result: " + result.IsSucceeded);
-            });
-        });
-#endif
+        //TODO: Continue with Facebook
     }
 
-    public void AddAcorns(int acorns)
+    private void AddAcorns(int acorns)
     {
         _acorns += acorns;
         _hudAcornsText.text = _acorns.ToString("N0");
@@ -391,7 +337,7 @@ public class PlayControllerScript : MonoBehaviour
         SoundsControllerScript.Instance.PlayDingSound();
     }
 
-    public void AddScore(int score)
+    private void AddScore(int score)
     {
         _score += score;
         _hudScoreText.text = _score.ToString("N0");
@@ -404,7 +350,7 @@ public class PlayControllerScript : MonoBehaviour
         _time += seconds;
     }
 
-    public void Die()
+    private void Die()
     {
         StartCoroutine(DieCoroutine());
     }
@@ -430,19 +376,15 @@ public class PlayControllerScript : MonoBehaviour
             _soundsOffImage.SetActive(true);
         }
         MusicControllerScript.Instance.FadeOut();
-        _pauseButton.SetActive(false);
-        _hudAcornsLabel.gameObject.SetActive(false);
-        _hudAcornsText.gameObject.SetActive(false);
-        _hudScoreLabel.gameObject.SetActive(false);
-        _hudScoreText.gameObject.SetActive(false);
-        _hudTimeLabel.gameObject.SetActive(false);
-        _hudTimeText.gameObject.SetActive(false);
-        _pausedLabel.SetActive(false);
-        _gameOverLabel.SetActive(true);
+        _hudPanel.SetActive(false);
+        _informationPanelLabel.text = "GAME OVER";
         _resumeButton.SetActive(false);
-        _continueButton.SetActive(true);
-        _continueButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
-        _uiPanel.SetActive(true);
+        _continueWithAdButton.SetActive(true);
+        _continueWithAdButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
+        //TODO: Continue with Facebook
+        //_continueWithFacebookButton.SetActive(true);
+        //_continueWithFacebookButton.GetComponent<Button>().interactable = _continueCount < 2 && Monetization.IsReady(GameControllerScript.ADS_REWARDED_PLACEMENTID);
+        _informationPanel.SetActive(true);
 #if UNITY_IOS
         yield return new WaitForSeconds(2F);
         if (GameControllerScript.Instance.ReviewRequestedVersion != Application.version.ToString())

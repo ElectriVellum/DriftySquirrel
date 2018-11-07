@@ -93,7 +93,7 @@ public class MenuControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        _player.SetActive(true);
+        //_player.SetActive(true);
     }
 
     private void MakeInstance()

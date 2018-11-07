@@ -38,6 +38,7 @@ public class GameControllerScript : MonoBehaviour
     private const string ACORNS = "Acorns";
     private const string HIGH_SCORE = "High Score";
     private const string BEST_TIME = "Best Time";
+    private const string PLAY_COUNT = "Play Count";
 
     [SerializeField()]
     private bool _resetPlayerPrefs;
@@ -124,6 +125,9 @@ public class GameControllerScript : MonoBehaviour
             SoundsOn = true;
             SoundsVolume = 0.5f;
             HighScore = 0;
+            Acorns = 0;
+            BestTime = 0f;
+            PlayCount = 0;
         }
     }
 
@@ -234,6 +238,18 @@ public class GameControllerScript : MonoBehaviour
         set
         {
             PlayerPrefs.SetFloat(BEST_TIME, value);
+        }
+    }
+
+    public int PlayCount
+    {
+        get
+        {
+            return PlayerPrefs.GetInt(PLAY_COUNT, 0);
+        }
+        set
+        {
+            PlayerPrefs.SetInt(PLAY_COUNT, value);
         }
     }
 

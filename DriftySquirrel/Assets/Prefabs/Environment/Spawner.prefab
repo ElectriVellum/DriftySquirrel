@@ -123,11 +123,10 @@ MonoBehaviour:
     _maximumSize: 2147483647
   _animatedCollectibleTile:
     _prefabs:
-    - {fileID: 1869891083906174, guid: c9c921ae6d3f84a3ca23ebab9e36bbd7, type: 2}
+    - {fileID: 1224561316075330, guid: 158649734987748eda58b5a37c5f72c9, type: 2}
     - {fileID: 1571609216900714, guid: f89df65404b0a4b468267163da3763a6, type: 2}
     - {fileID: 1698059472537520, guid: dd0efb4c8ec6340f182f5d8eb54cc911, type: 2}
     - {fileID: 1839617119668102, guid: 337f8ede82dab479e98434f8a624fc96, type: 2}
-    - {fileID: 1224561316075330, guid: 158649734987748eda58b5a37c5f72c9, type: 2}
     _maximumSize: 2147483647
   _animatedChestTile:
     _prefabs:
@@ -138,6 +137,11 @@ MonoBehaviour:
     - {fileID: 1498195649673922, guid: bec6596533d494e6cb14682c6c0d96df, type: 2}
     - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
     - {fileID: 1898231120611998, guid: 6303887ac9708459f865dff6c80ebf35, type: 2}
+    - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
+    - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
+    - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
+    - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
+    - {fileID: 1251998406816414, guid: a7001280b953c4e1995584eebe42d547, type: 2}
     _maximumSize: 2147483647
   _canopy1LeftTile:
     _prefabs:

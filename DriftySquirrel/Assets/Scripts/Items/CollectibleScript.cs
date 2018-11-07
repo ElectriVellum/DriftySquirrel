@@ -31,7 +31,7 @@ public class CollectibleScript : MonoBehaviour
     {
         get
         {
-            return _acornsCount;
+            return _scoreCount;
         }
     }
 
