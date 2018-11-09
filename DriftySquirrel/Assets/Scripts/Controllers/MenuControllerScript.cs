@@ -50,6 +50,8 @@ public class MenuControllerScript : MonoBehaviour
     private GameObject _silverMedalImage;
     [SerializeField()]
     private GameObject _goldMedalImage;
+    [SerializeField()]
+    private GameObject _updatePanel;
 
     public MenuControllerScript()
     {
@@ -64,6 +66,7 @@ public class MenuControllerScript : MonoBehaviour
         _bronzeMedalImage = null;
         _silverMedalImage = null;
         _goldMedalImage = null;
+        _updatePanel = null;
     }
 
     private void Awake()
@@ -98,7 +101,6 @@ public class MenuControllerScript : MonoBehaviour
         {
             _soundsOffImage.SetActive(true);
         }
-        //_player.SetActive(true);
     }
 
     private void MakeInstance()
@@ -141,21 +143,21 @@ public class MenuControllerScript : MonoBehaviour
         var time = TimeSpan.FromSeconds(bestTime);
         var timeString = time.Hours.ToString() + ":" + time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString().PadLeft(2, '0').Substring(0, 2);
         _bestTimeText.text = timeString;
-        if (highScore <= 20)
+        if (highScore <= 200)
         {
             _medalText.text = "No Medal Awarded";
             _goldMedalImage.SetActive(false);
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(false);
         }
-        else if (highScore <= 40)
+        else if (highScore <= 500)
         {
             _medalText.text = "Bronze Medal";
             _goldMedalImage.SetActive(false);
             _silverMedalImage.SetActive(false);
             _bronzeMedalImage.SetActive(true);
         }
-        else if (highScore <= 100)
+        else if (highScore <= 1000)
         {
             _medalText.text = "Silver Medal";
             _goldMedalImage.SetActive(false);
@@ -175,13 +177,15 @@ public class MenuControllerScript : MonoBehaviour
 
     public void LeaderboardButton()
     {
-#if UNITY_IOS
         SoundsControllerScript.Instance.PlayGuiClickSound();
+#if UNITY_IOS
         ISN_GKGameCenterViewController viewController = new ISN_GKGameCenterViewController();
         viewController.ViewState = ISN_GKGameCenterViewControllerState.Leaderboards;
         viewController.LeaderboardIdentifier = GameControllerScript.IOS_SCORE_LEADERBOARD_ID;
         viewController.LeaderboardTimeScope = ISN_GKLeaderboardTimeScope.Today;
         viewController.Show();
+#elif UNITY_ANDROID
+        Social.ShowLeaderboardUI();
 #endif
     }
 

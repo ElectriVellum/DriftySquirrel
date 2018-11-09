@@ -30,6 +30,8 @@ public class PlayControllerScript : MonoBehaviour
     [SerializeField()]
     private GameObject _readyPanel;
     [SerializeField()]
+    private Button _readyButton;
+    [SerializeField()]
     private GameObject _readyImage;
     [SerializeField()]
     private GameObject _threeImage;
@@ -75,6 +77,7 @@ public class PlayControllerScript : MonoBehaviour
     private SquirrelScript _squirrel;
 
     private bool _continueFinished;
+    private bool _playedReady;
 
     public PlayControllerScript()
     {
@@ -104,7 +107,9 @@ public class PlayControllerScript : MonoBehaviour
         _timeText = null;
         _squirrel = null;
 
+
         _continueFinished = false;
+        _playedReady = false;
     }
 
     private void Awake()
@@ -185,7 +190,11 @@ public class PlayControllerScript : MonoBehaviour
 
     public void ReadyButton()
     {
-        StartCoroutine(Ready());
+        if (!_playedReady)
+        {
+            _playedReady = true;
+            StartCoroutine(Ready());
+        }
     }
 
     private IEnumerator Ready()

@@ -1,6 +1,9 @@
 ﻿#if UNITY_IOS
 using SA.Foundation.Templates;
 using SA.iOS.GameKit;
+#elif UNITY_ANDROID
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 #endif
 using UnityEngine;
 using UnityEngine.Monetization;
@@ -53,12 +56,24 @@ public class GameControllerScript : MonoBehaviour
             return _localPlayer;
         }
     }
+#elif UNITY_ANDROID
+    private UnityEngine.SocialPlatforms.ILocalUser _localPlayer;
+
+    public UnityEngine.SocialPlatforms.ILocalUser LocalPlayer
+    {
+        get
+        {
+            return _localPlayer;
+        }
+    }
 #endif
 
     public GameControllerScript()
     {
         _resetPlayerPrefs = false;
 #if UNITY_IOS
+        _localPlayer = null;
+#elif UNITY_ANDROID
         _localPlayer = null;
 #endif
     }
@@ -85,6 +100,17 @@ public class GameControllerScript : MonoBehaviour
             else
             {
                 _localPlayer = null;
+            }
+        });
+#elif UNITY_ANDROID
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+        PlayGamesPlatform.InitializeInstance(config);
+        PlayGamesPlatform.Activate();
+        Social.localUser.Authenticate((bool success) =>
+        {
+            if (success)
+            {
+                _localPlayer = Social.localUser;
             }
         });
 #endif
@@ -271,6 +297,10 @@ public class GameControllerScript : MonoBehaviour
                 Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
             }
         });
+#elif UNITY_ANDROID
+        Social.ReportScore(acorns, "CgkI8fqhh7oYEAIQAw", (bool success) => {
+            // handle success or failure
+        });
 #endif
         Acorns = acorns;
     }
@@ -292,6 +322,10 @@ public class GameControllerScript : MonoBehaviour
             {
                 Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
             }
+        });
+#elif UNITY_ANDROID
+        Social.ReportScore(score, "CgkI8fqhh7oYEAIQAQ", (bool success) => {
+            // handle success or failure
         });
 #endif
         if (score > HighScore)
@@ -317,6 +351,10 @@ public class GameControllerScript : MonoBehaviour
             {
                 Debug.Log("Score Report failed! Code: " + result.Error.Code + " Message: " + result.Error.Message);
             }
+        });
+#elif UNITY_ANDROID
+        Social.ReportScore((long)time, "CgkI8fqhh7oYEAIQAg", (bool success) => {
+            // handle success or failure
         });
 #endif
         if (time > BestTime)

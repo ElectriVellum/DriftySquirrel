@@ -851,6 +851,7 @@ MonoBehaviour:
   _bronzeMedalImage: {fileID: 1801058667}
   _silverMedalImage: {fileID: 218609471}
   _goldMedalImage: {fileID: 167040446}
+  _updatePanel: {fileID: 0}
 --- !u!4 &273607270
 Transform:
   m_ObjectHideFlags: 0

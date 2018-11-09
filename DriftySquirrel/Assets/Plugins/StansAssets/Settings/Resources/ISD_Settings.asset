@@ -18,7 +18,7 @@ MonoBehaviour:
     Type: 22
   - IsOptional: 0
     IsEmbeded: 0
-    Type: 35
+    Type: 79
   - IsOptional: 0
     IsEmbeded: 0
     Type: 1
@@ -30,11 +30,62 @@ MonoBehaviour:
     Type: 54
   - IsOptional: 0
     IsEmbeded: 0
-    Type: 79
+    Type: 35
   EmbededFrameworks: []
   Libraries: []
   Flags: []
-  PlistVariables: []
+  PlistVariables:
+  - IsOpen: 1
+    IsListOpen: 1
+    Name: LSApplicationQueriesSchemes
+    Type: 3
+    StringValue: 
+    IntegerValue: 0
+    FloatValue: 0
+    BooleanValue: 1
+    ChildrensIds:
+    - DTgH3dghgSu8p75OmB7h
+    - OXZp5uCfaZ6ZFP2vbC84
+  - IsOpen: 1
+    IsListOpen: 1
+    Name: NSCameraUsageDescription
+    Type: 0
+    StringValue: Please change 'Camera Usage Description' with IOS Native UI Kit Editor
+      Settings
+    IntegerValue: 0
+    FloatValue: 0
+    BooleanValue: 1
+    ChildrensIds: []
+  - IsOpen: 1
+    IsListOpen: 1
+    Name: NSPhotoLibraryUsageDescription
+    Type: 0
+    StringValue: Please change 'Photo Library Usage Description' with IOS Native UI
+      Kit Editor Settings
+    IntegerValue: 0
+    FloatValue: 0
+    BooleanValue: 1
+    ChildrensIds: []
+  - IsOpen: 1
+    IsListOpen: 1
+    Name: NSPhotoLibraryAddUsageDescription
+    Type: 0
+    StringValue: Please change 'Photo Library Add Usage Description' with IOS Native
+      UI Kit Editor Settings
+    IntegerValue: 0
+    FloatValue: 0
+    BooleanValue: 1
+    ChildrensIds: []
+  - IsOpen: 1
+    IsListOpen: 1
+    Name: NSMicrophoneUsageDescription
+    Type: 0
+    StringValue: Please change 'Microphone Usage Description' with IOS Native UI Kit
+      Editor Settings
+    IntegerValue: 0
+    FloatValue: 0
+    BooleanValue: 1
+    ChildrensIds: []
   VariableDictionary:
   - VariableValue:
       IsOpen: 1
@@ -124,6 +175,28 @@ MonoBehaviour:
       BooleanValue: 1
       ChildrensIds: []
     uniqueIdKey: CV4NFu3qoCfv8Yth8MCe
+  - VariableValue:
+      IsOpen: 1
+      IsListOpen: 1
+      Name: 
+      Type: 0
+      StringValue: instagram
+      IntegerValue: 0
+      FloatValue: 0
+      BooleanValue: 1
+      ChildrensIds: []
+    uniqueIdKey: DTgH3dghgSu8p75OmB7h
+  - VariableValue:
+      IsOpen: 1
+      IsListOpen: 1
+      Name: 
+      Type: 0
+      StringValue: whatsapp
+      IntegerValue: 0
+      FloatValue: 0
+      BooleanValue: 1
+      ChildrensIds: []
+    uniqueIdKey: OXZp5uCfaZ6ZFP2vbC84
   Languages:
   - m_code: en
     m_name: English
@@ -142,6 +215,11 @@ MonoBehaviour:
     - NO
   - m_name: GENERATE_PROFILING_CODE
     m_value: NO
+    m_options:
+    - YES
+    - NO
+  - m_name: GCC_ENABLE_OBJC_EXCEPTIONS
+    m_value: YES
     m_options:
     - YES
     - NO
